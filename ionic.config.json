@@ -1,0 +1,7 @@
+{
+  "name": "Spelling Trainer",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
