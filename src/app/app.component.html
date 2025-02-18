@@ -1,33 +1,57 @@
 <ion-app>
-  <ion-split-pane contentId="main-content">
-    <ion-menu contentId="main-content" type="overlay">
-      <ion-content>
-        <ion-list id="inbox-list">
-          <ion-list-header>Inbox</ion-list-header>
-          <ion-note>hi&#64;ionicframework.com</ion-note>
+	<ion-split-pane contentId="main-content">
+		<ion-menu contentId="main-content" type="overlay" *ngIf="isLoggedIn$ | async">
+			<ion-content>
+				<ion-list id="inbox-list">
+					<ion-list-header>
+						<ion-text>
+							<ion-avatar>{{ userInitials }}</ion-avatar>
+							{{ (user$ | async)?.name }}
+						</ion-text>
+					</ion-list-header>
 
-          @for (p of appPages; track p; let i = $index) {
-            <ion-menu-toggle auto-hide="false">
-              <ion-item routerDirection="root" [routerLink]="[p.url]" lines="none" detail="false" routerLinkActive="selected">
-                <ion-icon aria-hidden="true" slot="start" [ios]="p.icon + '-outline'" [md]="p.icon + '-sharp'"></ion-icon>
-                <ion-label>{{ p.title }}</ion-label>
-              </ion-item>
-            </ion-menu-toggle>
-          }
-        </ion-list>
+					<div id="list-content">
+						<ion-menu-toggle auto-hide="false">
+							<ion-item routerDirection="root" routerLink="/dashboard" lines="full" detail="false" routerLinkActive="selected">
+								<ion-icon aria-hidden="true" slot="start" name="home-outline"></ion-icon>
+								<ion-label>Dashboard</ion-label>
+							</ion-item>
+						</ion-menu-toggle>
 
-        <ion-list id="labels-list">
-          <ion-list-header>Labels</ion-list-header>
+						<ion-menu-toggle auto-hide="false">
+							<ion-item routerDirection="forward" routerLink="/train/misspelled" lines="full" detail="false" routerLinkActive="selected">
+								<ion-icon aria-hidden="true" slot="start" name="close-circle-outline"></ion-icon>
+								<ion-label>Misspelled</ion-label>
+								<ion-badge color="danger" slot="end">22</ion-badge>
+							</ion-item>
+						</ion-menu-toggle>
 
-          @for (label of labels; track label) {
-            <ion-item lines="none">
-              <ion-icon aria-hidden="true" slot="start" ios="bookmark-outline" md="bookmark-sharp"></ion-icon>
-              <ion-label>{{ label }}</ion-label>
-            </ion-item>
-          }
-        </ion-list>
-      </ion-content>
-    </ion-menu>
-    <ion-router-outlet id="main-content"></ion-router-outlet>
-  </ion-split-pane>
+						<ion-menu-toggle auto-hide="false">
+							<ion-item routerDirection="forward" routerLink="/train/reviewing" lines="full" detail="false" routerLinkActive="selected">
+								<ion-icon aria-hidden="true" slot="start" name="search-outline"></ion-icon>
+								<ion-label>Reviewing</ion-label>
+								<ion-badge color="warning" slot="end">13</ion-badge>
+							</ion-item>
+						</ion-menu-toggle>
+
+						<ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
+							<ion-item [routerDirection]="p.direction" [routerLink]="[p.url]" lines="full" detail="false" routerLinkActive="selected">
+								<ion-icon aria-hidden="true" slot="start" [name]="p.icon + '-outline'"></ion-icon>
+								<ion-label>{{ p.title }}</ion-label>
+								<round-progress [current]="p.current" [max]="p.max" [radius]="16" [stroke]="7" color="#0054E9"/>
+							</ion-item>
+						</ion-menu-toggle>
+
+						<ion-menu-toggle auto-hide="false" (click)="logout()">
+							<ion-item lines="full" detail="false">
+								<ion-icon aria-hidden="true" slot="start" name="log-out-outline"></ion-icon>
+								<ion-label>Logout</ion-label>
+							</ion-item>
+						</ion-menu-toggle>
+					</div>
+				</ion-list>
+			</ion-content>
+		</ion-menu>
+		<ion-router-outlet id="main-content"></ion-router-outlet>
+	</ion-split-pane>
 </ion-app>

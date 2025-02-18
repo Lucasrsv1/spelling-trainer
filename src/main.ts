@@ -1,14 +1,22 @@
-import { bootstrapApplication } from '@angular/platform-browser';
-import { RouteReuseStrategy, provideRouter, withPreloading, PreloadAllModules } from '@angular/router';
-import { IonicRouteStrategy, provideIonicAngular } from '@ionic/angular/standalone';
+import { bootstrapApplication } from "@angular/platform-browser";
+import { importProvidersFrom } from "@angular/core";
+import { IonicRouteStrategy, provideIonicAngular } from "@ionic/angular/standalone";
+import { PreloadAllModules, provideRouter, RouteReuseStrategy, withPreloading } from "@angular/router";
 
-import { routes } from './app/app.routes';
-import { AppComponent } from './app/app.component';
+import { Drivers } from "@ionic/storage";
+import { IonicStorageModule } from "@ionic/storage-angular";
+
+import { AppComponent } from "./app/app.component";
+import { routes } from "./app/app.routes";
 
 bootstrapApplication(AppComponent, {
-  providers: [
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    provideIonicAngular(),
-    provideRouter(routes, withPreloading(PreloadAllModules)),
-  ],
+	providers: [
+		{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+		provideIonicAngular(),
+		importProvidersFrom(IonicStorageModule.forRoot({
+			name: "__SpellingTrainerStorage",
+			driverOrder: [Drivers.IndexedDB, Drivers.LocalStorage]
+		})),
+		provideRouter(routes, withPreloading(PreloadAllModules))
+	]
 });
