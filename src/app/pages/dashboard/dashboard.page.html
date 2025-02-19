@@ -1,13 +1,37 @@
-<ion-header [translucent]="true">
+<ion-content>
 	<ion-toolbar>
-		<ion-title>dashboard</ion-title>
+		<ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+		</ion-buttons>
 	</ion-toolbar>
-</ion-header>
 
-<ion-content [fullscreen]="true">
-	<ion-header collapse="condense">
-		<ion-toolbar>
-			<ion-title size="large">dashboard</ion-title>
-		</ion-toolbar>
-	</ion-header>
+	<div class="header">
+		<ion-text class="title">Welcome to the Spelling Trainer!</ion-text>
+		<ion-text class="subtitle">Choose a set of words to start training.</ion-text>
+	</div>
+
+	<ion-button color="danger" expand="block" size="large" routerDirection="root" routerLink="/train/misspelled">
+		<ion-label>Misspelled Words</ion-label>
+		<ion-badge color="light" slot="end">22</ion-badge>
+	</ion-button>
+
+	<ion-button color="warning" expand="block" size="large" routerDirection="root" routerLink="/train/reviewing">
+		<ion-label>Words to Review</ion-label>
+		<ion-badge color="light" slot="end">13</ion-badge>
+	</ion-button>
+
+	<ion-button color="success" expand="block" size="large" routerDirection="root" routerLink="/train/known-words">
+		<ion-label>Known Words</ion-label>
+		<ion-badge color="light" slot="end">32</ion-badge>
+	</ion-button>
+
+	<ion-button color="light" expand="block" size="large" routerDirection="root" routerLink="/train/common-words">
+		<ion-label>Common Words</ion-label>
+		<round-progress slot="end" [current]="13" [max]="48" [radius]="32" [stroke]="8" color="#0054E9" background="#ddd"/>
+	</ion-button>
+
+	<ion-button color="light" expand="block" size="large" routerDirection="root" routerLink="/train/all-words">
+		<ion-label>All Words</ion-label>
+		<round-progress slot="end" [current]="24" [max]="155" [radius]="32" [stroke]="8" color="#0054E9" background="#ddd"/>
+	</ion-button>
 </ion-content>

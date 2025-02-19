@@ -4,7 +4,7 @@ import { RouterLink, RouterLinkActive } from "@angular/router";
 
 import { addIcons } from "ionicons";
 import { RouterDirection } from "@ionic/core";
-import { bookOutline, closeCircleOutline, homeOutline, logOutOutline, searchOutline, textOutline } from "ionicons/icons";
+import { bookOutline, checkmarkDoneOutline, closeCircleOutline, homeOutline, logOutOutline, searchOutline, textOutline } from "ionicons/icons";
 import { IonApp, IonAvatar, IonBadge, IonContent, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuToggle, IonRouterLink, IonRouterOutlet, IonSplitPane, IonText } from "@ionic/angular/standalone";
 
 import { StatusBar } from "@capacitor/status-bar";
@@ -66,7 +66,7 @@ export class AppComponent {
 		private readonly authenticationService: AuthenticationService
 	) {
 		StatusBar.setBackgroundColor({ color: "#333333" });
-		addIcons({ bookOutline, closeCircleOutline, homeOutline, logOutOutline, searchOutline, textOutline });
+		addIcons({ bookOutline, checkmarkDoneOutline, closeCircleOutline, homeOutline, logOutOutline, searchOutline, textOutline });
 
 		this.user$ = this.authenticationService.user$;
 		this.isLoggedIn$ = this.authenticationService.isLoggedIn$;

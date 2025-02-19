@@ -19,7 +19,7 @@
 						</ion-menu-toggle>
 
 						<ion-menu-toggle auto-hide="false">
-							<ion-item routerDirection="forward" routerLink="/train/misspelled" lines="full" detail="false" routerLinkActive="selected">
+							<ion-item routerDirection="root" routerLink="/train/misspelled" lines="full" detail="false" routerLinkActive="selected">
 								<ion-icon aria-hidden="true" slot="start" name="close-circle-outline"></ion-icon>
 								<ion-label>Misspelled</ion-label>
 								<ion-badge color="danger" slot="end">22</ion-badge>
@@ -27,18 +27,26 @@
 						</ion-menu-toggle>
 
 						<ion-menu-toggle auto-hide="false">
-							<ion-item routerDirection="forward" routerLink="/train/reviewing" lines="full" detail="false" routerLinkActive="selected">
+							<ion-item routerDirection="root" routerLink="/train/reviewing" lines="full" detail="false" routerLinkActive="selected">
 								<ion-icon aria-hidden="true" slot="start" name="search-outline"></ion-icon>
 								<ion-label>Reviewing</ion-label>
 								<ion-badge color="warning" slot="end">13</ion-badge>
 							</ion-item>
 						</ion-menu-toggle>
 
+						<ion-menu-toggle auto-hide="false">
+							<ion-item routerDirection="root" routerLink="/train/known-words" lines="full" detail="false" routerLinkActive="selected">
+								<ion-icon aria-hidden="true" slot="start" name="checkmark-done-outline"></ion-icon>
+								<ion-label>Known Words</ion-label>
+								<ion-badge color="success" slot="end">32</ion-badge>
+							</ion-item>
+						</ion-menu-toggle>
+
 						<ion-menu-toggle auto-hide="false" *ngFor="let p of appPages; let i = index">
-							<ion-item [routerDirection]="p.direction" [routerLink]="[p.url]" lines="full" detail="false" routerLinkActive="selected">
+							<ion-item routerDirection="root" [routerLink]="[p.url]" lines="full" detail="false" routerLinkActive="selected">
 								<ion-icon aria-hidden="true" slot="start" [name]="p.icon + '-outline'"></ion-icon>
 								<ion-label>{{ p.title }}</ion-label>
-								<round-progress [current]="p.current" [max]="p.max" [radius]="16" [stroke]="7" color="#0054E9"/>
+								<round-progress [current]="p.current" [max]="p.max" [radius]="16" [stroke]="7" color="#0054E9" background="#ddd"/>
 							</ion-item>
 						</ion-menu-toggle>
 

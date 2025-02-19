@@ -40,3 +40,23 @@
 	font-family: "Chalk";
 	src: url("assets/DJB\ Chalk\ It\ Up.ttf") format("truetype");
 }
+
+ion-menu {
+	max-width: 370px;
+}
+
+ion-content {
+	color: white;
+	--color: white;
+	--background: url("assets/background.jpeg") 50% 50% / cover no-repeat;
+	// --background: url("assets/blackboard-texture.jpg") 50% 50% / cover no-repeat;
+	font-family: "Chalk", cursive, "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+	--padding-start: 16px;
+	--padding-end: 16px;
+}
+
+ion-toolbar {
+	color: white;
+	margin-left: -16px;
+	--background: transparent;
+}
