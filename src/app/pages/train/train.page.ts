@@ -7,6 +7,8 @@ import { addIcons } from "ionicons";
 import { homeOutline } from "ionicons/icons";
 import { IonButton, IonButtons, IonContent, IonIcon, IonMenuButton, IonRouterLink, IonToolbar } from "@ionic/angular/standalone";
 
+import { SpellingInputComponent } from "src/app/components/spelling-input/spelling-input.component";
+
 @Component({
 	selector: "app-train",
 	templateUrl: "./train.page.html",
@@ -22,10 +24,13 @@ import { IonButton, IonButtons, IonContent, IonIcon, IonMenuButton, IonRouterLin
 		IonToolbar,
 		IonRouterLink,
 		CommonModule,
-		FormsModule
+		FormsModule,
+		SpellingInputComponent
 	]
 })
 export class TrainPage implements OnInit {
+	public spelledWord: string = "dichlorodiphenyltrichloroethane";
+
 	constructor () {
 		addIcons({ homeOutline });
 	}

@@ -1,0 +1,9 @@
+<input type="text" id="keyboard-binding" (keydown)="keydown($event)" (focus)="focused = true" (blur)="focused = false"/>
+
+<label class="spelling-input" for="keyboard-binding">
+	@for (c of wordChars; track $index) {
+		<div class="letter">{{ c }}</div>
+	}
+
+	<div class="letter cursor" [class.focused]="focused"></div>
+</label>
