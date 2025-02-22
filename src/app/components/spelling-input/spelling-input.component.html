@@ -1,9 +1,23 @@
 <input type="text" id="keyboard-binding" (keydown)="keydown($event)" (focus)="focused = true" (blur)="focused = false"/>
 
-<label class="spelling-input" for="keyboard-binding">
-	@for (c of wordChars; track $index) {
-		<div class="letter">{{ c }}</div>
-	}
+@if (validate) {
+	<label>
+		@for (c of validationChanges(); track $index) {
+			<div class="letter green" [class.red]="c.removed || c.added || c.switched">{{ c.removed ? "" : c.char }}</div>
+		}
+	</label>
 
-	<div class="letter cursor" [class.focused]="focused"></div>
-</label>
+	<label class="spelling-validation">
+		@for (c of validationChanges(); track $index) {
+			<div class="letter green" [class.red]="c.removed || c.added || c.switched">{{ c.added ? "" : (c.switched || c.char) }}</div>
+		}
+	</label>
+} @else {
+	<label class="spelling-input" for="keyboard-binding">
+		@for (c of wordChars; track $index) {
+			<div class="letter">{{ c }}</div>
+		}
+
+		<div class="letter cursor" [class.focused]="focused"></div>
+	</label>
+}
