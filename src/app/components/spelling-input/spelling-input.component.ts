@@ -1,4 +1,4 @@
-import { Component, computed, forwardRef, Input, input, signal } from "@angular/core";
+import { AfterViewInit, Component, computed, ElementRef, forwardRef, Input, input, OnInit, signal, ViewChild } from "@angular/core";
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from "@angular/forms";
 
 import { diffChars } from "diff";
@@ -29,11 +29,18 @@ const allowedCharacters = [
 		multi: true
 	}]
 })
-export class SpellingInputComponent implements ControlValueAccessor {
+export class SpellingInputComponent implements AfterViewInit, ControlValueAccessor {
 	@Input()
 	public validate: boolean = false;
 
+	@ViewChild("input")
+	public inputElement?: ElementRef<HTMLInputElement>;
+
 	public expected = input<string>("");
+
+	public ngAfterViewInit (): void {
+		setTimeout(() => this.inputElement?.nativeElement.focus(), 500);
+	}
 
 	public validationChanges = computed(() => {
 		const changes: CharDiff[] = [];

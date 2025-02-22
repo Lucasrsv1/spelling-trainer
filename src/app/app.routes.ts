@@ -10,7 +10,7 @@ export const routes: Routes = [
 
 	// Restricted
 	{ path: "dashboard", canActivate: [authenticationGuard], loadComponent: () => import("./pages/dashboard/dashboard.page").then(m => m.DashboardPage) },
-	{ path: "train/:deck", canActivate: [authenticationGuard], loadComponent: () => import("./pages/train/train.page").then(m => m.TrainPage) },
+	{ path: "train/:word-list", canActivate: [authenticationGuard], loadComponent: () => import("./pages/train/train.page").then(m => m.TrainPage) },
 
 	// No match
 	{ path: "", redirectTo: "home", pathMatch: "full" },

@@ -1,4 +1,12 @@
-<input type="text" id="keyboard-binding" (keydown)="keydown($event)" (focus)="focused = true" (blur)="focused = false"/>
+<input
+	type="text"
+	id="keyboard-binding"
+	autofocus
+	#input
+	(keydown)="keydown($event)"
+	(focus)="focused = true"
+	(blur)="focused = false"
+/>
 
 @if (validate) {
 	<label>
