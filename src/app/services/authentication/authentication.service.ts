@@ -28,7 +28,7 @@ export class AuthenticationService {
 	 * Retorna verdadeiro quando o usuário está logado
 	 */
 	public get isLoggedIn (): boolean {
-		return this.user !== null && Boolean(this.user.name);
+		return this.user !== null && Boolean(this.user.uuid);
 	}
 
 	/**
@@ -36,7 +36,7 @@ export class AuthenticationService {
 	 */
 	public get isLoggedIn$ (): Observable<boolean> {
 		return this._user$.pipe(
-			map(user => user !== null && Boolean(user.name))
+			map(user => user !== null && Boolean(user.uuid))
 		);
 	}
 
@@ -63,6 +63,6 @@ export class AuthenticationService {
 	public saveLoggedUser (user: IUser): void {
 		this.localStorage.set(JSON.stringify(user), LocalStorageKey.USER);
 		this._user$.next(user);
-		this.navController.navigateRoot(["inicio"]);
+		this.navController.navigateRoot(["dashboard"]);
 	}
 }

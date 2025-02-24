@@ -8,5 +8,10 @@
 		</ion-buttons>
 	</ion-toolbar>
 
-	<app-spelling-input [(ngModel)]="spelledWord" [expected]="expected" [validate]="validate"></app-spelling-input>
+	<app-spelling-input
+		[(ngModel)]="spelledWord"
+		[expected]="expected"
+		[validate]="validate"
+		(confirm)="validateWord()"
+	></app-spelling-input>
 </ion-content>

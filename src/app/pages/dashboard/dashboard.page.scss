@@ -28,3 +28,22 @@ ion-button {
 ion-button ion-badge, round-progress {
 	margin-left: 16px;
 }
+
+round-progress {
+	width: 64px;
+	height: 64px;
+}
+
+.progress {
+	position: relative;
+
+	ion-note {
+		top: 0;
+		left: 16px;
+		width: 64px;
+		line-height: 64px;
+		z-index: 50;
+		position: absolute;
+		text-align: center;
+	}
+}

@@ -17,7 +17,7 @@
 
 	<label class="spelling-validation">
 		@for (c of validationChanges(); track $index) {
-			<div class="letter green" [class.red]="c.removed || c.added || c.switched">{{ c.added ? "" : (c.switched || c.char) }}</div>
+			<div class="letter green">{{ c.added ? "" : (c.switched || c.char) }}</div>
 		}
 	</label>
 } @else {

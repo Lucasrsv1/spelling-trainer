@@ -1,11 +1,13 @@
 import { CommonModule } from "@angular/common";
+import { Component } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { ActivatedRoute, RouterLink } from "@angular/router";
-import { Component, OnInit } from "@angular/core";
 
 import { addIcons } from "ionicons";
 import { homeOutline } from "ionicons/icons";
 import { IonButton, IonButtons, IonContent, IonIcon, IonMenuButton, IonRouterLink, IonToolbar } from "@ionic/angular/standalone";
+
+import { filter, take } from "rxjs";
 
 import { SpellingInputComponent } from "src/app/components/spelling-input/spelling-input.component";
 
@@ -35,7 +37,7 @@ import { WordsToReviewService } from "src/app/services/training/words-to-review/
 		SpellingInputComponent
 	]
 })
-export class TrainPage implements OnInit {
+export class TrainPage {
 	// public spelledWord: string = "dichlorodiphenyltrichloroethane";
 	public spelledWord: string = "";
 	public expected: string = "";
@@ -71,14 +73,29 @@ export class TrainPage implements OnInit {
 				break;
 		}
 
-		console.log(this.trainingService);
+		this.trainingService.wordsLoaded$
+			.pipe(filter(loaded => loaded), take(1))
+			.subscribe(() => this.nextWord());
 	}
 
-	public ngOnInit () {
-		this.nextWord();
+	public nextWord (): void {
+		this.validate = false;
+		this.spelledWord = "";
+		this.expected = this.trainingService.availableWords[Math.floor(Math.random() * this.trainingService.availableWords.length)];
+		console.log(this.expected);
 	}
 
-	public validateWord (): void { }
+	public validateWord (): void {
+		this.validate = true;
+		console.log(this.expected, "===", this.spelledWord, this.expected === this.spelledWord.toUpperCase());
 
-	public nextWord (): void { }
+		if (this.expected === this.spelledWord.toUpperCase()) {
+			this.misspelledWordsService.remove(this.expected);
+			this.wordsToReviewService.add(this.expected);
+		} else {
+			this.misspelledWordsService.add(this.expected);
+			this.wordsToReviewService.remove(this.expected);
+			this.knownWordsService.remove(this.expected);
+		}
+	}
 }

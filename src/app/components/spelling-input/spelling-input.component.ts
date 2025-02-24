@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, computed, ElementRef, forwardRef, Input, input, OnInit, signal, ViewChild } from "@angular/core";
+import { AfterViewInit, Component, computed, ElementRef, EventEmitter, forwardRef, Input, input, Output, signal, ViewChild } from "@angular/core";
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from "@angular/forms";
 
 import { diffChars } from "diff";
@@ -32,6 +32,9 @@ const allowedCharacters = [
 export class SpellingInputComponent implements AfterViewInit, ControlValueAccessor {
 	@Input()
 	public validate: boolean = false;
+
+	@Output()
+	public confirm = new EventEmitter<string>();
 
 	@ViewChild("input")
 	public inputElement?: ElementRef<HTMLInputElement>;
@@ -92,10 +95,15 @@ export class SpellingInputComponent implements AfterViewInit, ControlValueAccess
 
 		switch (event.key) {
 			case "Enter":
-				console.log("ENTER:", this.spelledWord());
+			case "Tab":
+			case "Spacebar":
+			case " ":
+				this.confirm.emit(this.spelledWord());
 				break;
 			case "Backspace":
+			case "Clear":
 			case "Delete":
+			case "Del":
 				if (this.spelledWord().length > 0)
 					this.spelledWord.set(this.spelledWord().slice(0, -1));
 				break;

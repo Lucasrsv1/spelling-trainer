@@ -1,3 +1,8 @@
+import { Observable } from "rxjs";
+
 export interface ITrainingService {
-	// getWord (): string;
+	wordsLoaded$: Observable<boolean>;
+	availableWords: string[];
+
+	loadWords (): Promise<void>;
 }
