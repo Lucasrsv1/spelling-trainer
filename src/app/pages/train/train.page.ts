@@ -38,7 +38,6 @@ import { WordsToReviewService } from "src/app/services/training/words-to-review/
 	]
 })
 export class TrainPage {
-	// public spelledWord: string = "dichlorodiphenyltrichloroethane";
 	public spelledWord: string = "";
 	public expected: string = "";
 	public validate: boolean = false;
@@ -82,10 +81,14 @@ export class TrainPage {
 		this.validate = false;
 		this.spelledWord = "";
 		this.expected = this.trainingService.availableWords[Math.floor(Math.random() * this.trainingService.availableWords.length)];
-		console.log(this.expected);
+		console.log(this.expected, this.spelledWord);
+		// this.spelledWord = "dichlorodiphenyltrichloroethane";
 	}
 
 	public validateWord (): void {
+		if (this.validate)
+			return this.nextWord();
+
 		this.validate = true;
 		console.log(this.expected, "===", this.spelledWord, this.expected === this.spelledWord.toUpperCase());
 

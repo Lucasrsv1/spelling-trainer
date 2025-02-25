@@ -90,28 +90,16 @@ export class SpellingInputComponent implements AfterViewInit, ControlValueAccess
 	protected onTouched = () => { };
 
 	public keydown (event: KeyboardEvent): void {
+		if (["Enter", "Tab", "Spacebar", " "].includes(event.key))
+			return this.confirm.emit(this.spelledWord());
+
 		if (this.validate)
 			return;
 
-		switch (event.key) {
-			case "Enter":
-			case "Tab":
-			case "Spacebar":
-			case " ":
-				this.confirm.emit(this.spelledWord());
-				break;
-			case "Backspace":
-			case "Clear":
-			case "Delete":
-			case "Del":
-				if (this.spelledWord().length > 0)
-					this.spelledWord.set(this.spelledWord().slice(0, -1));
-				break;
-			default:
-				if (allowedCharacters.includes(event.key.toUpperCase()))
-					this.spelledWord.set(this.spelledWord() + event.key.toLowerCase());
-				break;
-		}
+		if (["Backspace", "Clear", "Delete", "Del"].includes(event.key) && this.spelledWord().length > 0)
+			this.spelledWord.set(this.spelledWord().slice(0, -1));
+		else if (allowedCharacters.includes(event.key.toUpperCase()))
+			this.spelledWord.set(this.spelledWord() + event.key.toLowerCase());
 
 		this.onChangeCallback(this.spelledWord());
 	}

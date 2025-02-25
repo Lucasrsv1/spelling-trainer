@@ -2,7 +2,7 @@
 	"name": "spelling-trainer",
 	"version": "0.0.1",
 	"author": "Lucas Rassilan Vilanova",
-	"description": "An Ionic project",
+	"description": "App to improve your spelling skills",
 	"homepage": "https://spellingtrainer.lrv.dev.br",
 	"scripts": {
 		"ng": "ng",
