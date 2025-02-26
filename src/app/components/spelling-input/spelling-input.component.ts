@@ -37,15 +37,15 @@ export class SpellingInputComponent implements AfterViewInit, ControlValueAccess
 	public confirm = new EventEmitter<string>();
 
 	@ViewChild("input")
-	public inputElement?: ElementRef<HTMLInputElement>;
+	protected inputElement?: ElementRef<HTMLInputElement>;
 
 	public expected = input<string>("");
 
 	public ngAfterViewInit (): void {
-		setTimeout(() => this.inputElement?.nativeElement.focus(), 500);
+		setTimeout(() => this.focus(), 500);
 	}
 
-	public validationChanges = computed(() => {
+	protected validationChanges = computed(() => {
 		const changes: CharDiff[] = [];
 		const diff = diffChars(this.expected(), this.spelledWord(), { ignoreCase: true });
 
@@ -88,6 +88,10 @@ export class SpellingInputComponent implements AfterViewInit, ControlValueAccess
 
 	protected onChangeCallback = (value?: string) => { };
 	protected onTouched = () => { };
+
+	public focus (): void {
+		this.inputElement?.nativeElement.focus();
+	}
 
 	public keydown (event: KeyboardEvent): void {
 		if (["Enter", "Tab", "Spacebar", " "].includes(event.key))

@@ -1,5 +1,5 @@
-<ion-content>
-	<ion-toolbar>
+<ion-content (click)="spellingInput?.focus()">
+	<ion-toolbar (click)="$event.stopPropagation()">
 		<ion-buttons slot="start">
 			<ion-menu-button></ion-menu-button>
 			<ion-button routerDirection="root" routerLink="/dashboard">
@@ -10,8 +10,44 @@
 
 	<app-spelling-input
 		[(ngModel)]="spelledWord"
-		[expected]="expected"
+		[expected]="expected()"
 		[validate]="validate"
 		(confirm)="validateWord()"
 	></app-spelling-input>
+
+	<div class="meaning">
+		<ion-text>
+			<strong>Part of speech:</strong> {{ partOfSpeech }}
+		</ion-text>
+
+		@if (definition) {
+			<ion-text>
+				<strong>Definition:</strong> {{ definition }}
+			</ion-text>
+		} @else {
+			<ion-text>
+				<strong>No definition available.</strong>
+			</ion-text>
+		}
+
+		@if (example) {
+			<ion-text>
+				<strong>Example phrase:</strong> {{ example }}
+			</ion-text>
+		} @else {
+			<ion-text>
+				<strong>No example phrase available.</strong>
+			</ion-text>
+		}
+
+		@if (context.length) {
+			<ion-text>
+				<strong>Context:</strong> {{ context.join(", ") }}
+			</ion-text>
+		} @else {
+			<ion-text>
+				<strong>No context available.</strong>
+			</ion-text>
+		}
+	</div>
 </ion-content>

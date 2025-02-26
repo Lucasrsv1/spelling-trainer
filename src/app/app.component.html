@@ -13,14 +13,14 @@
 					<div id="list-content">
 						<ion-menu-toggle auto-hide="false">
 							<ion-item routerDirection="root" routerLink="/dashboard" lines="full" detail="false" routerLinkActive="selected">
-								<ion-icon aria-hidden="true" slot="start" name="home-outline"></ion-icon>
+								<ion-icon slot="start" name="home-outline"></ion-icon>
 								<ion-label>Dashboard</ion-label>
 							</ion-item>
 						</ion-menu-toggle>
 
 						<ion-menu-toggle auto-hide="false">
 							<ion-item routerDirection="root" routerLink="/train/misspelled" lines="full" detail="false" routerLinkActive="selected">
-								<ion-icon aria-hidden="true" slot="start" name="close-circle-outline"></ion-icon>
+								<ion-icon slot="start" name="close-circle-outline"></ion-icon>
 								<ion-label>Misspelled</ion-label>
 								<ion-badge color="danger" slot="end" *ngIf="misspelledWordsService.misspelledCounter$ | async">
 									{{ misspelledWordsService.misspelledCounter$ | async }}
@@ -30,7 +30,7 @@
 
 						<ion-menu-toggle auto-hide="false">
 							<ion-item routerDirection="root" routerLink="/train/reviewing" lines="full" detail="false" routerLinkActive="selected">
-								<ion-icon aria-hidden="true" slot="start" name="search-outline"></ion-icon>
+								<ion-icon slot="start" name="search-outline"></ion-icon>
 								<ion-label>Reviewing</ion-label>
 								<ion-badge color="warning" slot="end" *ngIf="wordsToReviewService.reviewCounter$ | async">
 									{{ wordsToReviewService.reviewCounter$ | async }}
@@ -40,7 +40,7 @@
 
 						<ion-menu-toggle auto-hide="false">
 							<ion-item routerDirection="root" routerLink="/train/known-words" lines="full" detail="false" routerLinkActive="selected">
-								<ion-icon aria-hidden="true" slot="start" name="checkmark-done-outline"></ion-icon>
+								<ion-icon slot="start" name="checkmark-done-outline"></ion-icon>
 								<ion-label>Known Words</ion-label>
 								<ion-badge color="success" slot="end" *ngIf="knownWordsService.knownCounter$ | async">
 									{{ knownWordsService.knownCounter$ | async }}
@@ -50,7 +50,7 @@
 
 						<ion-menu-toggle auto-hide="false">
 							<ion-item routerDirection="root" routerLink="/train/common-words" lines="full" detail="false" routerLinkActive="selected">
-								<ion-icon aria-hidden="true" slot="start" name="text-outline"></ion-icon>
+								<ion-icon slot="start" name="text-outline"></ion-icon>
 								<ion-label>Common Words</ion-label>
 								<round-progress
 									[current]="commonCounter.value"
@@ -65,7 +65,7 @@
 
 						<ion-menu-toggle auto-hide="false">
 							<ion-item routerDirection="root" routerLink="/train/all-words" lines="full" detail="false" routerLinkActive="selected">
-								<ion-icon aria-hidden="true" slot="start" name="book-outline"></ion-icon>
+								<ion-icon slot="start" name="book-outline"></ion-icon>
 								<ion-label>All Words</ion-label>
 								<round-progress
 									[current]="knownCounter.value"
@@ -80,7 +80,7 @@
 
 						<ion-menu-toggle auto-hide="false" (click)="logout()">
 							<ion-item lines="full" detail="false">
-								<ion-icon aria-hidden="true" slot="start" name="log-out-outline"></ion-icon>
+								<ion-icon slot="start" name="log-out-outline"></ion-icon>
 								<ion-label>Logout</ion-label>
 							</ion-item>
 						</ion-menu-toggle>

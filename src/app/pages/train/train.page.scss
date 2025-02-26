@@ -1,3 +1,26 @@
 app-spelling-input {
 	font-size: 26px;
 }
+
+ion-text {
+	display: block;
+	font-size: 24px;
+	margin-bottom: 18px;
+	letter-spacing: 2px;
+}
+
+.meaning {
+	margin: 8px;
+}
+
+@media (min-width: 768px) {
+	.meaning {
+		margin: 16px;
+	}
+}
+
+@media (min-width: 1200px) {
+	.meaning {
+		margin: 32px;
+	}
+}
