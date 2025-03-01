@@ -13,9 +13,35 @@ ion-text {
 	margin: 8px;
 }
 
+.player-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	margin-bottom: 16px;
+
+	.player {
+		width: 100px;
+	}
+
+	ion-icon {
+		font-size: 100px;
+		margin-top: 8px;
+		margin-bottom: 8px;
+	}
+}
+
 @media (min-width: 768px) {
 	.meaning {
 		margin: 16px;
+	}
+
+	.player-container {
+		flex-direction: row;
+
+		.player {
+			margin-right: 24px;
+		}
 	}
 }
 

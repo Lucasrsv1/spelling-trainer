@@ -4,10 +4,12 @@ import { ActivatedRoute, RouterLink } from "@angular/router";
 import { Component, effect, signal, ViewChild } from "@angular/core";
 
 import { addIcons } from "ionicons";
-import { homeOutline } from "ionicons/icons";
+import { homeOutline, pauseCircleOutline, playCircleOutline } from "ionicons/icons";
 import { IonButton, IonButtons, IonContent, IonIcon, IonMenuButton, IonRouterLink, IonText, IonToolbar } from "@ionic/angular/standalone";
 
 import { filter, take } from "rxjs";
+
+import { environment } from "src/environments/environment";
 
 import { SpellingInputComponent } from "src/app/components/spelling-input/spelling-input.component";
 
@@ -47,6 +49,8 @@ export class TrainPage {
 	public spelledWord: string = "";
 	public validate: boolean = false;
 
+	public audio: HTMLAudioElement;
+	public isPlaying: boolean = false;
 	public partOfSpeech: string = "Unknown";
 	public definition: string = "";
 	public example: string = "";
@@ -65,7 +69,8 @@ export class TrainPage {
 		private readonly misspelledWordsService: MisspelledWordsService,
 		private readonly wordsToReviewService: WordsToReviewService
 	) {
-		addIcons({ homeOutline });
+		this.audio = new Audio();
+		addIcons({ homeOutline, pauseCircleOutline, playCircleOutline });
 		switch (this.route.snapshot.paramMap.get("word-list")) {
 			case "common-words":
 				this.trainingService = this.commonWordsService;
@@ -93,6 +98,7 @@ export class TrainPage {
 			const meaning = this.dictionaryService.getMeaning(this.expected());
 			const antonyms = this.dictionaryService.getAntonyms(this.expected());
 			const synonyms = this.dictionaryService.getSynonyms(this.expected());
+			const wordRegex = new RegExp(this.expected(), "gi");
 
 			if (!meaning) {
 				this.partOfSpeech = "Unknown";
@@ -105,10 +111,9 @@ export class TrainPage {
 			}
 
 			this.partOfSpeech = meaning[0] || "Unknown";
-			this.definition = meaning[1] || "";
+			this.definition = (meaning[1] || "").replace(wordRegex, "___");
 			this.context = meaning[2].filter(c => !c.toUpperCase().includes(this.expected().toUpperCase()));
 
-			const wordRegex = new RegExp(this.expected(), "gi");
 			const examples = meaning[3].filter(e => wordRegex.test(e));
 			this.example = (examples[Math.floor(Math.random() * examples.length)] || "").replace(wordRegex, "___");
 
@@ -130,6 +135,13 @@ export class TrainPage {
 		this.expected.set(this.trainingService.availableWords[Math.floor(Math.random() * this.trainingService.availableWords.length)]);
 		console.log(this.expected(), this.spelledWord);
 		// this.spelledWord = "dichlorodiphenyltrichloroethane";
+
+		this.audio.src = `${environment.audioURL}${this.expected().toLowerCase()}.mp3`;
+		this.audio.muted = false;
+		this.audio.autoplay = true;
+		this.audio.play();
+		this.audio.onplay = () => this.isPlaying = !this.audio?.paused;
+		this.audio.onpause = () => this.isPlaying = !this.audio?.paused;
 	}
 
 	public validateWord (): void {

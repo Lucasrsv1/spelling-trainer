@@ -1,3 +1,4 @@
 export const environment = {
-	production: true
+	production: true,
+	audioURL: "http://localhost:8080/"
 };

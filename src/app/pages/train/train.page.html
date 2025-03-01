@@ -8,12 +8,18 @@
 		</ion-buttons>
 	</ion-toolbar>
 
-	<app-spelling-input
-		[(ngModel)]="spelledWord"
-		[expected]="expected()"
-		[validate]="validate"
-		(confirm)="validateWord()"
-	></app-spelling-input>
+	<div class="player-container">
+		<div class="player">
+			<ion-icon (click)="audio.play()" [name]="isPlaying ? 'pause-circle-outline' : 'play-circle-outline'"></ion-icon>
+		</div>
+
+		<app-spelling-input
+			[(ngModel)]="spelledWord"
+			[expected]="expected()"
+			[validate]="validate"
+			(confirm)="validateWord()"
+		></app-spelling-input>
+	</div>
 
 	<div class="meaning">
 		<ion-text>
