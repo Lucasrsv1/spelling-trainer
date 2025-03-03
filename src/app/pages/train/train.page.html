@@ -29,7 +29,7 @@
 
 	<div class="player-container">
 		<div class="player">
-			<ion-icon (click)="audio.play()" [name]="isPlaying ? 'pause-circle-outline' : 'play-circle-outline'"></ion-icon>
+			<ion-icon (click)="isPlaying ? pause() : play()" [name]="isPlaying ? 'pause-circle-outline' : 'play-circle-outline'"></ion-icon>
 		</div>
 
 		<app-spelling-input

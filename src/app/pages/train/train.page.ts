@@ -49,7 +49,6 @@ export class TrainPage {
 	public spelledWord: string = "";
 	public validate: boolean = false;
 
-	public audio: HTMLAudioElement;
 	public isPlaying: boolean = false;
 	public partOfSpeech: string = "Unknown";
 	public definition: string = "";
@@ -59,6 +58,7 @@ export class TrainPage {
 	public synonyms: string = "";
 	public spellingCounter: number = 0;
 
+	private audio: HTMLAudioElement;
 	private trainingService: ITrainingService;
 
 	constructor (
@@ -183,5 +183,14 @@ export class TrainPage {
 
 			this.spellingCounter = this.misspelledWordsService.getSpellingCounter(this.expected());
 		}
+	}
+
+	public play (): void {
+		this.audio.play();
+	}
+
+	public pause (): void {
+		this.audio.pause();
+		this.audio.currentTime = 0;
 	}
 }
