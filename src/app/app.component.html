@@ -39,6 +39,16 @@
 						</ion-menu-toggle>
 
 						<ion-menu-toggle auto-hide="false">
+							<ion-item routerDirection="root" routerLink="/train/known-common-words" lines="full" detail="false" routerLinkActive="selected" [disabled]="!commonCounter.value">
+								<ion-icon slot="start" name="checkmark-done-outline"></ion-icon>
+								<ion-label>Known Common Words</ion-label>
+								<ion-badge color="success" slot="end" *ngIf="commonCounter.value">
+									{{ commonCounter.value }}
+								</ion-badge>
+							</ion-item>
+						</ion-menu-toggle>
+
+						<ion-menu-toggle auto-hide="false">
 							<ion-item routerDirection="root" routerLink="/train/known-words" lines="full" detail="false" routerLinkActive="selected" [disabled]="!(knownWordsService.knownCounter$ | async)">
 								<ion-icon slot="start" name="checkmark-done-outline"></ion-icon>
 								<ion-label>Known Words</ion-label>

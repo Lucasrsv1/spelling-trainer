@@ -17,6 +17,7 @@ import { AllWordsService } from "src/app/services/training/all-words/all-words.s
 import { CommonWordsService } from "src/app/services/training/common-words/common-words.service";
 import { DictionaryService } from "src/app/services/dictionary/dictionary.service";
 import { ITrainingService } from "src/app/services/training/training.service";
+import { KnownCommonWordsService } from "src/app/services/training/known-common-words/known-common-words.service";
 import { KnownWordsService } from "src/app/services/training/known-words/known-words.service";
 import { MisspelledWordsService } from "src/app/services/training/misspelled-words/misspelled-words.service";
 import { WordsToReviewService } from "src/app/services/training/words-to-review/words-to-review.service";
@@ -67,6 +68,7 @@ export class TrainPage {
 		private readonly allWordsService: AllWordsService,
 		private readonly commonWordsService: CommonWordsService,
 		private readonly dictionaryService: DictionaryService,
+		private readonly knownCommonWordsService: KnownCommonWordsService,
 		private readonly knownWordsService: KnownWordsService,
 		private readonly misspelledWordsService: MisspelledWordsService,
 		private readonly wordsToReviewService: WordsToReviewService
@@ -76,6 +78,9 @@ export class TrainPage {
 		switch (this.route.snapshot.paramMap.get("word-list")) {
 			case "common-words":
 				this.trainingService = this.commonWordsService;
+				break;
+			case "known-common-words":
+				this.trainingService = this.knownCommonWordsService;
 				break;
 			case "known-words":
 				this.trainingService = this.knownWordsService;

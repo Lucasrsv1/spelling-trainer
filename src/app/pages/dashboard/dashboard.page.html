@@ -50,6 +50,20 @@
 		expand="block"
 		size="large"
 		routerDirection="root"
+		routerLink="/train/known-common-words"
+		[disabled]="!commonCounter.value"
+	>
+		<ion-label>Known Common Words</ion-label>
+		<ion-badge color="light" slot="end">
+			{{ commonCounter.value }}
+		</ion-badge>
+	</ion-button>
+
+	<ion-button
+		color="success"
+		expand="block"
+		size="large"
+		routerDirection="root"
 		routerLink="/train/known-words"
 		[disabled]="!(knownWordsService.knownCounter$ | async)"
 	>
