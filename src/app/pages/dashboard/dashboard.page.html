@@ -67,7 +67,7 @@
 		routerLink="/train/known-words"
 		[disabled]="!(knownWordsService.knownCounter$ | async)"
 	>
-		<ion-label>Known Words</ion-label>
+		<ion-label>All Known Words</ion-label>
 		<ion-badge color="light" slot="end">
 			{{ knownWordsService.knownCounter$ | async }}
 		</ion-badge>
