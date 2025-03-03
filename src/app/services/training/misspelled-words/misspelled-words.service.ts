@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 
 import { BehaviorSubject, Observable } from "rxjs";
 
-import { IMisspelledWord } from "src/app/models/user";
+import { MisspelledWord } from "src/app/models/user";
 
 import { AppStorageService } from "../../app-storage/app-storage.service";
 import { ITrainingService } from "../training.service";
@@ -11,7 +11,7 @@ import { ITrainingService } from "../training.service";
 export class MisspelledWordsService implements ITrainingService {
 	private _misspelledCounter$ = new BehaviorSubject<number>(0);
 
-	private misspelledWords: IMisspelledWord = {};
+	private misspelledWords: MisspelledWord = {};
 
 	public availableWords: string[] = [];
 	public wordsLoaded$ = new BehaviorSubject<boolean>(false);
@@ -38,8 +38,7 @@ export class MisspelledWordsService implements ITrainingService {
 		this.misspelledWords[word]++;
 		this.appStorageService.setMisspelledWords(this.misspelledWords);
 
-		const index = this.availableWords.indexOf(word);
-		if (index === -1)
+		if (!this.availableWords.includes(word))
 			this.availableWords.push(word);
 
 		this._misspelledCounter$.next(this.availableWords.length);
@@ -47,11 +46,16 @@ export class MisspelledWordsService implements ITrainingService {
 
 	public remove (word: string): void {
 		const index = this.availableWords.indexOf(word);
-		if (index > -1)
+		if (index > -1) {
 			this.availableWords.splice(index, 1);
+			this._misspelledCounter$.next(this.availableWords.length);
+		}
 
-		this._misspelledCounter$.next(this.availableWords.length);
 		delete this.misspelledWords[word];
 		this.appStorageService.setMisspelledWords(this.misspelledWords);
+	}
+
+	public getSpellingCounter (word: string): number {
+		return (this.misspelledWords[word] || 1) * -1;
 	}
 }

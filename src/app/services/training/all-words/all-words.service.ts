@@ -19,7 +19,7 @@ export class AllWordsService implements ITrainingService {
 	}
 
 	public async loadWords (): Promise<void> {
-		const knownWords = await this.appStorageService.getKnownWords();
+		const knownWords = Object.keys(await this.appStorageService.getKnownWords());
 
 		for (const word of this.dictionaryService.words) {
 			if (!knownWords.includes(word))

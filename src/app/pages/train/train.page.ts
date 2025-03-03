@@ -4,7 +4,7 @@ import { ActivatedRoute, RouterLink } from "@angular/router";
 import { Component, effect, signal, ViewChild } from "@angular/core";
 
 import { addIcons } from "ionicons";
-import { homeOutline, pauseCircleOutline, playCircleOutline } from "ionicons/icons";
+import { checkmarkCircle, checkmarkCircleOutline, checkmarkDoneCircle, checkmarkDoneCircleOutline, closeCircleOutline, homeOutline, pauseCircleOutline, playCircleOutline, removeCircleOutline } from "ionicons/icons";
 import { IonButton, IonButtons, IonContent, IonIcon, IonMenuButton, IonRouterLink, IonText, IonToolbar } from "@ionic/angular/standalone";
 
 import { filter, take } from "rxjs";
@@ -57,6 +57,7 @@ export class TrainPage {
 	public context: string[] = [];
 	public antonyms: string = "";
 	public synonyms: string = "";
+	public spellingCounter: number = 0;
 
 	private trainingService: ITrainingService;
 
@@ -70,7 +71,7 @@ export class TrainPage {
 		private readonly wordsToReviewService: WordsToReviewService
 	) {
 		this.audio = new Audio();
-		addIcons({ homeOutline, pauseCircleOutline, playCircleOutline });
+		addIcons({ checkmarkCircle, checkmarkCircleOutline, checkmarkDoneCircle, checkmarkDoneCircleOutline, closeCircleOutline, homeOutline, pauseCircleOutline, playCircleOutline, removeCircleOutline });
 		switch (this.route.snapshot.paramMap.get("word-list")) {
 			case "common-words":
 				this.trainingService = this.commonWordsService;
@@ -133,6 +134,14 @@ export class TrainPage {
 		this.validate = false;
 		this.spelledWord = "";
 		this.expected.set(this.trainingService.availableWords[Math.floor(Math.random() * this.trainingService.availableWords.length)]);
+
+		if (this.trainingService === this.misspelledWordsService)
+			this.spellingCounter = this.misspelledWordsService.getSpellingCounter(this.expected());
+		else if (this.trainingService === this.wordsToReviewService)
+			this.spellingCounter = this.wordsToReviewService.getSpellingCounter(this.expected());
+		else
+			this.spellingCounter = this.knownWordsService.getSpellingCounter(this.expected());
+
 		console.log(this.expected(), this.spelledWord);
 		// this.spelledWord = "dichlorodiphenyltrichloroethane";
 
@@ -153,7 +162,11 @@ export class TrainPage {
 
 		if (this.expected() === this.spelledWord.toUpperCase()) {
 			this.misspelledWordsService.remove(this.expected());
-			this.wordsToReviewService.add(this.expected());
+
+			if (this.knownWordsService.isKnown(this.expected()))
+				this.knownWordsService.add(this.expected());
+			else
+				this.wordsToReviewService.add(this.expected());
 		} else {
 			this.misspelledWordsService.add(this.expected());
 			this.wordsToReviewService.remove(this.expected());

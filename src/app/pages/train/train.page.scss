@@ -9,6 +9,31 @@ ion-text {
 	letter-spacing: 2px;
 }
 
+.spelling-counter {
+	font-family: "Chalk", cursive, "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+
+	&.red {
+		color: lighten($color: #C5000F, $amount: 17%);
+	}
+
+	&.green {
+		color: lighten($color: #28A745, $amount: 17%);
+	}
+
+	&.yellow {
+		color: lighten($color: #FFC409, $amount: 10%);
+	}
+
+	&> ion-icon {
+		margin-right: 8px;
+	}
+
+	&> span {
+		font-size: 22px;
+		font-weight: bold;
+	}
+}
+
 .meaning {
 	margin: 8px;
 }

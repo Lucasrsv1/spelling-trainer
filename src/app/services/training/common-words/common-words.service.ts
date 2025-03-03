@@ -36,7 +36,7 @@ export class CommonWordsService implements ITrainingService {
 
 	public async loadWords (): Promise<void> {
 		let knownCommonWords = 0;
-		const knownWords = await this.appStorageService.getKnownWords();
+		const knownWords = Object.keys(await this.appStorageService.getKnownWords());
 
 		for (const word of this.words) {
 			if (knownWords.includes(word))

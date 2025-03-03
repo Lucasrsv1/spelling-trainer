@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 
 import { Storage } from "@ionic/storage-angular";
 
-import { IMisspelledWord, IWordToReview } from "src/app/models/user";
+import { KnownWord, MisspelledWord, WordToReview } from "src/app/models/user";
 
 import { AuthenticationService } from "../authentication/authentication.service";
 
@@ -31,35 +31,35 @@ export class AppStorageService {
 		return APP_USER_RW_KEY + (this.authenticationService.user?.uuid || "");
 	}
 
-	public async getKnownWords (): Promise<string[]> {
+	public async getKnownWords (): Promise<KnownWord> {
 		const storage = await this.getStorage();
-		const storedData: string[] | null = await storage.get(this.knownWordsKey);
-		return storedData || [];
-	}
-
-	public async getMisspelledWords (): Promise<IMisspelledWord> {
-		const storage = await this.getStorage();
-		const storedData: IMisspelledWord | null = await storage.get(this.misspelledWordsKey);
+		const storedData: KnownWord | null = await storage.get(this.knownWordsKey);
 		return storedData || {};
 	}
 
-	public async getWordsToReview (): Promise<IWordToReview> {
+	public async getMisspelledWords (): Promise<MisspelledWord> {
 		const storage = await this.getStorage();
-		const storedData: IWordToReview | null = await storage.get(this.reviewingWordsKey);
+		const storedData: MisspelledWord | null = await storage.get(this.misspelledWordsKey);
 		return storedData || {};
 	}
 
-	public async setKnownWords (value: string[]): Promise<void> {
+	public async getWordsToReview (): Promise<WordToReview> {
 		const storage = await this.getStorage();
-		await storage.set(this.knownWordsKey, value.map(w => w.toUpperCase()));
+		const storedData: WordToReview | null = await storage.get(this.reviewingWordsKey);
+		return storedData || {};
 	}
 
-	public async setMisspelledWords (value: IMisspelledWord): Promise<void> {
+	public async setKnownWords (value: KnownWord): Promise<void> {
+		const storage = await this.getStorage();
+		await storage.set(this.knownWordsKey, value);
+	}
+
+	public async setMisspelledWords (value: MisspelledWord): Promise<void> {
 		const storage = await this.getStorage();
 		await storage.set(this.misspelledWordsKey, value);
 	}
 
-	public async setWordsToReview (value: IWordToReview): Promise<void> {
+	public async setWordsToReview (value: WordToReview): Promise<void> {
 		const storage = await this.getStorage();
 		await storage.set(this.reviewingWordsKey, value);
 	}

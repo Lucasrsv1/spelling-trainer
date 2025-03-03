@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import dayjs from "dayjs";
 import { BehaviorSubject, Observable } from "rxjs";
 
-import { IWordToReview } from "src/app/models/user";
+import { WordToReview } from "src/app/models/user";
 
 import { AppStorageService } from "../../app-storage/app-storage.service";
 import { ITrainingService } from "../training.service";
@@ -19,7 +19,7 @@ export class WordsToReviewService implements ITrainingService {
 	private _reviewCounter$ = new BehaviorSubject<number>(0);
 	private _nextReview$ = new BehaviorSubject<INextReview>({ counter: 0, days: 0 });
 
-	private wordsToReview: IWordToReview = {};
+	private wordsToReview: WordToReview = {};
 
 	public availableWords: string[] = [];
 	public notAvailableWords: string[] = [];
@@ -96,6 +96,10 @@ export class WordsToReviewService implements ITrainingService {
 		delete this.wordsToReview[word];
 		this.appStorageService.setWordsToReview(this.wordsToReview);
 		this.updateCounters();
+	}
+
+	public getSpellingCounter (word: string): number {
+		return (this.wordsToReview[word] ? this.wordsToReview[word][0] : 0) + 1;
 	}
 
 	private updateCounters (): void {

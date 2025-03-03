@@ -2,6 +2,8 @@ import { Injectable } from "@angular/core";
 
 import { BehaviorSubject, Observable } from "rxjs";
 
+import { KnownWord } from "src/app/models/user";
+
 import { AllWordsService } from "../all-words/all-words.service";
 import { AppStorageService } from "../../app-storage/app-storage.service";
 import { CommonWordsService } from "../common-words/common-words.service";
@@ -11,6 +13,8 @@ import { ITrainingService } from "../training.service";
 export class KnownWordsService implements ITrainingService {
 	private _knownCounter$ = new BehaviorSubject<number>(0);
 	public wordsLoaded$ = new BehaviorSubject<boolean>(false);
+
+	private knownWords: KnownWord = {};
 
 	/**
 	 * The available words are the known words
@@ -30,22 +34,23 @@ export class KnownWordsService implements ITrainingService {
 	}
 
 	public async loadWords (): Promise<void> {
-		this.availableWords = await this.appStorageService.getKnownWords();
+		this.knownWords = await this.appStorageService.getKnownWords();
+		this.availableWords = Object.keys(this.knownWords);
 		this._knownCounter$.next(this.availableWords.length);
 		this.wordsLoaded$.next(true);
 	}
 
-	public getWord (): string {
-		return this.availableWords[Math.floor(Math.random() * this.availableWords.length)];
-	}
-
 	public add (word: string): void {
-		if (this.availableWords.includes(word))
-			return;
+		if (!this.knownWords[word])
+			this.knownWords[word] = 0;
 
-		this.availableWords.push(word);
+		this.knownWords[word]++;
+		this.appStorageService.setKnownWords(this.knownWords);
+
+		if (!this.availableWords.includes(word))
+			this.availableWords.push(word);
+
 		this._knownCounter$.next(this.availableWords.length);
-		this.appStorageService.setKnownWords(this.availableWords);
 
 		this.allWordsService.knownWordAdded(word);
 		this.commonWordsService.knownWordAdded(word);
@@ -56,10 +61,20 @@ export class KnownWordsService implements ITrainingService {
 		if (index > -1) {
 			this.availableWords.splice(index, 1);
 			this._knownCounter$.next(this.availableWords.length);
-			this.appStorageService.setKnownWords(this.availableWords);
-
-			this.allWordsService.knownWordRemoved(word);
-			this.commonWordsService.knownWordRemoved(word);
 		}
+
+		delete this.knownWords[word];
+		this.appStorageService.setKnownWords(this.knownWords);
+
+		this.allWordsService.knownWordRemoved(word);
+		this.commonWordsService.knownWordRemoved(word);
+	}
+
+	public getSpellingCounter (word: string): number {
+		return this.knownWords[word] || 0;
+	}
+
+	public isKnown (word: string): boolean {
+		return Boolean(this.knownWords[word]);
 	}
 }
