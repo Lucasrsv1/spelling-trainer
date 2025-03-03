@@ -1,6 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
-import { ActivatedRoute, RouterLink } from "@angular/router";
+import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { Component, effect, signal, ViewChild } from "@angular/core";
 
 import { addIcons } from "ionicons";
@@ -63,6 +63,7 @@ export class TrainPage {
 
 	constructor (
 		private readonly route: ActivatedRoute,
+		private readonly router: Router,
 		private readonly allWordsService: AllWordsService,
 		private readonly commonWordsService: CommonWordsService,
 		private readonly dictionaryService: DictionaryService,
@@ -83,6 +84,7 @@ export class TrainPage {
 				this.trainingService = this.misspelledWordsService;
 				break;
 			case "reviewing":
+				this.wordsToReviewService.loadWords();
 				this.trainingService = this.wordsToReviewService;
 				break;
 			case "all-words":
@@ -131,6 +133,11 @@ export class TrainPage {
 	}
 
 	public nextWord (): void {
+		if (!this.trainingService.availableWords.length) {
+			this.router.navigateByUrl("/dashboard", { replaceUrl: true });
+			return;
+		}
+
 		this.validate = false;
 		this.spelledWord = "";
 		this.expected.set(this.trainingService.availableWords[Math.floor(Math.random() * this.trainingService.availableWords.length)]);
@@ -167,10 +174,14 @@ export class TrainPage {
 				this.knownWordsService.add(this.expected());
 			else
 				this.wordsToReviewService.add(this.expected());
+
+			this.spellingCounter = this.knownWordsService.getSpellingCounter(this.expected()) || this.wordsToReviewService.getSpellingCounter(this.expected());
 		} else {
 			this.misspelledWordsService.add(this.expected());
 			this.wordsToReviewService.remove(this.expected());
 			this.knownWordsService.remove(this.expected());
+
+			this.spellingCounter = this.misspelledWordsService.getSpellingCounter(this.expected());
 		}
 	}
 }

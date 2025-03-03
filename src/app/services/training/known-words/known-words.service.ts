@@ -42,7 +42,7 @@ export class KnownWordsService implements ITrainingService {
 
 	public add (word: string): void {
 		if (!this.knownWords[word])
-			this.knownWords[word] = 0;
+			this.knownWords[word] = 3;
 
 		this.knownWords[word]++;
 		this.appStorageService.setKnownWords(this.knownWords);

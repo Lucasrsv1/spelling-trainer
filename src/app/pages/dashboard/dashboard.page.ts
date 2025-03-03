@@ -50,14 +50,15 @@ export class DashboardPage {
 	) {
 		this.commonWordsService.commonCounter$.subscribe(counter => {
 			this.commonCounter.value = counter;
-			this.commonCounter.percentage = Math.round(counter / this.commonWordsService.words.size * 100);
+			this.commonCounter.percentage = (Math.round(counter / this.commonWordsService.words.size * 1000) / 10);
 		});
 
 		this.knownWordsService.knownCounter$.subscribe(counter => {
 			this.knownCounter.value = counter;
-			this.knownCounter.percentage = Math.round(counter / this.dictionaryService.words.size * 100);
+			this.knownCounter.percentage = (Math.round(counter / this.dictionaryService.words.size * 1000) / 10);
 		});
 
 		this.wordsToReviewService.nextReview$.subscribe(review => this.nextReview = review);
+		this.wordsToReviewService.loadWords();
 	}
 }

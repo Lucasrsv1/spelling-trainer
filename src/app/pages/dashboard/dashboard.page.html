@@ -30,7 +30,7 @@
 		size="large"
 		routerDirection="root"
 		routerLink="/train/reviewing"
-		[disabled]="!(wordsToReviewService.reviewCounter$ | async) && !nextReview?.counter"
+		[disabled]="!(wordsToReviewService.reviewCounter$ | async)"
 	>
 		<ion-label>
 			Words to Review<br>
@@ -59,7 +59,14 @@
 		</ion-badge>
 	</ion-button>
 
-	<ion-button color="light" expand="block" size="large" routerDirection="root" routerLink="/train/common-words">
+	<ion-button
+		color="light"
+		expand="block"
+		size="large"
+		routerDirection="root"
+		routerLink="/train/common-words"
+		[disabled]="commonCounter.value >= commonWordsService.words.size"
+	>
 		<ion-label>Common Words</ion-label>
 		<div class="progress">
 			<ion-note color="dark">
@@ -77,7 +84,14 @@
 		</div>
 	</ion-button>
 
-	<ion-button color="light" expand="block" size="large" routerDirection="root" routerLink="/train/all-words">
+	<ion-button
+		color="light"
+		expand="block"
+		size="large"
+		routerDirection="root"
+		routerLink="/train/all-words"
+		[disabled]="knownCounter.value >= dictionaryService.words.size"
+	>
 		<ion-label>All Words</ion-label>
 		<div class="progress">
 			<ion-note color="dark">

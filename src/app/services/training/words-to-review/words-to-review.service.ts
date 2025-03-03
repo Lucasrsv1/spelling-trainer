@@ -28,9 +28,7 @@ export class WordsToReviewService implements ITrainingService {
 	constructor (
 		private readonly appStorageService: AppStorageService,
 		private readonly knownWordsService: KnownWordsService
-	) {
-		this.loadWords();
-	}
+	) {}
 
 	public get reviewCounter$ (): Observable<number> {
 		return this._reviewCounter$.asObservable();
