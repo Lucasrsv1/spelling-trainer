@@ -126,12 +126,12 @@ export class TrainPage {
 			this.example = (examples[Math.floor(Math.random() * examples.length)] || "").replace(wordRegex, "___");
 
 			if (antonyms)
-				this.antonyms = antonyms.filter(a => !a.toUpperCase().includes(this.expected().toUpperCase())).join(", ");
+				this.antonyms = antonyms.filter(a => a.toUpperCase() !== this.expected().toUpperCase()).join(", ").replace(wordRegex, "___");
 			else
 				this.antonyms = "";
 
 			if (synonyms)
-				this.synonyms = synonyms.filter(s => !s.toUpperCase().includes(this.expected().toUpperCase())).join(", ");
+				this.synonyms = synonyms.filter(s => s.toUpperCase() !== this.expected().toUpperCase()).join(", ").replace(wordRegex, "___");
 			else
 				this.synonyms = "";
 		});

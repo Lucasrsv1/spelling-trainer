@@ -75,4 +75,25 @@
 			</ion-text>
 		}
 	</div>
+
+	<div class="extras">
+		@if (antonyms) {
+			<ion-text>
+				<strong>Antonyms:</strong> {{ antonyms }}
+			</ion-text>
+		} @else {
+			<ion-text>
+				<strong>No antonyms available.</strong>
+			</ion-text>
+		}
+		@if (synonyms) {
+			<ion-text>
+				<strong>Synonyms:</strong> {{ synonyms }}
+			</ion-text>
+		} @else {
+			<ion-text>
+				<strong>No synonyms available.</strong>
+			</ion-text>
+		}
+	</div>
 </ion-content>
