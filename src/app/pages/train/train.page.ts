@@ -154,9 +154,6 @@ export class TrainPage {
 		else
 			this.spellingCounter = this.knownWordsService.getSpellingCounter(this.expected());
 
-		console.log(this.expected(), this.spelledWord);
-		// this.spelledWord = "dichlorodiphenyltrichloroethane";
-
 		this.audio.src = `${environment.audioURL}${this.expected().toLowerCase()}.mp3`;
 		this.audio.muted = false;
 		this.audio.autoplay = true;
@@ -170,7 +167,6 @@ export class TrainPage {
 			return this.nextWord();
 
 		this.validate = true;
-		console.log(this.expected(), "===", this.spelledWord, this.expected() === this.spelledWord.toUpperCase());
 
 		if (this.expected() === this.spelledWord.toUpperCase()) {
 			this.misspelledWordsService.remove(this.expected());
