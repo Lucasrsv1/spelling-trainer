@@ -44,8 +44,19 @@ export class MisspelledWordsService implements ITrainingService {
 		this._misspelledCounter$.next(this.availableWords.length);
 	}
 
-	public remove (word: string): void {
+	public remove (word: string): boolean {
 		const index = this.availableWords.indexOf(word);
+		const counter = this.misspelledWords[word] || 1;
+
+		if (counter > 1) {
+			if (index === -1)
+				this.availableWords.push(word);
+
+			this.misspelledWords[word] = counter - 1;
+			this.appStorageService.setMisspelledWords(this.misspelledWords);
+			return false;
+		}
+
 		if (index > -1) {
 			this.availableWords.splice(index, 1);
 			this._misspelledCounter$.next(this.availableWords.length);
@@ -53,6 +64,7 @@ export class MisspelledWordsService implements ITrainingService {
 
 		delete this.misspelledWords[word];
 		this.appStorageService.setMisspelledWords(this.misspelledWords);
+		return true;
 	}
 
 	public getSpellingCounter (word: string): number {

@@ -169,14 +169,17 @@ export class TrainPage {
 		this.validate = true;
 
 		if (this.expected() === this.spelledWord.toUpperCase()) {
-			this.misspelledWordsService.remove(this.expected());
+			const removed = this.misspelledWordsService.remove(this.expected());
+			if (removed) {
+				if (this.knownWordsService.isKnown(this.expected()))
+					this.knownWordsService.add(this.expected());
+				else
+					this.wordsToReviewService.add(this.expected());
 
-			if (this.knownWordsService.isKnown(this.expected()))
-				this.knownWordsService.add(this.expected());
-			else
-				this.wordsToReviewService.add(this.expected());
-
-			this.spellingCounter = this.knownWordsService.getSpellingCounter(this.expected()) || this.wordsToReviewService.getSpellingCounter(this.expected());
+				this.spellingCounter = this.knownWordsService.getSpellingCounter(this.expected()) || this.wordsToReviewService.getSpellingCounter(this.expected());
+			} else {
+				this.spellingCounter = this.misspelledWordsService.getSpellingCounter(this.expected());
+			}
 		} else {
 			this.misspelledWordsService.add(this.expected());
 			this.wordsToReviewService.remove(this.expected());
