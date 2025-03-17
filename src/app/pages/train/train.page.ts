@@ -1,15 +1,17 @@
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
-import { Component, effect, signal, ViewChild } from "@angular/core";
+import { Component, CUSTOM_ELEMENTS_SCHEMA, effect, ElementRef, signal, ViewChild } from "@angular/core";
 
 import { addIcons } from "ionicons";
+import { IonicSlides } from "@ionic/angular";
 import { checkmarkCircle, checkmarkCircleOutline, checkmarkDoneCircle, checkmarkDoneCircleOutline, closeCircleOutline, homeOutline, pauseCircleOutline, playCircleOutline, removeCircleOutline } from "ionicons/icons";
 import { IonButton, IonButtons, IonContent, IonIcon, IonMenuButton, IonRouterLink, IonText, IonToolbar } from "@ionic/angular/standalone";
 
 import { filter, take } from "rxjs";
 
 import { environment } from "src/environments/environment";
+import { IFormattedMeaning } from "src/app/models/dictionary";
 
 import { SpellingInputComponent } from "src/app/components/spelling-input/spelling-input.component";
 
@@ -27,6 +29,7 @@ import { WordsToReviewService } from "src/app/services/training/words-to-review/
 	templateUrl: "./train.page.html",
 	styleUrls: ["./train.page.scss"],
 	standalone: true,
+	schemas: [CUSTOM_ELEMENTS_SCHEMA],
 	imports: [
 		RouterLink,
 		IonButton,
@@ -46,15 +49,17 @@ export class TrainPage {
 	@ViewChild(SpellingInputComponent)
 	protected spellingInput?: SpellingInputComponent;
 
+	@ViewChild("swiper")
+	protected swiperRef?: ElementRef;
+
+	protected swiperModules = [IonicSlides];
+
 	public expected = signal("");
 	public spelledWord: string = "";
 	public validate: boolean = false;
 
 	public isPlaying: boolean = false;
-	public partOfSpeech: string = "Unknown";
-	public definition: string = "";
-	public example: string = "";
-	public context: string[] = [];
+	public meanings: IFormattedMeaning[] = [];
 	public antonyms: string = "";
 	public synonyms: string = "";
 	public spellingCounter: number = 0;
@@ -103,27 +108,11 @@ export class TrainPage {
 			.subscribe(() => this.nextWord());
 
 		effect(() => {
-			const meaning = this.dictionaryService.getMeaning(this.expected());
+			this.meanings = this.dictionaryService.getMeanings(this.expected());
+
+			const wordRegex = new RegExp(this.expected(), "gi");
 			const antonyms = this.dictionaryService.getAntonyms(this.expected());
 			const synonyms = this.dictionaryService.getSynonyms(this.expected());
-			const wordRegex = new RegExp(this.expected(), "gi");
-
-			if (!meaning) {
-				this.partOfSpeech = "Unknown";
-				this.definition = "";
-				this.example = "";
-				this.context = [];
-				this.antonyms = "";
-				this.synonyms = "";
-				return;
-			}
-
-			this.partOfSpeech = meaning[0] || "Unknown";
-			this.definition = (meaning[1] || "").replace(wordRegex, "___");
-			this.context = meaning[2].filter(c => !c.toUpperCase().includes(this.expected().toUpperCase()));
-
-			const examples = meaning[3].filter(e => wordRegex.test(e));
-			this.example = (examples[Math.floor(Math.random() * examples.length)] || "").replace(wordRegex, "___");
 
 			if (antonyms)
 				this.antonyms = antonyms.filter(a => a.toUpperCase() !== this.expected().toUpperCase()).join(", ").replace(wordRegex, "___");
@@ -196,5 +185,13 @@ export class TrainPage {
 	public pause (): void {
 		this.audio.pause();
 		this.audio.currentTime = 0;
+	}
+
+	public nextMeaning (): void {
+		this.swiperRef?.nativeElement.swiper.slideNext();
+	}
+
+	public previousMeaning (): void {
+		this.swiperRef?.nativeElement.swiper.slidePrev();
 	}
 }

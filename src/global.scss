@@ -36,6 +36,38 @@
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import "@ionic/angular/css/palettes/dark.system.css";
 
+/* ========== Swiper ========== */
+
+swiper-container {
+	--swiper-pagination-bullet-inactive-color: #FFFFFF;
+	--swiper-pagination-bullet-inactive-opacity: 0.5;
+	--swiper-pagination-color: #FFD03C;
+	--swiper-pagination-progressbar-bg-color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.25);
+	--swiper-scrollbar-bg-color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.1);
+	--swiper-scrollbar-drag-bg-color: rgba(var(--ion-text-color-rgb, 0, 0, 0), 0.5);
+}
+
+swiper-slide {
+	display: flex;
+	position: relative;
+	flex-direction: column;
+	flex-shrink: 0;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+	font-size: 18px;
+	box-sizing: border-box;
+}
+
+swiper-slide img {
+	width: auto;
+	max-width: 100%;
+	height: auto;
+	max-height: 100%;
+}
+
+/* ========== App ========== */
+
 @font-face {
 	font-family: "Chalk";
 	src: url("assets/DJB\ Chalk\ It\ Up.ttf") format("truetype");

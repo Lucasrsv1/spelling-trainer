@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 
-import { IDictionary, IMeaning } from "../../models/dictionary";
+import { IDictionary, IFormattedMeaning } from "../../models/dictionary";
 
 import dictionary from "./dictionary.json";
 
@@ -14,30 +14,35 @@ export class DictionaryService {
 		this.dictionary = (dictionary as unknown) as IDictionary;
 	}
 
-	public getMeaning (word: string): IMeaning | null {
-		if (!this.dictionary[word])
-			return null;
+	public getMeanings (word: string): IFormattedMeaning[] {
+		if (!this.dictionary[word]) {
+			return [{
+				partOfSpeech: "Unknown",
+				definition: "",
+				example: "",
+				context: ""
+			}];
+		}
 
 		if ("LINK" in this.dictionary[word])
-			return this.getMeaning(this.dictionary[word].LINK);
+			return this.getMeanings(this.dictionary[word].LINK);
 
-		const complete = this.dictionary[word].MEANINGS.find(m => m[1] && m[2].length && m[3].length);
-		if (complete)
-			return complete;
+		const wordRegex = new RegExp(word, "gi");
+		const meanings = this.dictionary[word].MEANINGS.map(meaning => {
+			const formattedMeaning: IFormattedMeaning = {
+				partOfSpeech: meaning[0] || "Unknown",
+				definition: (meaning[1] || "").replace(wordRegex, "___"),
+				context: meaning[2].filter(c => !c.toUpperCase().includes(word.toUpperCase())).join(", "),
+				example: ""
+			};
 
-		const withDefinitionAndExample = this.dictionary[word].MEANINGS.find(m => m[1] && m[3].length);
-		if (withDefinitionAndExample)
-			return withDefinitionAndExample;
+			const examples = meaning[3].filter(e => wordRegex.test(e));
+			formattedMeaning.example = (examples[Math.floor(Math.random() * examples.length)] || "").replace(wordRegex, "___");
 
-		const withDefinitionAndContext = this.dictionary[word].MEANINGS.find(m => m[1] && m[2].length);
-		if (withDefinitionAndContext)
-			return withDefinitionAndContext;
+			return formattedMeaning;
+		});
 
-		const withDefinition = this.dictionary[word].MEANINGS.find(m => m[1]);
-		if (withDefinition)
-			return withDefinition;
-
-		return this.dictionary[word].MEANINGS[0] || null;
+		return meanings.sort((a, b) => this.getMeaningPriority(b) - this.getMeaningPriority(a));
 	}
 
 	public getAntonyms (word: string): string[] | null {
@@ -58,5 +63,20 @@ export class DictionaryService {
 			return this.getSynonyms(this.dictionary[word].LINK);
 
 		return this.dictionary[word].SYNONYMS;
+	}
+
+	private getMeaningPriority (meaning: IFormattedMeaning): number {
+		let score = meaning.partOfSpeech ? 1 : 0;
+
+		if (meaning.context)
+			score += 1;
+
+		if (meaning.example)
+			score += 3;
+
+		if (meaning.definition)
+			score += 5;
+
+		return score;
 	}
 }

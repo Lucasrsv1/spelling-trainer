@@ -37,44 +37,57 @@
 			[expected]="expected()"
 			[validate]="validate"
 			(confirm)="validateWord()"
+			(nextMeaning)="nextMeaning()"
+			(previousMeaning)="previousMeaning()"
 		></app-spelling-input>
 	</div>
 
-	<div class="meaning">
-		<ion-text>
-			<strong>Part of speech:</strong> {{ partOfSpeech }}
-		</ion-text>
+	<swiper-container
+		#swiper
+		class="meaning"
+		[modules]="swiperModules"
+		[pagination]="{ clickable: true }"
+		(swiperslidechange)="spellingInput?.focus()"
+	>
+		@for (m of meanings; track $index) {
+			<swiper-slide>
+				<ion-text>
+					<strong>Part of speech:</strong> {{ m.partOfSpeech }}
+				</ion-text>
 
-		@if (definition) {
-			<ion-text>
-				<strong>Definition:</strong> {{ definition }}
-			</ion-text>
-		} @else {
-			<ion-text>
-				<strong>No definition available.</strong>
-			</ion-text>
-		}
+				@if (m.definition) {
+					<ion-text>
+						<strong>Definition:</strong> {{ m.definition }}
+					</ion-text>
+				} @else {
+					<ion-text>
+						<strong>No definition available.</strong>
+					</ion-text>
+				}
 
-		@if (example) {
-			<ion-text>
-				<strong>Example phrase:</strong> {{ example }}
-			</ion-text>
-		} @else {
-			<ion-text>
-				<strong>No example phrase available.</strong>
-			</ion-text>
-		}
+				@if (m.example) {
+					<ion-text>
+						<strong>Example phrase:</strong> {{ m.example }}
+					</ion-text>
+				} @else {
+					<ion-text>
+						<strong>No example phrase available.</strong>
+					</ion-text>
+				}
 
-		@if (context.length) {
-			<ion-text>
-				<strong>Context:</strong> {{ context.join(", ") }}
-			</ion-text>
-		} @else {
-			<ion-text>
-				<strong>No context available.</strong>
-			</ion-text>
+				@if (m.context) {
+					<ion-text>
+						<strong>Context:</strong> {{ m.context }}
+					</ion-text>
+				} @else {
+					<ion-text>
+						<strong>No context available.</strong>
+					</ion-text>
+				}
+				<br>
+			</swiper-slide>
 		}
-	</div>
+	</swiper-container>
 
 	<div class="extras">
 		@if (antonyms) {

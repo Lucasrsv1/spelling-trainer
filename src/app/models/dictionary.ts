@@ -16,3 +16,10 @@ export interface ILinkedWord {
 export interface IDictionary {
 	[key: string]: IWord | ILinkedWord;
 }
+
+export interface IFormattedMeaning {
+	partOfSpeech: string;
+	definition: string;
+	example: string;
+	context: string;
+}

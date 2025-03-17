@@ -9,6 +9,7 @@ import { IonApp, IonAvatar, IonBadge, IonContent, IonIcon, IonItem, IonLabel, Io
 import { StatusBar } from "@capacitor/status-bar";
 
 import { Observable } from "rxjs";
+import { register } from "swiper/element/bundle";
 import { RoundProgressModule } from "angular-svg-round-progressbar";
 
 import { IUser } from "./models/user";
@@ -19,6 +20,8 @@ import { DictionaryService } from "./services/dictionary/dictionary.service";
 import { KnownWordsService } from "./services/training/known-words/known-words.service";
 import { MisspelledWordsService } from "./services/training/misspelled-words/misspelled-words.service";
 import { WordsToReviewService } from "./services/training/words-to-review/words-to-review.service";
+
+register();
 
 @Component({
 	selector: "app-root",

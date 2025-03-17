@@ -36,6 +36,12 @@ export class SpellingInputComponent implements AfterViewInit, ControlValueAccess
 	@Output()
 	public confirm = new EventEmitter<string>();
 
+	@Output()
+	public nextMeaning = new EventEmitter<void>();
+
+	@Output()
+	public previousMeaning = new EventEmitter<void>();
+
 	@ViewChild("input")
 	protected inputElement?: ElementRef<HTMLInputElement>;
 
@@ -96,6 +102,12 @@ export class SpellingInputComponent implements AfterViewInit, ControlValueAccess
 	public keydown (event: KeyboardEvent): void {
 		if (["Enter", "Tab", "Spacebar", " "].includes(event.key))
 			return this.confirm.emit(this.spelledWord());
+
+		if (["ArrowRight", "ArrowUp"].includes(event.key))
+			return this.nextMeaning.emit();
+
+		if (["ArrowLeft", "ArrowDown"].includes(event.key))
+			return this.previousMeaning.emit();
 
 		if (this.validate)
 			return;
