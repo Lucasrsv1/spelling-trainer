@@ -33,6 +33,9 @@ export class SpellingInputComponent implements AfterViewInit, ControlValueAccess
 	@Input()
 	public validate: boolean = false;
 
+	@Input()
+	public freeText: boolean = false;
+
 	@Output()
 	public confirm = new EventEmitter<string>();
 
@@ -100,7 +103,11 @@ export class SpellingInputComponent implements AfterViewInit, ControlValueAccess
 	}
 
 	public keydown (event: KeyboardEvent): void {
-		if (["Enter", "Tab", "Spacebar", " "].includes(event.key))
+		const confirmKeys = ["Enter", "Tab"];
+		if (!this.freeText)
+			confirmKeys.push("Spacebar", " ");
+
+		if (confirmKeys.includes(event.key))
 			return this.confirm.emit(this.spelledWord());
 
 		if (["ArrowRight", "ArrowUp"].includes(event.key))
@@ -114,6 +121,8 @@ export class SpellingInputComponent implements AfterViewInit, ControlValueAccess
 
 		if (["Backspace", "Clear", "Delete", "Del"].includes(event.key) && this.spelledWord().length > 0)
 			this.spelledWord.set(this.spelledWord().slice(0, -1));
+		else if (this.freeText && event.key.length === 1)
+			this.spelledWord.set(this.spelledWord() + event.key);
 		else if (allowedCharacters.includes(event.key.toUpperCase()))
 			this.spelledWord.set(this.spelledWord() + event.key.toLowerCase());
 

@@ -19,13 +19,16 @@ label {
 }
 
 .letter {
-	text-transform: uppercase;
 	border-bottom: 2px solid white;
 	display: inline-block;
 	margin: 4px;
 	padding: 0 4px;
 	width: 1em;
 	height: 1.5em;
+
+	&.upper {
+		text-transform: uppercase;
+	}
 
 	&.cursor:not(.focused) {
 		border-bottom: 2px solid #777;

@@ -4,7 +4,7 @@ import { RouterLink, RouterLinkActive } from "@angular/router";
 
 import { addIcons } from "ionicons";
 import { Platform } from "@ionic/angular";
-import { bookOutline, checkmarkDoneOutline, checkmarkOutline, closeCircleOutline, homeOutline, logOutOutline, saveOutline, searchOutline, textOutline } from "ionicons/icons";
+import { bookOutline, checkmarkDoneOutline, checkmarkOutline, closeCircleOutline, homeOutline, logOutOutline, saveOutline, searchOutline, textOutline, trashOutline } from "ionicons/icons";
 import { IonApp, IonAvatar, IonBadge, IonButton, IonContent, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuToggle, IonRouterLink, IonRouterOutlet, IonSplitPane, IonText } from "@ionic/angular/standalone";
 
 import { StatusBar } from "@capacitor/status-bar";
@@ -15,12 +15,14 @@ import { RoundProgressModule } from "angular-svg-round-progressbar";
 
 import { IUser } from "./models/user";
 
+import { AppStorageService } from "./services/app-storage/app-storage.service";
 import { AuthenticationService } from "./services/authentication/authentication.service";
 import { CommonWordsService } from "./services/training/common-words/common-words.service";
 import { DictionaryService } from "./services/dictionary/dictionary.service";
 import { KnownWordsService } from "./services/training/known-words/known-words.service";
 import { MisspelledWordsService } from "./services/training/misspelled-words/misspelled-words.service";
 import { SaveGameService } from "./services/save-game/save-game.service";
+import { UtilsService } from "./services/utils/utils.service";
 import { WordsToReviewService } from "./services/training/words-to-review/words-to-review.service";
 
 register();
@@ -67,12 +69,14 @@ export class AppComponent {
 		public readonly saveGameService: SaveGameService,
 		public readonly wordsToReviewService: WordsToReviewService,
 		private readonly platform: Platform,
-		private readonly authenticationService: AuthenticationService
+		private readonly appStorageService: AppStorageService,
+		private readonly authenticationService: AuthenticationService,
+		private readonly utilsService: UtilsService
 	) {
 		if (this.platform.is("mobile") || this.platform.is("mobileweb"))
 			StatusBar.setBackgroundColor({ color: "#333333" });
 
-		addIcons({ bookOutline, checkmarkDoneOutline, checkmarkOutline, closeCircleOutline, homeOutline, logOutOutline, saveOutline, searchOutline, textOutline });
+		addIcons({ bookOutline, checkmarkDoneOutline, checkmarkOutline, closeCircleOutline, homeOutline, logOutOutline, saveOutline, searchOutline, textOutline, trashOutline });
 
 		this.user$ = this.authenticationService.user$;
 		this.isLoggedIn$ = this.authenticationService.isLoggedIn$;
@@ -100,6 +104,18 @@ export class AppComponent {
 	}
 
 	public logout (): void {
+		this.authenticationService.signOut();
+	}
+
+	public async deleteProfile (): Promise<void> {
+		if (!this.authenticationService.isLoggedIn || !this.authenticationService.user)
+			return;
+
+		const confirm = await this.utilsService.prompt("Delete Profile", "Are you sure you want to delete your profile and all associated data?", "Cancel", true);
+		if (!confirm)
+			return;
+
+		await this.appStorageService.deleteUser(this.authenticationService.user);
 		this.authenticationService.signOut();
 	}
 }

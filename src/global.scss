@@ -127,6 +127,7 @@ ion-toolbar {
 		justify-content: space-between;
 		align-items: center;
 		width: 100%;
+		text-align: left;
 
 		ion-badge {
 			margin-left: 16px;
@@ -153,4 +154,8 @@ ion-toolbar {
 		position: absolute;
 		text-align: center;
 	}
+}
+
+app-spelling-input {
+	font-size: 26px;
 }
