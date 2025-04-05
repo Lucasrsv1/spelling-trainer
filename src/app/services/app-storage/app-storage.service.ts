@@ -26,21 +26,21 @@ export class AppStorageService {
 		return storedData || [];
 	}
 
-	public async getKnownWords (): Promise<KnownWords> {
+	public async getKnownWords (user?: IUser): Promise<KnownWords> {
 		const storage = await this.getStorage();
-		const storedData: KnownWords | null = await storage.get(this.getKnownWordsKey());
+		const storedData: KnownWords | null = await storage.get(this.getKnownWordsKey(user));
 		return storedData || {};
 	}
 
-	public async getMisspelledWords (): Promise<MisspelledWords> {
+	public async getMisspelledWords (user?: IUser): Promise<MisspelledWords> {
 		const storage = await this.getStorage();
-		const storedData: MisspelledWords | null = await storage.get(this.getMisspelledWordsKey());
+		const storedData: MisspelledWords | null = await storage.get(this.getMisspelledWordsKey(user));
 		return storedData || {};
 	}
 
-	public async getWordsToReview (): Promise<WordsToReview> {
+	public async getWordsToReview (user?: IUser): Promise<WordsToReview> {
 		const storage = await this.getStorage();
-		const storedData: WordsToReview | null = await storage.get(this.getReviewingWordsKey());
+		const storedData: WordsToReview | null = await storage.get(this.getReviewingWordsKey(user));
 		return storedData || {};
 	}
 

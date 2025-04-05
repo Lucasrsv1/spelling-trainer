@@ -10,116 +10,132 @@
 		<ion-text class="subtitle">Choose a set of words to start training.</ion-text>
 	</div>
 
-	<ion-button
-		color="danger"
-		expand="block"
-		size="large"
-		routerDirection="root"
-		routerLink="/train/misspelled"
-		[disabled]="!(misspelledWordsService.misspelledCounter$ | async)"
-	>
-		<ion-label>Misspelled Words</ion-label>
-		<ion-badge color="light" slot="end">
-			{{ misspelledWordsService.misspelledCounter$ | async }}
-		</ion-badge>
-	</ion-button>
+	<div class="buttons-list">
+		<ion-button
+			color="danger"
+			expand="block"
+			size="large"
+			routerDirection="root"
+			routerLink="/train/misspelled"
+			[disabled]="!(misspelledWordsService.misspelledCounter$ | async)"
+		>
+			<div class="space-between">
+				<ion-label>Misspelled Words</ion-label>
+				<ion-badge color="light" slot="end">
+					{{ misspelledWordsService.misspelledCounter$ | async }}
+				</ion-badge>
+			</div>
+		</ion-button>
 
-	<ion-button
-		color="warning"
-		expand="block"
-		size="large"
-		routerDirection="root"
-		routerLink="/train/reviewing"
-		[disabled]="!(wordsToReviewService.reviewCounter$ | async)"
-	>
-		<ion-label>
-			Words to Review<br>
-			<ion-note color="dark" *ngIf="nextReview?.counter">
-				{{ nextReview?.counter || 0 }}
-				more word(s) available in
-				{{ nextReview?.days || 0 }} day(s)
-			</ion-note>
-		</ion-label>
-		<ion-badge color="light" slot="end">
-			{{ wordsToReviewService.reviewCounter$ | async }}
-		</ion-badge>
-	</ion-button>
+		<ion-button
+			color="warning"
+			expand="block"
+			size="large"
+			routerDirection="root"
+			routerLink="/train/reviewing"
+			[disabled]="!(wordsToReviewService.reviewCounter$ | async)"
+		>
+			<div class="space-between">
+				<ion-label>
+					Words to Review<br>
+					<ion-note color="dark" *ngIf="nextReview?.counter">
+						{{ nextReview?.counter || 0 }}
+						more word(s) available in
+						{{ nextReview?.days || 0 }} day(s)
+					</ion-note>
+				</ion-label>
+				<ion-badge color="light" slot="end">
+					{{ wordsToReviewService.reviewCounter$ | async }}
+				</ion-badge>
+			</div>
+		</ion-button>
 
-	<ion-button
-		color="success"
-		expand="block"
-		size="large"
-		routerDirection="root"
-		routerLink="/train/known-common-words"
-		[disabled]="!commonCounter.value"
-	>
-		<ion-label>Known Common Words</ion-label>
-		<ion-badge color="light" slot="end">
-			{{ commonCounter.value }}
-		</ion-badge>
-	</ion-button>
+		<ion-button
+			color="success"
+			expand="block"
+			size="large"
+			routerDirection="root"
+			routerLink="/train/known-common-words"
+			[disabled]="!commonCounter.value"
+		>
+			<div class="space-between">
+				<ion-label>Known Common Words</ion-label>
+				<ion-badge color="light" slot="end">
+					{{ commonCounter.value }}
+				</ion-badge>
+			</div>
+		</ion-button>
 
-	<ion-button
-		color="success"
-		expand="block"
-		size="large"
-		routerDirection="root"
-		routerLink="/train/known-words"
-		[disabled]="!(knownWordsService.knownCounter$ | async)"
-	>
-		<ion-label>All Known Words</ion-label>
-		<ion-badge color="light" slot="end">
-			{{ knownWordsService.knownCounter$ | async }}
-		</ion-badge>
-	</ion-button>
+		<ion-button
+			color="success"
+			expand="block"
+			size="large"
+			routerDirection="root"
+			routerLink="/train/known-words"
+			[disabled]="!(knownWordsService.knownCounter$ | async)"
+		>
+			<div class="space-between">
+				<ion-label>All Known Words</ion-label>
+				<ion-badge color="light" slot="end">
+					{{ knownWordsService.knownCounter$ | async }}
+				</ion-badge>
+			</div>
+		</ion-button>
 
-	<ion-button
-		color="light"
-		expand="block"
-		size="large"
-		routerDirection="root"
-		routerLink="/train/common-words"
-		[disabled]="commonCounter.value >= commonWordsService.words.size"
-	>
-		<ion-label>Common Words</ion-label>
-		<div class="progress">
-			<ion-note color="dark">
-				{{ commonCounter.percentage }}%
-			</ion-note>
-			<round-progress
-				slot="end"
-				[current]="commonCounter.value"
-				[max]="commonWordsService.words.size"
-				[radius]="32"
-				[stroke]="8"
-				color="#0054E9"
-				background="#ddd"
-			/>
-		</div>
-	</ion-button>
+		<ion-button
+			color="light"
+			expand="block"
+			size="large"
+			routerDirection="root"
+			routerLink="/train/common-words"
+			[disabled]="commonCounter.value >= commonWordsService.words.size"
+		>
+			<div class="space-between">
+				<ion-label>Common Words</ion-label>
+				<div class="progress">
+					<ion-note color="dark">
+						{{ commonCounter.value }}<br>
+						<small>{{ commonCounter.percentage }}%</small>
+					</ion-note>
+					<round-progress
+						slot="end"
+						[current]="commonCounter.value"
+						[max]="commonWordsService.words.size"
+						[radius]="35"
+						[stroke]="9"
+						color="#0054E9"
+						background="#ddd"
+					/>
+				</div>
+			</div>
+		</ion-button>
 
-	<ion-button
-		color="light"
-		expand="block"
-		size="large"
-		routerDirection="root"
-		routerLink="/train/all-words"
-		[disabled]="knownCounter.value >= dictionaryService.words.size"
-	>
-		<ion-label>All Words</ion-label>
-		<div class="progress">
-			<ion-note color="dark">
-				{{ knownCounter.percentage }}%
-			</ion-note>
-			<round-progress
-				slot="end"
-				[current]="knownCounter.value"
-				[max]="dictionaryService.words.size"
-				[radius]="32"
-				[stroke]="8"
-				color="#0054E9"
-				background="#ddd"
-			/>
-		</div>
-	</ion-button>
+		<ion-button
+			color="light"
+			expand="block"
+			size="large"
+			routerDirection="root"
+			routerLink="/train/all-words"
+			[disabled]="knownCounter.value >= dictionaryService.words.size"
+		>
+			<div class="space-between">
+				<ion-label>All Words</ion-label>
+				<div class="progress">
+					<ion-note color="dark">
+						{{ knownCounter.value }}<br>
+						<small>{{ knownCounter.percentage }}%</small>
+					</ion-note>
+					<round-progress
+						slot="end"
+						[current]="knownCounter.value"
+						[max]="dictionaryService.words.size"
+						[radius]="35"
+						[stroke]="9"
+						color="#0054E9"
+						background="#ddd"
+					/>
+				</div>
+			</div>
+		</ion-button>
+	</div>
 </ion-content>

@@ -5,6 +5,7 @@ import { BehaviorSubject, Observable } from "rxjs";
 import { MisspelledWords } from "src/app/models/user";
 
 import { AppStorageService } from "../../app-storage/app-storage.service";
+import { AuthenticationService } from "../../authentication/authentication.service";
 import { ITrainingService } from "../training.service";
 
 @Injectable({ providedIn: "root" })
@@ -16,8 +17,12 @@ export class MisspelledWordsService implements ITrainingService {
 	public availableWords: string[] = [];
 	public wordsLoaded$ = new BehaviorSubject<boolean>(false);
 
-	constructor (private readonly appStorageService: AppStorageService) {
-		this.loadWords();
+	constructor (
+		private readonly appStorageService: AppStorageService,
+		private readonly authenticationService: AuthenticationService
+	) {
+		// Refresh available words whenever the user logs in or out.
+		this.authenticationService.user$.subscribe(() => this.loadWords());
 	}
 
 	public get misspelledCounter$ (): Observable<number> {

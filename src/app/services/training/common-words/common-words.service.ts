@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { BehaviorSubject, Observable } from "rxjs";
 
 import { AppStorageService } from "../../app-storage/app-storage.service";
+import { AuthenticationService } from "../../authentication/authentication.service";
 import { DictionaryService } from "../../dictionary/dictionary.service";
 import { ITrainingService } from "../training.service";
 
@@ -18,6 +19,7 @@ export class CommonWordsService implements ITrainingService {
 
 	constructor (
 		private readonly appStorageService: AppStorageService,
+		private readonly authenticationService: AuthenticationService,
 		private readonly dictionaryService: DictionaryService
 	) {
 		this.words = new Set<string>();
@@ -27,7 +29,8 @@ export class CommonWordsService implements ITrainingService {
 				this.words.add(word);
 		}
 
-		this.loadWords();
+		// Refresh available words whenever the user logs in or out.
+		this.authenticationService.user$.subscribe(() => this.loadWords());
 	}
 
 	public get commonCounter$ (): Observable<number> {

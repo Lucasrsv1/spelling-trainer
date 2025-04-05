@@ -93,3 +93,64 @@ ion-toolbar {
 	--background: transparent;
 	width: calc(100% + 16px);
 }
+
+.header {
+	width: 100%;
+	text-align: center;
+	margin-bottom: 56px;
+
+	.title {
+		display: block;
+		font-size: 52px;
+		margin-bottom: 8px;
+	}
+
+	.subtitle {
+		font-size: 36px;
+	}
+}
+
+.buttons-list {
+	ion-button {
+		max-width: 500px;
+		margin-left: auto;
+		margin-right: auto;
+		margin-bottom: 10px;
+
+		&:last-child {
+			margin-bottom: 72px;
+		}
+	}
+
+	.space-between {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		width: 100%;
+
+		ion-badge {
+			margin-left: 16px;
+		}
+	}
+}
+
+.progress {
+	position: relative;
+
+	round-progress {
+		margin-left: 16px;
+		width: 70px;
+		height: 70px;
+	}
+
+	ion-note {
+		top: 0;
+		left: 16px;
+		width: 70px;
+		font-size: 14px;
+		margin-top: 21px;
+		z-index: 50;
+		position: absolute;
+		text-align: center;
+	}
+}

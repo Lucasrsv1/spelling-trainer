@@ -1,2 +1,39 @@
 <ion-content>
+	<div class="header">
+		<ion-text class="title">Welcome to the Spelling Trainer!</ion-text>
+		<ion-text class="subtitle">Choose a profile to log-in or create a new one.</ion-text>
+	</div>
+
+	<div class="buttons-list">
+		@for (user of users; track $index) {
+			<ion-button color="light" expand="block" size="large" (click)="login(user)">
+				<div class="space-between">
+					<span>{{ user.name }}</span>
+					<div class="progress">
+						<ion-note color="dark">
+							{{ progress[user.uuid]?.value }}<br>
+							<small>{{ progress[user.uuid]?.percentage || 0 }}%</small>
+						</ion-note>
+						<round-progress
+							slot="end"
+							[current]="progress[user.uuid]?.value || 0"
+							[max]="dictionaryService.words.size"
+							[radius]="35"
+							[stroke]="9"
+							color="#0054E9"
+							background="#ddd"
+						/>
+					</div>
+				</div>
+			</ion-button>
+		}
+
+		@if (users.length) { <br/> }
+
+		<input type="file" id="file-input" (change)="loadProfile($event)" accept=".json"/>
+		<ion-button color="light" expand="block" size="large" (click)="openFile()">
+			<ion-icon slot="start" name="folder-open-outline"></ion-icon>
+			<ion-label>Import Profile Progress</ion-label>
+		</ion-button>
+	</div>
 </ion-content>

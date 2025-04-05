@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
 
 import { AppStorageService } from "../../app-storage/app-storage.service";
+import { AuthenticationService } from "../../authentication/authentication.service";
 import { DictionaryService } from "../../dictionary/dictionary.service";
 import { ITrainingService } from "../training.service";
 
@@ -13,9 +14,11 @@ export class AllWordsService implements ITrainingService {
 
 	constructor (
 		private readonly appStorageService: AppStorageService,
+		private readonly authenticationService: AuthenticationService,
 		private readonly dictionaryService: DictionaryService
 	) {
-		this.loadWords();
+		// Refresh available words whenever the user logs in or out.
+		this.authenticationService.user$.subscribe(() => this.loadWords());
 	}
 
 	public async loadWords (): Promise<void> {

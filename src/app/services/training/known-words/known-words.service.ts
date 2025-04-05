@@ -6,6 +6,7 @@ import { KnownWords } from "src/app/models/user";
 
 import { AllWordsService } from "../all-words/all-words.service";
 import { AppStorageService } from "../../app-storage/app-storage.service";
+import { AuthenticationService } from "../../authentication/authentication.service";
 import { CommonWordsService } from "../common-words/common-words.service";
 import { ITrainingService } from "../training.service";
 
@@ -23,10 +24,12 @@ export class KnownWordsService implements ITrainingService {
 
 	constructor (
 		private readonly appStorageService: AppStorageService,
+		private readonly authenticationService: AuthenticationService,
 		private readonly allWordsService: AllWordsService,
 		private readonly commonWordsService: CommonWordsService
 	) {
-		this.loadWords();
+		// Refresh available words whenever the user logs in or out.
+		this.authenticationService.user$.subscribe(() => this.loadWords());
 	}
 
 	public get knownCounter$ (): Observable<number> {

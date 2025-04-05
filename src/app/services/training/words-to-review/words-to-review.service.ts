@@ -6,6 +6,7 @@ import { BehaviorSubject, Observable } from "rxjs";
 import { WordsToReview } from "src/app/models/user";
 
 import { AppStorageService } from "../../app-storage/app-storage.service";
+import { AuthenticationService } from "../../authentication/authentication.service";
 import { ITrainingService } from "../training.service";
 import { KnownWordsService } from "../known-words/known-words.service";
 
@@ -27,9 +28,11 @@ export class WordsToReviewService implements ITrainingService {
 
 	constructor (
 		private readonly appStorageService: AppStorageService,
+		private readonly authenticationService: AuthenticationService,
 		private readonly knownWordsService: KnownWordsService
 	) {
-		this.loadWords();
+		// Refresh available words whenever the user logs in or out.
+		this.authenticationService.user$.subscribe(() => this.loadWords());
 	}
 
 	public get reviewCounter$ (): Observable<number> {
