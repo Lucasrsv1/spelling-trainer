@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 
 import { BehaviorSubject, Observable } from "rxjs";
 
-import { MisspelledWord } from "src/app/models/user";
+import { MisspelledWords } from "src/app/models/user";
 
 import { AppStorageService } from "../../app-storage/app-storage.service";
 import { ITrainingService } from "../training.service";
@@ -11,7 +11,7 @@ import { ITrainingService } from "../training.service";
 export class MisspelledWordsService implements ITrainingService {
 	private _misspelledCounter$ = new BehaviorSubject<number>(0);
 
-	private misspelledWords: MisspelledWord = {};
+	private misspelledWords: MisspelledWords = {};
 
 	public availableWords: string[] = [];
 	public wordsLoaded$ = new BehaviorSubject<boolean>(false);

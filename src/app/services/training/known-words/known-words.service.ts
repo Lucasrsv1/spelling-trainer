@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 
 import { BehaviorSubject, Observable } from "rxjs";
 
-import { KnownWord } from "src/app/models/user";
+import { KnownWords } from "src/app/models/user";
 
 import { AllWordsService } from "../all-words/all-words.service";
 import { AppStorageService } from "../../app-storage/app-storage.service";
@@ -14,7 +14,7 @@ export class KnownWordsService implements ITrainingService {
 	private _knownCounter$ = new BehaviorSubject<number>(0);
 	public wordsLoaded$ = new BehaviorSubject<boolean>(false);
 
-	private knownWords: KnownWord = {};
+	private knownWords: KnownWords = {};
 
 	/**
 	 * The available words are the known words

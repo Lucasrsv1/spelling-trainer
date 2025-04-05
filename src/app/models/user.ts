@@ -3,21 +3,21 @@ export interface IUser {
 	uuid: string;
 }
 
-export type KnownWord = {
+export type KnownWords = {
 	/**
 	 * How many times the word has been properly spelled.
 	 */
 	[word: string]: number;
 };
 
-export type MisspelledWord = {
+export type MisspelledWords = {
 	/**
 	 * How many times the word has been misspelled.
 	 */
 	[word: string]: number;
 };
 
-export type WordToReview = {
+export type WordsToReview = {
 	/**
 	 * The first number is how many times the word has been reviewed,
 	 * and the second number is the date when the word will be available again for review.

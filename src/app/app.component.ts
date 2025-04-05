@@ -3,8 +3,9 @@ import { AsyncPipe, NgIf } from "@angular/common";
 import { RouterLink, RouterLinkActive } from "@angular/router";
 
 import { addIcons } from "ionicons";
-import { bookOutline, checkmarkDoneOutline, checkmarkOutline, closeCircleOutline, homeOutline, logOutOutline, searchOutline, textOutline } from "ionicons/icons";
-import { IonApp, IonAvatar, IonBadge, IonContent, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuToggle, IonRouterLink, IonRouterOutlet, IonSplitPane, IonText } from "@ionic/angular/standalone";
+import { Platform } from "@ionic/angular";
+import { bookOutline, checkmarkDoneOutline, checkmarkOutline, closeCircleOutline, homeOutline, logOutOutline, saveOutline, searchOutline, textOutline } from "ionicons/icons";
+import { IonApp, IonAvatar, IonBadge, IonButton, IonContent, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuToggle, IonRouterLink, IonRouterOutlet, IonSplitPane, IonText } from "@ionic/angular/standalone";
 
 import { StatusBar } from "@capacitor/status-bar";
 
@@ -19,6 +20,7 @@ import { CommonWordsService } from "./services/training/common-words/common-word
 import { DictionaryService } from "./services/dictionary/dictionary.service";
 import { KnownWordsService } from "./services/training/known-words/known-words.service";
 import { MisspelledWordsService } from "./services/training/misspelled-words/misspelled-words.service";
+import { SaveGameService } from "./services/save-game/save-game.service";
 import { WordsToReviewService } from "./services/training/words-to-review/words-to-review.service";
 
 register();
@@ -35,6 +37,7 @@ register();
 		IonApp,
 		IonAvatar,
 		IonBadge,
+		IonButton,
 		IonSplitPane,
 		IonMenu,
 		IonContent,
@@ -61,11 +64,15 @@ export class AppComponent {
 		public readonly commonWordsService: CommonWordsService,
 		public readonly knownWordsService: KnownWordsService,
 		public readonly misspelledWordsService: MisspelledWordsService,
+		public readonly saveGameService: SaveGameService,
 		public readonly wordsToReviewService: WordsToReviewService,
+		private readonly platform: Platform,
 		private readonly authenticationService: AuthenticationService
 	) {
-		StatusBar.setBackgroundColor({ color: "#333333" });
-		addIcons({ bookOutline, checkmarkDoneOutline, checkmarkOutline, closeCircleOutline, homeOutline, logOutOutline, searchOutline, textOutline });
+		if (this.platform.is("mobile") || this.platform.is("mobileweb"))
+			StatusBar.setBackgroundColor({ color: "#333333" });
+
+		addIcons({ bookOutline, checkmarkDoneOutline, checkmarkOutline, closeCircleOutline, homeOutline, logOutOutline, saveOutline, searchOutline, textOutline });
 
 		this.user$ = this.authenticationService.user$;
 		this.isLoggedIn$ = this.authenticationService.isLoggedIn$;
