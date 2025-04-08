@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 
-import { BehaviorSubject, Observable } from "rxjs";
+import { BehaviorSubject, debounceTime, Observable } from "rxjs";
 
 import { KnownWords } from "src/app/models/user";
 
@@ -9,6 +9,7 @@ import { AppStorageService } from "../../app-storage/app-storage.service";
 import { AuthenticationService } from "../../authentication/authentication.service";
 import { CommonWordsService } from "../common-words/common-words.service";
 import { ITrainingService } from "../training.service";
+import { KnownCommonWordsService } from "../known-common-words/known-common-words.service";
 
 @Injectable({ providedIn: "root" })
 export class KnownWordsService implements ITrainingService {
@@ -26,10 +27,13 @@ export class KnownWordsService implements ITrainingService {
 		private readonly appStorageService: AppStorageService,
 		private readonly authenticationService: AuthenticationService,
 		private readonly allWordsService: AllWordsService,
-		private readonly commonWordsService: CommonWordsService
+		private readonly commonWordsService: CommonWordsService,
+		private readonly knownCommonWordsService: KnownCommonWordsService
 	) {
 		// Refresh available words whenever the user logs in or out.
-		this.authenticationService.user$.subscribe(() => this.loadWords());
+		this.authenticationService.user$
+			.pipe(debounceTime(100))
+			.subscribe(() => this.loadWords());
 	}
 
 	public get knownCounter$ (): Observable<number> {
@@ -39,8 +43,13 @@ export class KnownWordsService implements ITrainingService {
 	public async loadWords (): Promise<void> {
 		this.knownWords = await this.appStorageService.getKnownWords();
 		this.availableWords = Object.keys(this.knownWords);
+
 		this._knownCounter$.next(this.availableWords.length);
 		this.wordsLoaded$.next(true);
+
+		this.allWordsService.loadWords(this.knownWords);
+		this.commonWordsService.loadWords(this.knownWords);
+		this.knownCommonWordsService.loadWords(this.availableWords);
 	}
 
 	public add (word: string): void {
@@ -57,6 +66,7 @@ export class KnownWordsService implements ITrainingService {
 
 		this.allWordsService.knownWordAdded(word);
 		this.commonWordsService.knownWordAdded(word);
+		this.knownCommonWordsService.knownWordAdded(word);
 	}
 
 	public remove (word: string): void {
@@ -71,6 +81,7 @@ export class KnownWordsService implements ITrainingService {
 
 		this.allWordsService.knownWordRemoved(word);
 		this.commonWordsService.knownWordRemoved(word);
+		this.knownCommonWordsService.knownWordRemoved(word);
 	}
 
 	public getSpellingCounter (word: string): number {
@@ -78,6 +89,6 @@ export class KnownWordsService implements ITrainingService {
 	}
 
 	public isKnown (word: string): boolean {
-		return Boolean(this.knownWords[word]);
+		return word in this.knownWords;
 	}
 }

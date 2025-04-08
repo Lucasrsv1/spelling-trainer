@@ -49,11 +49,11 @@
 						</ion-menu-toggle>
 
 						<ion-menu-toggle auto-hide="false">
-							<ion-item routerDirection="root" routerLink="/train/known-common-words" lines="full" detail="false" routerLinkActive="selected" [disabled]="!commonCounter.value">
+							<ion-item routerDirection="root" routerLink="/train/known-common-words" lines="full" detail="false" routerLinkActive="selected" [disabled]="!commonCounter">
 								<ion-icon slot="start" name="checkmark-outline"></ion-icon>
 								<ion-label>Known Common Words</ion-label>
-								<ion-badge color="success" slot="end" *ngIf="commonCounter.value">
-									{{ commonCounter.value }}
+								<ion-badge color="success" slot="end" *ngIf="commonCounter">
+									{{ commonCounter }}
 								</ion-badge>
 							</ion-item>
 						</ion-menu-toggle>
@@ -69,11 +69,11 @@
 						</ion-menu-toggle>
 
 						<ion-menu-toggle auto-hide="false">
-							<ion-item routerDirection="root" routerLink="/train/common-words" lines="full" detail="false" routerLinkActive="selected" [disabled]="commonCounter.value >= commonWordsService.words.size">
+							<ion-item routerDirection="root" routerLink="/train/common-words" lines="full" detail="false" routerLinkActive="selected" [disabled]="commonCounter >= commonWordsService.words.size">
 								<ion-icon slot="start" name="text-outline"></ion-icon>
 								<ion-label>Common Words</ion-label>
 								<round-progress
-									[current]="commonCounter.value"
+									[current]="commonCounter"
 									[max]="commonWordsService.words.size"
 									[radius]="16"
 									[stroke]="7"
@@ -84,11 +84,11 @@
 						</ion-menu-toggle>
 
 						<ion-menu-toggle auto-hide="false">
-							<ion-item routerDirection="root" routerLink="/train/all-words" lines="full" detail="false" routerLinkActive="selected" [disabled]="knownCounter.value >= dictionaryService.words.size">
+							<ion-item routerDirection="root" routerLink="/train/all-words" lines="full" detail="false" routerLinkActive="selected" [disabled]="knownCounter >= dictionaryService.words.size">
 								<ion-icon slot="start" name="book-outline"></ion-icon>
 								<ion-label>All Words</ion-label>
 								<round-progress
-									[current]="knownCounter.value"
+									[current]="knownCounter"
 									[max]="dictionaryService.words.size"
 									[radius]="16"
 									[stroke]="7"

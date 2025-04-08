@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 
 import dayjs from "dayjs";
-import { BehaviorSubject, Observable } from "rxjs";
+import { BehaviorSubject, debounceTime, Observable } from "rxjs";
 
 import { WordsToReview } from "src/app/models/user";
 
@@ -32,7 +32,9 @@ export class WordsToReviewService implements ITrainingService {
 		private readonly knownWordsService: KnownWordsService
 	) {
 		// Refresh available words whenever the user logs in or out.
-		this.authenticationService.user$.subscribe(() => this.loadWords());
+		this.authenticationService.user$
+			.pipe(debounceTime(100))
+			.subscribe(() => this.loadWords());
 	}
 
 	public get reviewCounter$ (): Observable<number> {

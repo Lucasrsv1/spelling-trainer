@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 
-import { BehaviorSubject, Observable } from "rxjs";
+import { BehaviorSubject, debounceTime, Observable } from "rxjs";
 
 import { MisspelledWords } from "src/app/models/user";
 
@@ -22,7 +22,9 @@ export class MisspelledWordsService implements ITrainingService {
 		private readonly authenticationService: AuthenticationService
 	) {
 		// Refresh available words whenever the user logs in or out.
-		this.authenticationService.user$.subscribe(() => this.loadWords());
+		this.authenticationService.user$
+			.pipe(debounceTime(100))
+			.subscribe(() => this.loadWords());
 	}
 
 	public get misspelledCounter$ (): Observable<number> {

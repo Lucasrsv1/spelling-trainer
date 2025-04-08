@@ -51,7 +51,7 @@ export class LoginPage implements OnInit {
 			const knownWordsCounter = Object.keys(await this.appStorageService.getKnownWords(user)).length;
 			this.progress[user.uuid] = {
 				value: knownWordsCounter,
-				percentage: (Math.round(knownWordsCounter / this.dictionaryService.words.size * 1000) / 10)
+				percentage: Math.floor(knownWordsCounter / this.dictionaryService.words.size * 1000) / 10
 			};
 		}
 	}

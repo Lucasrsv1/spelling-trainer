@@ -2,8 +2,8 @@ import { Injectable } from "@angular/core";
 
 import { BehaviorSubject, Observable } from "rxjs";
 
-import { AppStorageService } from "../../app-storage/app-storage.service";
-import { AuthenticationService } from "../../authentication/authentication.service";
+import { KnownWords } from "src/app/models/user";
+
 import { DictionaryService } from "../../dictionary/dictionary.service";
 import { ITrainingService } from "../training.service";
 
@@ -17,32 +17,25 @@ export class CommonWordsService implements ITrainingService {
 	public availableWords: string[] = [];
 	public wordsLoaded$ = new BehaviorSubject<boolean>(false);
 
-	constructor (
-		private readonly appStorageService: AppStorageService,
-		private readonly authenticationService: AuthenticationService,
-		private readonly dictionaryService: DictionaryService
-	) {
+	constructor (private readonly dictionaryService: DictionaryService) {
 		this.words = new Set<string>();
 
 		for (const word of commonWords.map(w => w.toUpperCase())) {
 			if (this.dictionaryService.words.has(word))
 				this.words.add(word);
 		}
-
-		// Refresh available words whenever the user logs in or out.
-		this.authenticationService.user$.subscribe(() => this.loadWords());
 	}
 
 	public get commonCounter$ (): Observable<number> {
 		return this._commonCounter$.asObservable();
 	}
 
-	public async loadWords (): Promise<void> {
+	public loadWords (knownWords: KnownWords): void {
 		let knownCommonWords = 0;
-		const knownWords = Object.keys(await this.appStorageService.getKnownWords());
+		this.availableWords = [];
 
 		for (const word of this.words) {
-			if (knownWords.includes(word))
+			if (word in knownWords)
 				knownCommonWords++;
 			else
 				this.availableWords.push(word);

@@ -58,8 +58,8 @@ register();
 export class AppComponent {
 	public user$: Observable<IUser | null>;
 	public isLoggedIn$: Observable<boolean>;
-	public commonCounter = { value: 0, percentage: 0 };
-	public knownCounter = { value: 0, percentage: 0 };
+	public commonCounter: number = 0;
+	public knownCounter: number = 0;
 
 	constructor (
 		public readonly dictionaryService: DictionaryService,
@@ -82,13 +82,11 @@ export class AppComponent {
 		this.isLoggedIn$ = this.authenticationService.isLoggedIn$;
 
 		this.commonWordsService.commonCounter$.subscribe(counter => {
-			this.commonCounter.value = counter;
-			this.commonCounter.percentage = Math.round(counter / this.commonWordsService.words.size * 100);
+			this.commonCounter = counter;
 		});
 
 		this.knownWordsService.knownCounter$.subscribe(counter => {
-			this.knownCounter.value = counter;
-			this.knownCounter.percentage = Math.round(counter / this.dictionaryService.words.size * 100);
+			this.knownCounter = counter;
 		});
 	}
 

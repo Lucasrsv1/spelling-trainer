@@ -33,8 +33,8 @@ export class SaveGameService {
 	}
 
 	public async loadSaveGameFromFile (file: File): Promise<void> {
-		if (file.size > 1024 * 1024 * 200) {
-			await this.utilsService.alert("File is Too Large", "Please make sure the file is less than 200MB.");
+		if (file.size > 1024 * 1024 * 50) {
+			await this.utilsService.alert("File is Too Large", "Please make sure the file is less than 50MB.");
 			return;
 		}
 
@@ -74,7 +74,7 @@ export class SaveGameService {
 
 	private async loadSaveGameData (saveGameData: ISaveGame): Promise<void> {
 		const knownWordsCounter = Object.keys(saveGameData.knownWords).length;
-		const progress = Math.round(knownWordsCounter / this.dictionaryService.words.size * 1000) / 10;
+		const progress = Math.floor(knownWordsCounter / this.dictionaryService.words.size * 1000) / 10;
 		const confirm = await this.utilsService.prompt(
 			"Load Profile",
 			`Are you sure you want to load this profile?<br><br>${saveGameData.user.name}: ${knownWordsCounter} known words (${progress}%)`
