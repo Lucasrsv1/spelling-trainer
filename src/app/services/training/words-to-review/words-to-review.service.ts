@@ -1,14 +1,12 @@
 import { Injectable } from "@angular/core";
 
 import dayjs from "dayjs";
-import { BehaviorSubject, debounceTime, Observable } from "rxjs";
+import { BehaviorSubject, Observable } from "rxjs";
 
 import { WordsToReview } from "src/app/models/user";
 
 import { AppStorageService } from "../../app-storage/app-storage.service";
-import { AuthenticationService } from "../../authentication/authentication.service";
 import { ITrainingService } from "../training.service";
-import { KnownWordsService } from "../known-words/known-words.service";
 
 export interface INextReview {
 	counter: number;
@@ -17,28 +15,18 @@ export interface INextReview {
 
 @Injectable({ providedIn: "root" })
 export class WordsToReviewService implements ITrainingService {
-	private _reviewCounter$ = new BehaviorSubject<number>(0);
+	private _counter$ = new BehaviorSubject<number>(0);
 	private _nextReview$ = new BehaviorSubject<INextReview>({ counter: 0, days: 0 });
 
-	private wordsToReview: WordsToReview = {};
-
+	public wordsToReview: WordsToReview = {};
 	public availableWords: string[] = [];
 	public notAvailableWords: string[] = [];
 	public wordsLoaded$ = new BehaviorSubject<boolean>(false);
 
-	constructor (
-		private readonly appStorageService: AppStorageService,
-		private readonly authenticationService: AuthenticationService,
-		private readonly knownWordsService: KnownWordsService
-	) {
-		// Refresh available words whenever the user logs in or out.
-		this.authenticationService.user$
-			.pipe(debounceTime(100))
-			.subscribe(() => this.loadWords());
-	}
+	constructor (private readonly appStorageService: AppStorageService) { }
 
-	public get reviewCounter$ (): Observable<number> {
-		return this._reviewCounter$.asObservable();
+	public get counter$ (): Observable<number> {
+		return this._counter$.asObservable();
 	}
 
 	public get nextReview$ (): Observable<INextReview> {
@@ -62,7 +50,7 @@ export class WordsToReviewService implements ITrainingService {
 		this.wordsLoaded$.next(true);
 	}
 
-	public add (word: string): void {
+	public add (word: string): boolean {
 		if (!this.notAvailableWords.includes(word))
 			this.notAvailableWords.push(word);
 
@@ -83,10 +71,12 @@ export class WordsToReviewService implements ITrainingService {
 			this.appStorageService.setWordsToReview(this.wordsToReview);
 			this.updateCounters();
 		} else {
-			// After the third review, remove the word from words to review and add it to known words.
+			// After the third review, remove the word from words to review and return false signaling that the word must be added to known words.
 			this.remove(word);
-			this.knownWordsService.add(word);
+			return false;
 		}
+
+		return true;
 	}
 
 	public remove (word: string): void {
@@ -108,7 +98,7 @@ export class WordsToReviewService implements ITrainingService {
 	}
 
 	private updateCounters (): void {
-		this._reviewCounter$.next(this.availableWords.length);
+		this._counter$.next(this.availableWords.length);
 
 		const nextAvailableDate = Math.min(...this.notAvailableWords.map(word => this.wordsToReview[word][1]));
 		const nextAvailableWords = this.notAvailableWords.filter(word => this.wordsToReview[word][1] === nextAvailableDate);

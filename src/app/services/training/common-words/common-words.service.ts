@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 
 import { BehaviorSubject, Observable } from "rxjs";
 
-import { KnownWords } from "src/app/models/user";
+import { KnownWords, MisspelledWords, WordsToReview } from "src/app/models/user";
 
 import { DictionaryService } from "../../dictionary/dictionary.service";
 import { ITrainingService } from "../training.service";
@@ -11,7 +11,7 @@ import commonWords from "./common-words.json";
 
 @Injectable({ providedIn: "root" })
 export class CommonWordsService implements ITrainingService {
-	private _commonCounter$ = new BehaviorSubject<number>(0);
+	private _counter$ = new BehaviorSubject<number>(0);
 
 	public words: Set<string>;
 	public availableWords: string[] = [];
@@ -26,43 +26,29 @@ export class CommonWordsService implements ITrainingService {
 		}
 	}
 
-	public get commonCounter$ (): Observable<number> {
-		return this._commonCounter$.asObservable();
+	public get counter$ (): Observable<number> {
+		return this._counter$.asObservable();
 	}
 
-	public loadWords (knownWords: KnownWords): void {
-		let knownCommonWords = 0;
+	public loadWords (knownWords: KnownWords, wordsToReview: WordsToReview, misspelledWords: MisspelledWords): void {
 		this.availableWords = [];
-
 		for (const word of this.words) {
-			if (word in knownWords)
-				knownCommonWords++;
-			else
+			if (!(word in knownWords) && !(word in wordsToReview) && !(word in misspelledWords))
 				this.availableWords.push(word);
 		}
 
-		this._commonCounter$.next(knownCommonWords);
+		this._counter$.next(this.availableWords.length);
 		this.wordsLoaded$.next(true);
 	}
 
-	public knownWordAdded (word: string): void {
+	public consumeWord (word: string): void {
 		if (!this.words.has(word))
 			return;
 
 		const index = this.availableWords.indexOf(word);
 		if (index !== -1) {
 			this.availableWords.splice(index, 1);
-			this._commonCounter$.next(this._commonCounter$.value + 1);
-		}
-	}
-
-	public knownWordRemoved (word: string): void {
-		if (!this.words.has(word))
-			return;
-
-		if (!this.availableWords.includes(word)) {
-			this.availableWords.push(word);
-			this._commonCounter$.next(this._commonCounter$.value - 1);
+			this._counter$.next(this.availableWords.length);
 		}
 	}
 }

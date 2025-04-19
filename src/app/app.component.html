@@ -29,72 +29,72 @@
 						</ion-menu-toggle>
 
 						<ion-menu-toggle auto-hide="false">
-							<ion-item routerDirection="root" routerLink="/train/misspelled" lines="full" detail="false" routerLinkActive="selected" [disabled]="!(misspelledWordsService.misspelledCounter$ | async)">
+							<ion-item routerDirection="root" routerLink="/train/misspelled" lines="full" detail="false" routerLinkActive="selected" [disabled]="!progress.misspelled">
 								<ion-icon slot="start" name="close-circle-outline"></ion-icon>
 								<ion-label>Misspelled</ion-label>
-								<ion-badge color="danger" slot="end" *ngIf="misspelledWordsService.misspelledCounter$ | async">
-									{{ misspelledWordsService.misspelledCounter$ | async }}
+								<ion-badge color="danger" slot="end" *ngIf="progress.misspelled">
+									{{ progress.misspelled }}
 								</ion-badge>
 							</ion-item>
 						</ion-menu-toggle>
 
 						<ion-menu-toggle auto-hide="false">
-							<ion-item routerDirection="root" routerLink="/train/reviewing" lines="full" detail="false" routerLinkActive="selected" [disabled]="!(wordsToReviewService.reviewCounter$ | async)">
+							<ion-item routerDirection="root" routerLink="/train/reviewing" lines="full" detail="false" routerLinkActive="selected" [disabled]="!progress.inReview">
 								<ion-icon slot="start" name="search-outline"></ion-icon>
 								<ion-label>Reviewing</ion-label>
-								<ion-badge color="warning" slot="end" *ngIf="wordsToReviewService.reviewCounter$ | async">
-									{{ wordsToReviewService.reviewCounter$ | async }}
+								<ion-badge color="warning" slot="end" *ngIf="progress.inReview">
+									{{ progress.inReview }}
 								</ion-badge>
 							</ion-item>
 						</ion-menu-toggle>
 
 						<ion-menu-toggle auto-hide="false">
-							<ion-item routerDirection="root" routerLink="/train/known-common-words" lines="full" detail="false" routerLinkActive="selected" [disabled]="!commonCounter">
+							<ion-item routerDirection="root" routerLink="/train/known-common-words" lines="full" detail="false" routerLinkActive="selected" [disabled]="!progress.known.common.value">
 								<ion-icon slot="start" name="checkmark-outline"></ion-icon>
 								<ion-label>Known Common Words</ion-label>
-								<ion-badge color="success" slot="end" *ngIf="commonCounter">
-									{{ commonCounter }}
-								</ion-badge>
-							</ion-item>
-						</ion-menu-toggle>
-
-						<ion-menu-toggle auto-hide="false">
-							<ion-item routerDirection="root" routerLink="/train/known-words" lines="full" detail="false" routerLinkActive="selected" [disabled]="!(knownWordsService.knownCounter$ | async)">
-								<ion-icon slot="start" name="checkmark-done-outline"></ion-icon>
-								<ion-label>All Known Words</ion-label>
-								<ion-badge color="success" slot="end" *ngIf="knownWordsService.knownCounter$ | async">
-									{{ knownWordsService.knownCounter$ | async }}
-								</ion-badge>
-							</ion-item>
-						</ion-menu-toggle>
-
-						<ion-menu-toggle auto-hide="false">
-							<ion-item routerDirection="root" routerLink="/train/common-words" lines="full" detail="false" routerLinkActive="selected" [disabled]="commonCounter >= commonWordsService.words.size">
-								<ion-icon slot="start" name="text-outline"></ion-icon>
-								<ion-label>Common Words</ion-label>
 								<round-progress
-									[current]="commonCounter"
+									[current]="progress.known.common.value"
 									[max]="commonWordsService.words.size"
 									[radius]="16"
 									[stroke]="7"
-									color="#0054E9"
-									background="#ddd"
+									color="#39AE54"
+									background="#DDD"
 								/>
 							</ion-item>
 						</ion-menu-toggle>
 
 						<ion-menu-toggle auto-hide="false">
-							<ion-item routerDirection="root" routerLink="/train/all-words" lines="full" detail="false" routerLinkActive="selected" [disabled]="knownCounter >= dictionaryService.words.size">
-								<ion-icon slot="start" name="book-outline"></ion-icon>
-								<ion-label>All Words</ion-label>
+							<ion-item routerDirection="root" routerLink="/train/known-words" lines="full" detail="false" routerLinkActive="selected" [disabled]="!progress.known.all.value">
+								<ion-icon slot="start" name="checkmark-done-outline"></ion-icon>
+								<ion-label>All Known Words</ion-label>
 								<round-progress
-									[current]="knownCounter"
+									[current]="progress.known.all.value"
 									[max]="dictionaryService.words.size"
 									[radius]="16"
 									[stroke]="7"
-									color="#0054E9"
-									background="#ddd"
+									color="#39AE54"
+									background="#DDD"
 								/>
+							</ion-item>
+						</ion-menu-toggle>
+
+						<ion-menu-toggle auto-hide="false">
+							<ion-item routerDirection="root" routerLink="/train/common-words" lines="full" detail="false" routerLinkActive="selected" [disabled]="!progress.common">
+								<ion-icon slot="start" name="text-outline"></ion-icon>
+								<ion-label>New Common Words</ion-label>
+								<ion-badge color="medium" slot="end" *ngIf="progress.common">
+									{{ progress.common }}
+								</ion-badge>
+							</ion-item>
+						</ion-menu-toggle>
+
+						<ion-menu-toggle auto-hide="false">
+							<ion-item routerDirection="root" routerLink="/train/all-words" lines="full" detail="false" routerLinkActive="selected" [disabled]="!progress.all">
+								<ion-icon slot="start" name="book-outline"></ion-icon>
+								<ion-label>New Words</ion-label>
+								<ion-badge color="medium" slot="end" *ngIf="progress.all">
+									{{ progress.all }}
+								</ion-badge>
 							</ion-item>
 						</ion-menu-toggle>
 

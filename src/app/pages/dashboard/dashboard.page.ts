@@ -1,16 +1,19 @@
-import { Component } from "@angular/core";
 import { FormsModule } from "@angular/forms";
+import { NgIf } from "@angular/common";
 import { RouterLink } from "@angular/router";
-import { AsyncPipe, NgIf } from "@angular/common";
+import { Component, OnDestroy } from "@angular/core";
 
 import { RoundProgressModule } from "angular-svg-round-progressbar";
 
 import { IonBadge, IonButton, IonButtons, IonContent, IonLabel, IonMenuButton, IonNote, IonRouterLink, IonText, IonToolbar } from "@ionic/angular/standalone";
 
+import { Subscription } from "rxjs";
+
+import { Progress } from "src/app/models/progress";
+
 import { CommonWordsService } from "src/app/services/training/common-words/common-words.service";
 import { DictionaryService } from "src/app/services/dictionary/dictionary.service";
-import { KnownWordsService } from "src/app/services/training/known-words/known-words.service";
-import { MisspelledWordsService } from "src/app/services/training/misspelled-words/misspelled-words.service";
+import { TrainerLoaderService } from "src/app/services/training/trainer-loader/trainer-loader.service";
 import { INextReview, WordsToReviewService } from "src/app/services/training/words-to-review/words-to-review.service";
 
 @Component({
@@ -19,7 +22,6 @@ import { INextReview, WordsToReviewService } from "src/app/services/training/wor
 	styleUrls: ["./dashboard.page.scss"],
 	standalone: true,
 	imports: [
-		AsyncPipe,
 		IonNote,
 		IonButtons,
 		IonToolbar,
@@ -36,29 +38,28 @@ import { INextReview, WordsToReviewService } from "src/app/services/training/wor
 		RoundProgressModule
 	]
 })
-export class DashboardPage {
+export class DashboardPage implements OnDestroy {
+	private subscriptions: Subscription[] = [];
+
 	public nextReview?: INextReview;
-	public commonCounter = { value: 0, percentage: 0 };
-	public knownCounter = { value: 0, percentage: 0 };
+	public progress = new Progress();
 
 	constructor (
 		public readonly dictionaryService: DictionaryService,
 		public readonly commonWordsService: CommonWordsService,
-		public readonly knownWordsService: KnownWordsService,
-		public readonly misspelledWordsService: MisspelledWordsService,
-		public readonly wordsToReviewService: WordsToReviewService
+		private readonly trainerLoaderService: TrainerLoaderService,
+		private readonly wordsToReviewService: WordsToReviewService
 	) {
-		this.commonWordsService.commonCounter$.subscribe(counter => {
-			this.commonCounter.value = counter;
-			this.commonCounter.percentage = Math.floor(counter / this.commonWordsService.words.size * 1000) / 10;
-		});
+		this.subscriptions.push(
+			this.trainerLoaderService.progress$.subscribe(progress => this.progress = progress),
+			this.wordsToReviewService.nextReview$.subscribe(review => this.nextReview = review)
+		);
 
-		this.knownWordsService.knownCounter$.subscribe(counter => {
-			this.knownCounter.value = counter;
-			this.knownCounter.percentage = Math.floor(counter / this.dictionaryService.words.size * 1000) / 10;
-		});
-
-		this.wordsToReviewService.nextReview$.subscribe(review => this.nextReview = review);
 		this.wordsToReviewService.loadWords();
+	}
+
+	public ngOnDestroy (): void {
+		for (const subscription of this.subscriptions)
+			subscription.unsubscribe();
 	}
 }

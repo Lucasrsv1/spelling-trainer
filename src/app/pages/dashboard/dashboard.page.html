@@ -17,12 +17,12 @@
 			size="large"
 			routerDirection="root"
 			routerLink="/train/misspelled"
-			[disabled]="!(misspelledWordsService.misspelledCounter$ | async)"
+			[disabled]="!progress.misspelled"
 		>
 			<div class="space-between">
 				<ion-label>Misspelled Words</ion-label>
 				<ion-badge color="light" slot="end">
-					{{ misspelledWordsService.misspelledCounter$ | async }}
+					{{ progress.misspelled }}
 				</ion-badge>
 			</div>
 		</ion-button>
@@ -33,7 +33,7 @@
 			size="large"
 			routerDirection="root"
 			routerLink="/train/reviewing"
-			[disabled]="!(wordsToReviewService.reviewCounter$ | async)"
+			[disabled]="!progress.inReview"
 		>
 			<div class="space-between">
 				<ion-label>
@@ -45,40 +45,64 @@
 					</ion-note>
 				</ion-label>
 				<ion-badge color="light" slot="end">
-					{{ wordsToReviewService.reviewCounter$ | async }}
+					{{ progress.inReview }}
 				</ion-badge>
 			</div>
 		</ion-button>
 
 		<ion-button
-			color="success"
+			color="light"
 			expand="block"
 			size="large"
 			routerDirection="root"
 			routerLink="/train/known-common-words"
-			[disabled]="!commonCounter.value"
+			[disabled]="!progress.known.common.value"
 		>
 			<div class="space-between">
 				<ion-label>Known Common Words</ion-label>
-				<ion-badge color="light" slot="end">
-					{{ commonCounter.value }}
-				</ion-badge>
+				<div class="progress">
+					<ion-note color="dark">
+						{{ progress.known.common.value }}<br>
+						<small>{{ progress.known.common.progress }}%</small>
+					</ion-note>
+					<round-progress
+						slot="end"
+						[current]="progress.known.common.value"
+						[max]="commonWordsService.words.size"
+						[radius]="35"
+						[stroke]="9"
+						color="#39AE54"
+						background="#DDD"
+					/>
+				</div>
 			</div>
 		</ion-button>
 
 		<ion-button
-			color="success"
+			color="light"
 			expand="block"
 			size="large"
 			routerDirection="root"
 			routerLink="/train/known-words"
-			[disabled]="!(knownWordsService.knownCounter$ | async)"
+			[disabled]="!progress.known.all.value"
 		>
 			<div class="space-between">
 				<ion-label>All Known Words</ion-label>
-				<ion-badge color="light" slot="end">
-					{{ knownWordsService.knownCounter$ | async }}
-				</ion-badge>
+				<div class="progress">
+					<ion-note color="dark">
+						{{ progress.known.all.value }}<br>
+						<small>{{ progress.known.all.progress }}%</small>
+					</ion-note>
+					<round-progress
+						slot="end"
+						[current]="progress.known.all.value"
+						[max]="dictionaryService.words.size"
+						[radius]="35"
+						[stroke]="9"
+						color="#39AE54"
+						background="#DDD"
+					/>
+				</div>
 			</div>
 		</ion-button>
 
@@ -88,25 +112,13 @@
 			size="large"
 			routerDirection="root"
 			routerLink="/train/common-words"
-			[disabled]="commonCounter.value >= commonWordsService.words.size"
+			[disabled]="!progress.common"
 		>
 			<div class="space-between">
-				<ion-label>Common Words</ion-label>
-				<div class="progress">
-					<ion-note color="dark">
-						{{ commonCounter.value }}<br>
-						<small>{{ commonCounter.percentage }}%</small>
-					</ion-note>
-					<round-progress
-						slot="end"
-						[current]="commonCounter.value"
-						[max]="commonWordsService.words.size"
-						[radius]="35"
-						[stroke]="9"
-						color="#0054E9"
-						background="#ddd"
-					/>
-				</div>
+				<ion-label>New Common Words</ion-label>
+				<ion-badge color="medium" slot="end">
+					{{ progress.common }}
+				</ion-badge>
 			</div>
 		</ion-button>
 
@@ -116,25 +128,13 @@
 			size="large"
 			routerDirection="root"
 			routerLink="/train/all-words"
-			[disabled]="knownCounter.value >= dictionaryService.words.size"
+			[disabled]="!progress.all"
 		>
 			<div class="space-between">
-				<ion-label>All Words</ion-label>
-				<div class="progress">
-					<ion-note color="dark">
-						{{ knownCounter.value }}<br>
-						<small>{{ knownCounter.percentage }}%</small>
-					</ion-note>
-					<round-progress
-						slot="end"
-						[current]="knownCounter.value"
-						[max]="dictionaryService.words.size"
-						[radius]="35"
-						[stroke]="9"
-						color="#0054E9"
-						background="#ddd"
-					/>
-				</div>
+				<ion-label>New Words</ion-label>
+				<ion-badge color="medium" slot="end">
+					{{ progress.all }}
+				</ion-badge>
 			</div>
 		</ion-button>
 	</div>

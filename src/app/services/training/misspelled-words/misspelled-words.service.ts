@@ -1,44 +1,34 @@
 import { Injectable } from "@angular/core";
 
-import { BehaviorSubject, debounceTime, Observable } from "rxjs";
+import { BehaviorSubject, Observable } from "rxjs";
 
 import { MisspelledWords } from "src/app/models/user";
 
 import { AppStorageService } from "../../app-storage/app-storage.service";
-import { AuthenticationService } from "../../authentication/authentication.service";
 import { ITrainingService } from "../training.service";
 
 @Injectable({ providedIn: "root" })
 export class MisspelledWordsService implements ITrainingService {
-	private _misspelledCounter$ = new BehaviorSubject<number>(0);
+	private _counter$ = new BehaviorSubject<number>(0);
 
-	private misspelledWords: MisspelledWords = {};
-
+	public misspelledWords: MisspelledWords = {};
 	public availableWords: string[] = [];
 	public wordsLoaded$ = new BehaviorSubject<boolean>(false);
 
-	constructor (
-		private readonly appStorageService: AppStorageService,
-		private readonly authenticationService: AuthenticationService
-	) {
-		// Refresh available words whenever the user logs in or out.
-		this.authenticationService.user$
-			.pipe(debounceTime(100))
-			.subscribe(() => this.loadWords());
-	}
+	constructor (private readonly appStorageService: AppStorageService) { }
 
-	public get misspelledCounter$ (): Observable<number> {
-		return this._misspelledCounter$.asObservable();
+	public get counter$ (): Observable<number> {
+		return this._counter$.asObservable();
 	}
 
 	public async loadWords (): Promise<void> {
 		this.misspelledWords = await this.appStorageService.getMisspelledWords();
 		this.availableWords = Object.keys(this.misspelledWords);
-		this._misspelledCounter$.next(this.availableWords.length);
+		this._counter$.next(this.availableWords.length);
 		this.wordsLoaded$.next(true);
 	}
 
-	public add (word: string): void {
+	public add (word: string): boolean {
 		if (!this.misspelledWords[word])
 			this.misspelledWords[word] = 0;
 
@@ -48,7 +38,8 @@ export class MisspelledWordsService implements ITrainingService {
 		if (!this.availableWords.includes(word))
 			this.availableWords.push(word);
 
-		this._misspelledCounter$.next(this.availableWords.length);
+		this._counter$.next(this.availableWords.length);
+		return true;
 	}
 
 	public remove (word: string): boolean {
@@ -66,7 +57,7 @@ export class MisspelledWordsService implements ITrainingService {
 
 		if (index > -1) {
 			this.availableWords.splice(index, 1);
-			this._misspelledCounter$.next(this.availableWords.length);
+			this._counter$.next(this.availableWords.length);
 		}
 
 		delete this.misspelledWords[word];

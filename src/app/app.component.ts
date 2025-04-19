@@ -1,5 +1,5 @@
-import { Component } from "@angular/core";
 import { AsyncPipe, NgIf } from "@angular/common";
+import { Component, OnDestroy } from "@angular/core";
 import { RouterLink, RouterLinkActive } from "@angular/router";
 
 import { addIcons } from "ionicons";
@@ -9,21 +9,21 @@ import { IonApp, IonAvatar, IonBadge, IonButton, IonContent, IonIcon, IonItem, I
 
 import { StatusBar } from "@capacitor/status-bar";
 
-import { Observable } from "rxjs";
 import { register } from "swiper/element/bundle";
 import { RoundProgressModule } from "angular-svg-round-progressbar";
 
+import { Observable, Subscription } from "rxjs";
+
 import { IUser } from "./models/user";
+import { Progress } from "./models/progress";
 
 import { AppStorageService } from "./services/app-storage/app-storage.service";
 import { AuthenticationService } from "./services/authentication/authentication.service";
 import { CommonWordsService } from "./services/training/common-words/common-words.service";
 import { DictionaryService } from "./services/dictionary/dictionary.service";
-import { KnownWordsService } from "./services/training/known-words/known-words.service";
-import { MisspelledWordsService } from "./services/training/misspelled-words/misspelled-words.service";
 import { SaveGameService } from "./services/save-game/save-game.service";
+import { TrainerLoaderService } from "./services/training/trainer-loader/trainer-loader.service";
 import { UtilsService } from "./services/utils/utils.service";
-import { WordsToReviewService } from "./services/training/words-to-review/words-to-review.service";
 
 register();
 
@@ -55,22 +55,21 @@ register();
 		RoundProgressModule
 	]
 })
-export class AppComponent {
+export class AppComponent implements OnDestroy {
+	private subscriptions: Subscription[] = [];
+
 	public user$: Observable<IUser | null>;
 	public isLoggedIn$: Observable<boolean>;
-	public commonCounter: number = 0;
-	public knownCounter: number = 0;
+	public progress = new Progress();
 
 	constructor (
 		public readonly dictionaryService: DictionaryService,
 		public readonly commonWordsService: CommonWordsService,
-		public readonly knownWordsService: KnownWordsService,
-		public readonly misspelledWordsService: MisspelledWordsService,
 		public readonly saveGameService: SaveGameService,
-		public readonly wordsToReviewService: WordsToReviewService,
 		private readonly platform: Platform,
 		private readonly appStorageService: AppStorageService,
 		private readonly authenticationService: AuthenticationService,
+		private readonly trainerLoaderService: TrainerLoaderService,
 		private readonly utilsService: UtilsService
 	) {
 		if (this.platform.is("mobile") || this.platform.is("mobileweb"))
@@ -81,13 +80,9 @@ export class AppComponent {
 		this.user$ = this.authenticationService.user$;
 		this.isLoggedIn$ = this.authenticationService.isLoggedIn$;
 
-		this.commonWordsService.commonCounter$.subscribe(counter => {
-			this.commonCounter = counter;
-		});
-
-		this.knownWordsService.knownCounter$.subscribe(counter => {
-			this.knownCounter = counter;
-		});
+		this.subscriptions.push(
+			this.trainerLoaderService.progress$.subscribe(progress => this.progress = progress)
+		);
 	}
 
 	public get userInitials (): string {
@@ -99,6 +94,11 @@ export class AppComponent {
 			return names[0][0].toUpperCase();
 
 		return names[0][0].toUpperCase() + names[names.length - 1][0].toUpperCase();
+	}
+
+	public ngOnDestroy (): void {
+		for (const subscription of this.subscriptions)
+			subscription.unsubscribe();
 	}
 
 	public logout (): void {

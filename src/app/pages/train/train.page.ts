@@ -1,14 +1,14 @@
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
-import { Component, CUSTOM_ELEMENTS_SCHEMA, effect, ElementRef, signal, ViewChild } from "@angular/core";
+import { Component, CUSTOM_ELEMENTS_SCHEMA, effect, ElementRef, OnDestroy, signal, ViewChild } from "@angular/core";
 
 import { addIcons } from "ionicons";
 import { IonicSlides } from "@ionic/angular";
 import { checkmarkCircle, checkmarkCircleOutline, checkmarkDoneCircle, checkmarkDoneCircleOutline, closeCircleOutline, homeOutline, pauseCircleOutline, playCircleOutline, removeCircleOutline } from "ionicons/icons";
 import { IonButton, IonButtons, IonContent, IonIcon, IonMenuButton, IonRouterLink, IonText, IonToolbar } from "@ionic/angular/standalone";
 
-import { filter, take } from "rxjs";
+import { filter, Subscription, take } from "rxjs";
 
 import { environment } from "src/environments/environment";
 import { IFormattedMeaning } from "src/app/models/dictionary";
@@ -22,6 +22,7 @@ import { ITrainingService } from "src/app/services/training/training.service";
 import { KnownCommonWordsService } from "src/app/services/training/known-common-words/known-common-words.service";
 import { KnownWordsService } from "src/app/services/training/known-words/known-words.service";
 import { MisspelledWordsService } from "src/app/services/training/misspelled-words/misspelled-words.service";
+import { TrainerLoaderService } from "src/app/services/training/trainer-loader/trainer-loader.service";
 import { WordsToReviewService } from "src/app/services/training/words-to-review/words-to-review.service";
 
 @Component({
@@ -45,7 +46,7 @@ import { WordsToReviewService } from "src/app/services/training/words-to-review/
 		SpellingInputComponent
 	]
 })
-export class TrainPage {
+export class TrainPage implements OnDestroy {
 	@ViewChild(SpellingInputComponent)
 	protected spellingInput?: SpellingInputComponent;
 
@@ -66,6 +67,7 @@ export class TrainPage {
 
 	private audio: HTMLAudioElement;
 	private trainingService: ITrainingService;
+	private subscriptions: Subscription[] = [];
 
 	constructor (
 		private readonly route: ActivatedRoute,
@@ -76,6 +78,7 @@ export class TrainPage {
 		private readonly knownCommonWordsService: KnownCommonWordsService,
 		private readonly knownWordsService: KnownWordsService,
 		private readonly misspelledWordsService: MisspelledWordsService,
+		private readonly trainerLoaderService: TrainerLoaderService,
 		private readonly wordsToReviewService: WordsToReviewService
 	) {
 		this.audio = new Audio();
@@ -103,9 +106,11 @@ export class TrainPage {
 				break;
 		}
 
-		this.trainingService.wordsLoaded$
-			.pipe(filter(loaded => loaded), take(1))
-			.subscribe(() => this.nextWord());
+		this.subscriptions.push(
+			this.trainingService.wordsLoaded$
+				.pipe(filter(loaded => loaded), take(1))
+				.subscribe(() => this.nextWord())
+		);
 
 		effect(() => {
 			this.meanings = this.dictionaryService.getMeanings(this.expected());
@@ -124,6 +129,11 @@ export class TrainPage {
 			else
 				this.synonyms = "";
 		});
+	}
+
+	public ngOnDestroy (): void {
+		for (const subscription of this.subscriptions)
+			subscription.unsubscribe();
 	}
 
 	public nextWord (): void {
@@ -158,21 +168,19 @@ export class TrainPage {
 		this.validate = true;
 
 		if (this.expected() === this.spelledWord.toUpperCase()) {
-			const removed = this.misspelledWordsService.remove(this.expected());
+			const removed = this.trainerLoaderService.removeMisspelledWord(this.expected());
 			if (removed) {
-				if (this.knownWordsService.isKnown(this.expected()))
-					this.knownWordsService.add(this.expected());
+				if (!this.knownWordsService.isKnown(this.expected()))
+					this.trainerLoaderService.addWordToReview(this.expected());
 				else
-					this.wordsToReviewService.add(this.expected());
+					this.trainerLoaderService.addKnownWord(this.expected());
 
 				this.spellingCounter = this.knownWordsService.getSpellingCounter(this.expected()) || this.wordsToReviewService.getSpellingCounter(this.expected());
 			} else {
 				this.spellingCounter = this.misspelledWordsService.getSpellingCounter(this.expected());
 			}
 		} else {
-			this.misspelledWordsService.add(this.expected());
-			this.wordsToReviewService.remove(this.expected());
-			this.knownWordsService.remove(this.expected());
+			this.trainerLoaderService.addMisspelledWord(this.expected());
 
 			this.spellingCounter = this.misspelledWordsService.getSpellingCounter(this.expected());
 		}
