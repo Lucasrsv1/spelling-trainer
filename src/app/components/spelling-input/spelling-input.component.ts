@@ -40,6 +40,9 @@ export class SpellingInputComponent implements AfterViewInit, ControlValueAccess
 	public confirm = new EventEmitter<string>();
 
 	@Output()
+	public toggleAudio = new EventEmitter<void>();
+
+	@Output()
 	public nextMeaning = new EventEmitter<void>();
 
 	@Output()
@@ -103,12 +106,11 @@ export class SpellingInputComponent implements AfterViewInit, ControlValueAccess
 	}
 
 	public keydown (event: KeyboardEvent): void {
-		const confirmKeys = ["Enter", "Tab"];
-		if (!this.freeText)
-			confirmKeys.push("Spacebar", " ");
-
-		if (confirmKeys.includes(event.key))
+		if (["Enter", "Tab"].includes(event.key))
 			return this.confirm.emit(this.spelledWord());
+
+		if (!this.freeText && ["Spacebar", " "].includes(event.key))
+			return this.toggleAudio.emit();
 
 		if (["ArrowRight", "ArrowUp"].includes(event.key))
 			return this.nextMeaning.emit();

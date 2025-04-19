@@ -36,6 +36,7 @@
 			[(ngModel)]="spelledWord"
 			[expected]="expected()"
 			[validate]="validate"
+			(toggleAudio)="isPlaying ? pause() : play()"
 			(confirm)="validateWord()"
 			(nextMeaning)="nextMeaning()"
 			(previousMeaning)="previousMeaning()"

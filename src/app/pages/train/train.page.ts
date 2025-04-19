@@ -114,6 +114,7 @@ export class TrainPage implements OnDestroy {
 
 		effect(() => {
 			this.meanings = this.dictionaryService.getMeanings(this.expected());
+			this.swiperRef?.nativeElement.swiper.slideTo(0);
 
 			const wordRegex = new RegExp(this.expected(), "gi");
 			const antonyms = this.dictionaryService.getAntonyms(this.expected());

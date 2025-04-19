@@ -113,6 +113,9 @@ export class TrainerLoaderService implements OnDestroy {
 
 		this.removeWordToReview(word);
 		this.removeKnownWord(word);
+
+		this.allWordsService.consumeWord(word);
+		this.commonWordsService.consumeWord(word);
 	}
 
 	public removeMisspelledWord (word: string): boolean {
@@ -120,8 +123,12 @@ export class TrainerLoaderService implements OnDestroy {
 	}
 
 	public addWordToReview (word: string): void {
-		if (!this.wordsToReviewService.add(word))
+		if (this.wordsToReviewService.add(word)) {
+			this.allWordsService.consumeWord(word);
+			this.commonWordsService.consumeWord(word);
+		} else {
 			this.addKnownWord(word);
+		}
 	}
 
 	public removeWordToReview (word: string): void {
