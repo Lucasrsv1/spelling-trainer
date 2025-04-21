@@ -1,0 +1,31 @@
+.header .buttons {
+	margin-top: 1em;
+
+	ion-button {
+		width: 230px;
+		height: 68px;
+		margin-left: 1em;
+		margin-right: 1em;
+	}
+
+	#android-btn {
+		--padding-top: 0;
+		--padding-bottom: 0;
+		--padding-start: 0;
+		--padding-end: 0;
+	}
+}
+
+.content {
+	margin-left: 1em;
+	margin-right: 1em;
+	margin-bottom: 56px;
+}
+
+h2 {
+	font-size: 36px;
+}
+
+ion-text {
+	font-size: 26px;
+}

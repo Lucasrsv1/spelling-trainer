@@ -4,7 +4,8 @@
 
 export const environment = {
 	production: false,
-	audioURL: "http://localhost:8080/"
+	audioURL: "http://localhost:8080/",
+	version: "v1.0.0-alpha"
 };
 
 /*

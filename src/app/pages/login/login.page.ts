@@ -1,10 +1,11 @@
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
+import { RouterLink } from "@angular/router";
 import { Component, OnInit } from "@angular/core";
 
 import { addIcons } from "ionicons";
-import { checkmarkOutline, closeOutline, folderOpenOutline, personAddOutline } from "ionicons/icons";
-import { IonButton, IonContent, IonIcon, IonLabel, IonNote, IonText } from "@ionic/angular/standalone";
+import { arrowBackOutline, checkmarkOutline, closeOutline, folderOpenOutline, personAddOutline } from "ionicons/icons";
+import { IonButton, IonButtons, IonContent, IonIcon, IonLabel, IonNote, IonText, IonToolbar } from "@ionic/angular/standalone";
 
 import { RoundProgressModule } from "angular-svg-round-progressbar";
 
@@ -22,7 +23,21 @@ import { SaveGameService } from "src/app/services/save-game/save-game.service";
 	templateUrl: "./login.page.html",
 	styleUrls: ["./login.page.scss"],
 	standalone: true,
-	imports: [IonIcon, IonNote, IonLabel, IonButton, IonText, IonContent, CommonModule, FormsModule, RoundProgressModule, SpellingInputComponent]
+	imports: [
+		IonIcon,
+		IonNote,
+		IonLabel,
+		IonButton,
+		IonButtons,
+		IonText,
+		IonToolbar,
+		IonContent,
+		CommonModule,
+		FormsModule,
+		RoundProgressModule,
+		RouterLink,
+		SpellingInputComponent
+	]
 })
 export class LoginPage implements OnInit {
 	public users: IUser[] = [];
@@ -36,7 +51,7 @@ export class LoginPage implements OnInit {
 		private readonly authenticationService: AuthenticationService,
 		private readonly saveGameService: SaveGameService
 	) {
-		addIcons({ checkmarkOutline, closeOutline, folderOpenOutline, personAddOutline });
+		addIcons({ arrowBackOutline, checkmarkOutline, closeOutline, folderOpenOutline, personAddOutline });
 	}
 
 	public ngOnInit (): void {
