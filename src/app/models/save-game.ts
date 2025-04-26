@@ -5,4 +5,5 @@ export interface ISaveGame {
 	knownWords: KnownWords;
 	misspelledWords: MisspelledWords;
 	wordsToReview: WordsToReview;
+	ignoredWords: string[];
 }

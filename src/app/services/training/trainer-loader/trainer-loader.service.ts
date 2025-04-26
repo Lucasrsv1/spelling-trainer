@@ -8,6 +8,7 @@ import { AllWordsService } from "../all-words/all-words.service";
 import { AuthenticationService } from "../../authentication/authentication.service";
 import { CommonWordsService } from "../common-words/common-words.service";
 import { DictionaryService } from "../../dictionary/dictionary.service";
+import { IgnoredWordsService } from "../ignored-words/ignored-words.service";
 import { KnownCommonWordsService } from "../known-common-words/known-common-words.service";
 import { KnownWordsService } from "../known-words/known-words.service";
 import { MisspelledWordsService } from "../misspelled-words/misspelled-words.service";
@@ -25,6 +26,7 @@ export class TrainerLoaderService implements OnDestroy {
 		private readonly authenticationService: AuthenticationService,
 		private readonly dictionaryService: DictionaryService,
 		private readonly commonWordsService: CommonWordsService,
+		private readonly ignoredWordsService: IgnoredWordsService,
 		private readonly knownCommonWordsService: KnownCommonWordsService,
 		private readonly knownWordsService: KnownWordsService,
 		private readonly misspelledWordsService: MisspelledWordsService,
@@ -79,19 +81,22 @@ export class TrainerLoaderService implements OnDestroy {
 		await this.knownWordsService.loadWords();
 		await this.misspelledWordsService.loadWords();
 		await this.wordsToReviewService.loadWords();
+		await this.ignoredWordsService.loadWords();
 
 		this.knownCommonWordsService.loadWords(this.knownWordsService.availableWords);
 
 		this.allWordsService.loadWords(
 			this.knownWordsService.knownWords,
 			this.wordsToReviewService.wordsToReview,
-			this.misspelledWordsService.misspelledWords
+			this.misspelledWordsService.misspelledWords,
+			this.ignoredWordsService.ignoredWords
 		);
 
 		this.commonWordsService.loadWords(
 			this.knownWordsService.knownWords,
 			this.wordsToReviewService.wordsToReview,
-			this.misspelledWordsService.misspelledWords
+			this.misspelledWordsService.misspelledWords,
+			this.ignoredWordsService.ignoredWords
 		);
 	}
 
@@ -133,5 +138,10 @@ export class TrainerLoaderService implements OnDestroy {
 
 	public removeWordToReview (word: string): void {
 		this.wordsToReviewService.remove(word);
+	}
+
+	public ignoreWord (word: string): void {
+		this.misspelledWordsService.remove(word, true);
+		this.ignoredWordsService.add(word);
 	}
 }

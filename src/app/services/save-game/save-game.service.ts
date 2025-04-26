@@ -47,13 +47,14 @@ export class SaveGameService {
 			const saveGameData: ISaveGame = JSON.parse(await this.utilsService.readTextFile(file));
 
 			if (
-				!saveGameData.user || !saveGameData.knownWords || !saveGameData.misspelledWords || !saveGameData.wordsToReview
-				|| !saveGameData.user.name || !saveGameData.user.uuid || typeof saveGameData.user.name !== "string" || typeof saveGameData.user.uuid !== "string"
-				|| typeof saveGameData.knownWords !== "object" || typeof saveGameData.misspelledWords !== "object" || typeof saveGameData.wordsToReview !== "object"
+				saveGameData.user && saveGameData.knownWords && saveGameData.misspelledWords && saveGameData.wordsToReview && saveGameData.ignoredWords
+				&& saveGameData.user.name && saveGameData.user.uuid && typeof saveGameData.user.name === "string" && typeof saveGameData.user.uuid === "string"
+				&& typeof saveGameData.knownWords === "object" && typeof saveGameData.misspelledWords === "object" && typeof saveGameData.wordsToReview === "object"
+				&& Array.isArray(saveGameData.ignoredWords)
 			)
-				await this.utilsService.alert("Failed to Load Profile", "Please make sure the file is a valid spelling trainer profile.");
-			else
 				await this.loadSaveGameData(saveGameData);
+			else
+				await this.utilsService.alert("Failed to Load Profile", "Please make sure the file is a valid spelling trainer profile.");
 		} catch (error) {
 			console.error("Failed to load save game:", error);
 			await this.utilsService.alert("Failed to Load Profile", "Please make sure the file is a valid JSON file.");
@@ -68,7 +69,8 @@ export class SaveGameService {
 			user: this.authenticationService.user!,
 			knownWords: await this.appStorageService.getKnownWords(),
 			misspelledWords: await this.appStorageService.getMisspelledWords(),
-			wordsToReview: await this.appStorageService.getWordsToReview()
+			wordsToReview: await this.appStorageService.getWordsToReview(),
+			ignoredWords: await this.appStorageService.getIgnoredWords()
 		};
 	}
 
@@ -86,6 +88,7 @@ export class SaveGameService {
 		await this.appStorageService.setKnownWords(saveGameData.knownWords, saveGameData.user);
 		await this.appStorageService.setMisspelledWords(saveGameData.misspelledWords, saveGameData.user);
 		await this.appStorageService.setWordsToReview(saveGameData.wordsToReview, saveGameData.user);
+		await this.appStorageService.setIgnoredWords(saveGameData.ignoredWords, saveGameData.user);
 		await this.appStorageService.addUser(saveGameData.user);
 
 		// Log-in using new user

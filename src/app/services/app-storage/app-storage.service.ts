@@ -10,6 +10,7 @@ const APP_USERS = "USERS";
 const APP_USER_KW_KEY = "USER_KW_";
 const APP_USER_MW_KEY = "USER_MW_";
 const APP_USER_RW_KEY = "USER_RW_";
+const APP_USER_IW_KEY = "USER_IW_";
 
 @Injectable({ providedIn: "root" })
 export class AppStorageService {
@@ -44,6 +45,12 @@ export class AppStorageService {
 		return storedData || {};
 	}
 
+	public async getIgnoredWords (user?: IUser): Promise<string[]> {
+		const storage = await this.getStorage();
+		const storedData: string[] | null = await storage.get(this.getIgnoredWordsKey(user));
+		return storedData || [];
+	}
+
 	public async addUser (user: IUser): Promise<void> {
 		const users = await this.getUsers();
 
@@ -67,6 +74,11 @@ export class AppStorageService {
 	public async setWordsToReview (value: WordsToReview, user?: IUser): Promise<void> {
 		const storage = await this.getStorage();
 		await storage.set(this.getReviewingWordsKey(user), value);
+	}
+
+	public async setIgnoredWords (value: string[], user?: IUser): Promise<void> {
+		const storage = await this.getStorage();
+		await storage.set(this.getIgnoredWordsKey(user), value);
 	}
 
 	public async deleteUser (user: IUser): Promise<void> {
@@ -100,5 +112,9 @@ export class AppStorageService {
 
 	private getReviewingWordsKey (user?: IUser): string {
 		return APP_USER_RW_KEY + ((user || this.authenticationService.user)?.uuid || "");
+	}
+
+	private getIgnoredWordsKey (user?: IUser): string {
+		return APP_USER_IW_KEY + ((user || this.authenticationService.user)?.uuid || "");
 	}
 }

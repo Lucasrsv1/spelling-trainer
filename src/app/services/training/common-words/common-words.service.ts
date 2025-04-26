@@ -30,10 +30,10 @@ export class CommonWordsService implements ITrainingService {
 		return this._counter$.asObservable();
 	}
 
-	public loadWords (knownWords: KnownWords, wordsToReview: WordsToReview, misspelledWords: MisspelledWords): void {
+	public loadWords (knownWords: KnownWords, wordsToReview: WordsToReview, misspelledWords: MisspelledWords, ignoredWords: Set<string>): void {
 		this.availableWords = [];
 		for (const word of this.words) {
-			if (!(word in knownWords) && !(word in wordsToReview) && !(word in misspelledWords))
+			if (!(word in knownWords) && !(word in wordsToReview) && !(word in misspelledWords) && !ignoredWords.has(word))
 				this.availableWords.push(word);
 		}
 

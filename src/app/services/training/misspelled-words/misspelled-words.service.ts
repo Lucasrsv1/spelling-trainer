@@ -42,11 +42,11 @@ export class MisspelledWordsService implements ITrainingService {
 		return true;
 	}
 
-	public remove (word: string): boolean {
+	public remove (word: string, force: boolean = false): boolean {
 		const index = this.availableWords.indexOf(word);
 		const counter = this.misspelledWords[word] || 1;
 
-		if (counter > 1) {
+		if (!force && counter > 1) {
 			if (index === -1)
 				this.availableWords.push(word);
 

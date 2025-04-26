@@ -58,6 +58,7 @@ export class TrainPage implements OnDestroy {
 	public expected = signal("");
 	public spelledWord: string = "";
 	public validate: boolean = false;
+	public gotItRight: boolean = false;
 
 	public isPlaying: boolean = false;
 	public meanings: IFormattedMeaning[] = [];
@@ -167,8 +168,9 @@ export class TrainPage implements OnDestroy {
 			return this.nextWord();
 
 		this.validate = true;
+		this.gotItRight = this.expected() === this.spelledWord.toUpperCase();
 
-		if (this.expected() === this.spelledWord.toUpperCase()) {
+		if (this.gotItRight) {
 			const removed = this.trainerLoaderService.removeMisspelledWord(this.expected());
 			if (removed) {
 				if (!this.knownWordsService.isKnown(this.expected()))
@@ -202,5 +204,10 @@ export class TrainPage implements OnDestroy {
 
 	public previousMeaning (): void {
 		this.swiperRef?.nativeElement.swiper.slidePrev();
+	}
+
+	public ignoreWord (): void {
+		this.trainerLoaderService.ignoreWord(this.expected());
+		this.nextWord();
 	}
 }
