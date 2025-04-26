@@ -92,6 +92,7 @@ export class AppStorageService {
 			await storage.remove(this.getKnownWordsKey(user));
 			await storage.remove(this.getMisspelledWordsKey(user));
 			await storage.remove(this.getReviewingWordsKey(user));
+			await storage.remove(this.getIgnoredWordsKey(user));
 		}
 	}
 
