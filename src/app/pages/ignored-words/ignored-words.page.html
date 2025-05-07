@@ -1,0 +1,27 @@
+<ion-content>
+	<ion-toolbar>
+		<ion-buttons slot="start">
+			<ion-menu-button></ion-menu-button>
+			<ion-button routerDirection="root" routerLink="/dashboard">
+				<ion-icon slot="icon-only" name="home-outline"></ion-icon>
+			</ion-button>
+		</ion-buttons>
+	</ion-toolbar>
+
+	<ion-list>
+		@for (word of ignoredWords; track $index) {
+			<ion-item lines="full">
+				<ion-label>{{ word }}</ion-label>
+				<ion-button shape="round" fill="clear" color="light" slot="end" (click)="restoreWord(word)">
+					<ion-icon slot="icon-only" name="arrow-undo-outline"></ion-icon>
+				</ion-button>
+			</ion-item>
+		}
+
+		@if (!ignoredWords.length) {
+			<ion-item lines="none">
+				<ion-label class="text-center">No word is being ignored</ion-label>
+			</ion-item>
+		}
+	</ion-list>
+</ion-content>

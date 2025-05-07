@@ -144,4 +144,9 @@ export class TrainerLoaderService implements OnDestroy {
 		this.misspelledWordsService.remove(word, true);
 		this.ignoredWordsService.add(word);
 	}
+
+	public restoreWord (word: string): void {
+		this.ignoredWordsService.remove(word);
+		this.addMisspelledWord(word);
+	}
 }

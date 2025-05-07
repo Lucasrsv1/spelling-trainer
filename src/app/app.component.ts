@@ -4,7 +4,7 @@ import { RouterLink, RouterLinkActive } from "@angular/router";
 
 import { addIcons } from "ionicons";
 import { Platform } from "@ionic/angular";
-import { bookOutline, checkmarkDoneOutline, checkmarkOutline, closeCircleOutline, homeOutline, informationCircleOutline, logOutOutline, saveOutline, searchOutline, textOutline, trashOutline } from "ionicons/icons";
+import { bookOutline, checkmarkDoneOutline, checkmarkOutline, closeCircleOutline, eyeOffOutline, homeOutline, informationCircleOutline, logOutOutline, saveOutline, searchOutline, textOutline, trashOutline } from "ionicons/icons";
 import { IonApp, IonAvatar, IonBadge, IonButton, IonContent, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuToggle, IonNote, IonRouterLink, IonRouterOutlet, IonSplitPane, IonText } from "@ionic/angular/standalone";
 
 import { StatusBar } from "@capacitor/status-bar";
@@ -79,7 +79,7 @@ export class AppComponent implements OnDestroy {
 		if (this.platform.is("mobile") || this.platform.is("mobileweb"))
 			StatusBar.setBackgroundColor({ color: "#333333" });
 
-		addIcons({ bookOutline, checkmarkDoneOutline, checkmarkOutline, closeCircleOutline, homeOutline, informationCircleOutline, logOutOutline, saveOutline, searchOutline, textOutline, trashOutline });
+		addIcons({ bookOutline, checkmarkDoneOutline, checkmarkOutline, closeCircleOutline, eyeOffOutline, homeOutline, informationCircleOutline, logOutOutline, saveOutline, searchOutline, textOutline, trashOutline });
 
 		this.user$ = this.authenticationService.user$;
 		this.isLoggedIn$ = this.authenticationService.isLoggedIn$;

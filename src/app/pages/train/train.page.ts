@@ -5,7 +5,7 @@ import { Component, CUSTOM_ELEMENTS_SCHEMA, effect, ElementRef, OnDestroy, signa
 
 import { addIcons } from "ionicons";
 import { IonicSlides } from "@ionic/angular";
-import { checkmarkCircle, checkmarkCircleOutline, checkmarkDoneCircle, checkmarkDoneCircleOutline, closeCircleOutline, homeOutline, pauseCircleOutline, playCircleOutline, removeCircleOutline } from "ionicons/icons";
+import { checkmarkCircle, checkmarkCircleOutline, checkmarkDoneCircle, checkmarkDoneCircleOutline, closeCircleOutline, eyeOffOutline, homeOutline, pauseCircleOutline, playCircleOutline, removeCircleOutline } from "ionicons/icons";
 import { IonButton, IonButtons, IonContent, IonIcon, IonMenuButton, IonRouterLink, IonText, IonToolbar } from "@ionic/angular/standalone";
 
 import { filter, Subscription, take } from "rxjs";
@@ -83,7 +83,7 @@ export class TrainPage implements OnDestroy {
 		private readonly wordsToReviewService: WordsToReviewService
 	) {
 		this.audio = new Audio();
-		addIcons({ checkmarkCircle, checkmarkCircleOutline, checkmarkDoneCircle, checkmarkDoneCircleOutline, closeCircleOutline, homeOutline, pauseCircleOutline, playCircleOutline, removeCircleOutline });
+		addIcons({ checkmarkCircle, checkmarkCircleOutline, checkmarkDoneCircle, checkmarkDoneCircleOutline, closeCircleOutline, eyeOffOutline, homeOutline, pauseCircleOutline, playCircleOutline, removeCircleOutline });
 		switch (this.route.snapshot.paramMap.get("word-list")) {
 			case "common-words":
 				this.trainingService = this.commonWordsService;

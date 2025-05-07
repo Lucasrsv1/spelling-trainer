@@ -1,0 +1,29 @@
+ion-list {
+	--ion-item-background: transparent;
+
+	ion-item {
+		--ion-item-border-color: #FFF;
+	}
+
+	ion-label {
+		font-family: "Chalk", cursive, "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+		font-size: 24px;
+		letter-spacing: 2px;
+		color: #FFF;
+	}
+
+	ion-button {
+		--padding-bottom: 6px;
+		--padding-end: 6px;
+		--padding-start: 6px;
+		--padding-top: 6px;
+
+		ion-icon {
+			font-size: 22px;
+		}
+	}
+}
+
+.text-center {
+	text-align: center;
+}

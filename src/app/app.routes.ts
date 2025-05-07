@@ -11,6 +11,7 @@ export const routes: Routes = [
 	// Restricted
 	{ path: "dashboard", canActivate: [authenticationGuard], loadComponent: () => import("./pages/dashboard/dashboard.page").then(m => m.DashboardPage) },
 	{ path: "train/:word-list", canActivate: [authenticationGuard], loadComponent: () => import("./pages/train/train.page").then(m => m.TrainPage) },
+	{ path: "ignored-words", canActivate: [authenticationGuard], loadComponent: () => import("./pages/ignored-words/ignored-words.page").then(m => m.IgnoredWordsPage) },
 
 	// No match
 	{ path: "", redirectTo: "home", pathMatch: "full" },
