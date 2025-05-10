@@ -1,12 +1,17 @@
 ion-menu ion-content {
 	--background: var(--ion-item-background, var(--ion-background-color, #fff));
-}
-
-ion-menu ion-content {
 	--padding-start: 0;
 	--padding-end: 0;
 	--padding-top: 0;
 	--padding-bottom: 0;
+
+	// Hide scroll bar on the menu
+	--offset-bottom: auto!important;
+	--overflow: hidden;
+	overflow: auto;
+	&::-webkit-scrollbar {
+	  display: none;
+	}
 }
 
 ion-menu ion-list {
@@ -51,7 +56,6 @@ ion-menu ion-list ion-list-header {
 		font-size: 2rem;
 		font-weight: 600;
 		color: var(--ion-color-primary-contrast);
-		font-family: "Chalk", cursive, "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 	}
 
 	ion-avatar {

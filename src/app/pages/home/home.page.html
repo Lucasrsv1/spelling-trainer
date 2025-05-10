@@ -6,7 +6,7 @@
 	</ion-toolbar>
 
 	<div class="header">
-		<ion-text class="title">Welcome to the Spelling Trainer!</ion-text>
+		<ion-text class="title">Welcome to Spelling Trainer!</ion-text>
 		<br>
 
 		@if (!(isLoggedIn$ | async)) {
@@ -25,17 +25,77 @@
 		}
 	</div>
 
-	<div class="content">
-		<ion-text><h2>How it Works?</h2></ion-text>
-		<ion-text>
-			TODO
-		</ion-text>
-	</div>
+	<div class="bootstrap-container">
+		<div class="content">
+			<ion-text>
+				Spelling Trainer is an app designed to help you improve your English spelling skills through consistent practice and smart repetition.
+			</ion-text>
+			<ion-text>
+				Here’s how it works:
+			</ion-text>
 
-	<div class="content">
-		<ion-text><h2>Donate!</h2></ion-text>
-		<ion-text>
-			If you enjoy the Spelling Trainer, please consider making a donation to support the project and help keep it free for everyone!
-		</ion-text>
+			<ion-text>
+				<h2>🎧 Hear it. 📝 Spell it.</h2>
+			</ion-text>
+			<ion-text>
+				You’ll be presented with a word and hear its pronunciation. Your task is to type the correct spelling of the word.
+			</ion-text>
+
+			<ion-text>
+				<h2>❌ Misspelled Words</h2>
+			</ion-text>
+			<ion-text>
+				If you misspell a word, it is added to the <b class="red">Misspelled Words</b> deck. You’ll need to spell it correctly to move it out of this deck, but not so fast! There’s a counter tracking your progress.
+
+				<ul>
+					<li>Every correct spelling increases the counter by 1.</li>
+					<li>A misspelling resets the counter to -1 or subtracts 1 if it’s already negative.</li>
+					<li>Only when the counter becomes positive can the word move to the next stage.</li>
+				</ul>
+			</ion-text>
+
+			<ion-text>
+				<h2>🔁 Review Process</h2>
+			</ion-text>
+			<ion-text>
+				Once a word has been spelled correctly enough times to leave the Misspelled deck, it enters the <b class="yellow">Review</b> deck. To fully learn a word, you need to pass <b class="yellow">three spaced reviews</b>:
+
+				<ol>
+					<li><b>First review:</b> 2 days after the last correct spelling.</li>
+					<li><b>Second review:</b> 3 days after the first review.</li>
+					<li><b>Final review:</b> 5 days after the second review.</li>
+				</ol>
+
+				If you misspell the word during any of these reviews, it goes back to the Misspelled Words deck and the process starts again.
+			</ion-text>
+
+			<ion-text>
+				<h2>✅ Known Words</h2>
+			</ion-text>
+			<ion-text>
+				After passing all three review stages, the word becomes a <b class="green">Known Word</b>. You can continue practicing these words, but if you misspell one, it’ll go back to the Misspelled Words deck and need to be relearned.
+			</ion-text>
+
+			<ion-text>
+				<h2>🙈 Ignored Words</h2>
+			</ion-text>
+			<ion-text>
+				Not every word is worth your time. If you don’t want to study a particular word, you can move it to the Ignored Words deck. You can always restore it later if you change your mind.
+			</ion-text>
+
+			<ion-text class="mt">
+				Spelling Trainer turns spelling practice into a smart, structured, and repeatable process, helping you move words from <b class="red">“misspelled”</b> to <b class="green">“mastered”</b>.
+			</ion-text>
+			<ion-text>
+				Ready to train your spelling?
+			</ion-text>
+
+			<ion-text>
+				<h2>💸 Don't Forget to Donate!</h2>
+			</ion-text>
+			<ion-text>
+				If you enjoy Spelling Trainer, please consider making a donation to support the project and help keep it free for everyone!
+			</ion-text>
+		</div>
 	</div>
 </ion-content>

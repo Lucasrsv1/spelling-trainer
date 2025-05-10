@@ -66,6 +66,34 @@ swiper-slide img {
 	max-height: 100%;
 }
 
+/* ========== Bootstrap Container ========== */
+
+.bootstrap-container {
+	max-width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+
+	@media (min-width: 576px) {
+		max-width: 540px;
+	}
+
+	@media (min-width: 768px) {
+		max-width: 720px;
+	}
+
+	@media (min-width: 992px) {
+		max-width: 960px;
+	}
+
+	@media (min-width: 1200px) {
+		max-width: 1140px;
+	}
+
+	@media (min-width: 1400px) {
+		max-width: 1320px;
+	}
+}
+
 /* ========== App ========== */
 
 @font-face {
@@ -82,9 +110,13 @@ ion-content {
 	--color: white;
 	--background: url("assets/background.jpeg") 50% 50% / cover no-repeat;
 	// --background: url("assets/blackboard-texture.jpg") 50% 50% / cover no-repeat;
-	font-family: "Chalk", cursive, "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 	--padding-start: 16px;
 	--padding-end: 16px;
+
+	ion-text {
+		font-family: "Chalk", cursive, "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+		letter-spacing: 2px;
+	}
 }
 
 ion-toolbar {
