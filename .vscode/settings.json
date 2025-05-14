@@ -4,6 +4,7 @@
 		"@ionic/angular"
 	],
 	"cSpell.words": [
+		"capgo",
 		"checkmark",
 		"mobileweb",
 		"progressbar",
@@ -11,5 +12,6 @@
 		"spellingtrainer",
 		"styleext",
 		"swiperslidechange"
-	]
+	],
+	"java.configuration.updateBuildConfiguration": "interactive"
 }

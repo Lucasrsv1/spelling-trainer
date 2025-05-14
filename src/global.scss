@@ -117,6 +117,10 @@ ion-content {
 		font-family: "Chalk", cursive, "Lucida Sans", "Lucida Sans Regular", "Lucida Grande", "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 		letter-spacing: 2px;
 	}
+
+	ion-toolbar {
+		padding-top: var(--safe-area-inset-top, 0) !important;
+	}
 }
 
 ion-toolbar {

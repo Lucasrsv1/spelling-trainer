@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 
 // import { Platform } from "@ionic/angular";
 
-import { saveAs } from "file-saver";
+import { saveAs } from "file-saver-es";
 
 import { ISaveGame } from "src/app/models/save-game";
 

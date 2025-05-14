@@ -1,5 +1,5 @@
 import { AsyncPipe, NgIf } from "@angular/common";
-import { Component, OnDestroy } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { RouterLink, RouterLinkActive } from "@angular/router";
 
 import { addIcons } from "ionicons";
@@ -7,7 +7,8 @@ import { Platform } from "@ionic/angular";
 import { bookOutline, checkmarkDoneOutline, checkmarkOutline, closeCircleOutline, eyeOffOutline, homeOutline, informationCircleOutline, logOutOutline, saveOutline, searchOutline, textOutline, trashOutline } from "ionicons/icons";
 import { IonApp, IonAvatar, IonBadge, IonButton, IonContent, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuToggle, IonNote, IonRouterLink, IonRouterOutlet, IonSplitPane, IonText } from "@ionic/angular/standalone";
 
-import { StatusBar } from "@capacitor/status-bar";
+import { SafeArea, SafeAreaInsets } from "capacitor-plugin-safe-area";
+import { StatusBar, Style } from "@capacitor/status-bar";
 
 import { register } from "swiper/element/bundle";
 import { RoundProgressModule } from "angular-svg-round-progressbar";
@@ -57,7 +58,7 @@ register();
 		RoundProgressModule
 	]
 })
-export class AppComponent implements OnDestroy {
+export class AppComponent implements OnInit, OnDestroy {
 	private subscriptions: Subscription[] = [];
 
 	public user$: Observable<IUser | null>;
@@ -76,8 +77,10 @@ export class AppComponent implements OnDestroy {
 		private readonly trainerLoaderService: TrainerLoaderService,
 		private readonly utilsService: UtilsService
 	) {
-		if (this.platform.is("mobile") || this.platform.is("mobileweb"))
-			StatusBar.setBackgroundColor({ color: "#333333" });
+		if (this.platform.is("mobile") && !this.platform.is("mobileweb")) {
+			StatusBar.setBackgroundColor({ color: "#0A0A0A" });
+			StatusBar.setStyle({ style: Style.Dark });
+		}
 
 		addIcons({ bookOutline, checkmarkDoneOutline, checkmarkOutline, closeCircleOutline, eyeOffOutline, homeOutline, informationCircleOutline, logOutOutline, saveOutline, searchOutline, textOutline, trashOutline });
 
@@ -100,9 +103,16 @@ export class AppComponent implements OnDestroy {
 		return names[0][0].toUpperCase() + names[names.length - 1][0].toUpperCase();
 	}
 
+	public async ngOnInit (): Promise<void> {
+		SafeArea.getSafeAreaInsets().then(this.updateSafeArea);
+		SafeArea.addListener("safeAreaChanged", this.updateSafeArea);
+	}
+
 	public ngOnDestroy (): void {
 		for (const subscription of this.subscriptions)
 			subscription.unsubscribe();
+
+		SafeArea.removeAllListeners();
 	}
 
 	public logout (): void {
@@ -119,5 +129,10 @@ export class AppComponent implements OnDestroy {
 
 		await this.appStorageService.deleteUser(this.authenticationService.user);
 		this.authenticationService.signOut();
+	}
+
+	private updateSafeArea (data: SafeAreaInsets): void {
+		for (const [key, value] of Object.entries(data.insets))
+			document.documentElement.style.setProperty(`--safe-area-inset-${key}`, `${value}px`);
 	}
 }
