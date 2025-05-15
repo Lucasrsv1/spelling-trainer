@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, Input } from "@angular/core";
 
 import { IonButton } from "@ionic/angular/standalone";
 
@@ -11,5 +11,11 @@ import { KeyboardService } from "src/app/services/keyboard/keyboard.service";
 	imports: [IonButton]
 })
 export class MobileKeyboardComponent {
+	@Input()
+	public isTraining: boolean = false;
+
+	@Input()
+	public wordConfirmed: boolean = false;
+
 	constructor (public readonly keyboardService: KeyboardService) { }
 }

@@ -35,7 +35,12 @@
 		<ion-button color="dark" (click)="keyboardService.backspace()" id="backspace">⌫</ion-button>
 	</div>
 	<div class="keyboard-row">
-		<ion-button color="dark" (click)="keyboardService.input(' ')" id="space">Space</ion-button>
-		<ion-button color="dark" (click)="keyboardService.enter()" id="enter">Enter</ion-button>
+		<ion-button color="dark" (click)="keyboardService.input(' ')" id="space">
+			{{ isTraining ? "Say Word" : "Space" }}
+		</ion-button>
+
+		<ion-button color="dark" (click)="keyboardService.enter()" id="enter">
+			{{ isTraining && wordConfirmed ? "Next" : "Enter" }}
+		</ion-button>
 	</div>
 </div>
