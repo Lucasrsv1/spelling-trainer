@@ -5,10 +5,12 @@ import { Component, OnInit } from "@angular/core";
 
 import { addIcons } from "ionicons";
 import { arrowBackOutline, checkmarkOutline, closeOutline, folderOpenOutline, personAddOutline } from "ionicons/icons";
-import { IonButton, IonButtons, IonContent, IonIcon, IonLabel, IonNote, IonText, IonToolbar } from "@ionic/angular/standalone";
+import { IonButton, IonButtons, IonContent, IonIcon, IonLabel, IonNote, IonRouterLink, IonText, IonToolbar } from "@ionic/angular/standalone";
 
 import { RoundProgressModule } from "angular-svg-round-progressbar";
+import { v4 } from "uuid";
 
+import { MobileKeyboardComponent } from "src/app/components/mobile-keyboard/mobile-keyboard.component";
 import { SpellingInputComponent } from "src/app/components/spelling-input/spelling-input.component";
 
 import { IUser } from "src/app/models/user";
@@ -32,11 +34,13 @@ import { SaveGameService } from "src/app/services/save-game/save-game.service";
 		IonText,
 		IonToolbar,
 		IonContent,
+		IonRouterLink,
 		CommonModule,
 		FormsModule,
 		RoundProgressModule,
 		RouterLink,
-		SpellingInputComponent
+		SpellingInputComponent,
+		MobileKeyboardComponent
 	]
 })
 export class LoginPage implements OnInit {
@@ -108,7 +112,7 @@ export class LoginPage implements OnInit {
 
 		const user: IUser = {
 			name: this.name,
-			uuid: (crypto as any).randomUUID()
+			uuid: v4()
 		};
 
 		await this.appStorageService.addUser(user);

@@ -14,6 +14,6 @@ export const routes: Routes = [
 	{ path: "ignored-words", canActivate: [authenticationGuard], loadComponent: () => import("./pages/ignored-words/ignored-words.page").then(m => m.IgnoredWordsPage) },
 
 	// No match
-	{ path: "", redirectTo: "home", pathMatch: "full" },
-	{ path: "**", redirectTo: "home" }
+	{ path: "", redirectTo: "dashboard", pathMatch: "full" },
+	{ path: "**", redirectTo: "dashboard" }
 ];

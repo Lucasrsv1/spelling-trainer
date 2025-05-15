@@ -1,14 +1,13 @@
 <ion-content (click)="focus()">
 	<ion-toolbar>
 		<ion-buttons slot="start">
-			<ion-button routerDirection="root" routerLink="/home">
+			<ion-button routerDirection="back" routerLink="/home">
 				<ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
 			</ion-button>
 		</ion-buttons>
 	</ion-toolbar>
 
 	<div class="header">
-		<ion-text class="title">Welcome to Spelling Trainer!</ion-text>
 		@if (signUp) {
 			<ion-text class="subtitle">Enter your name to create your profile.</ion-text>
 		} @else {
@@ -68,3 +67,7 @@
 		}
 	</div>
 </ion-content>
+
+@if (signUp) {
+	<app-mobile-keyboard></app-mobile-keyboard>
+}

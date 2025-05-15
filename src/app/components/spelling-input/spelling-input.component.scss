@@ -30,18 +30,6 @@ label {
 		text-transform: uppercase;
 	}
 
-	&.cursor:not(.focused) {
-		border-bottom: 2px solid #777;
-	}
-
-	&.cursor.focused {
-		display: inline-block;
-		animation-name: focused-cursor;
-		animation-duration: 1s;
-		animation-iteration-count: infinite;
-		animation-timing-function: step-end;
-	}
-
 	&.green:not(.red) {
 		border-bottom-color: color.adjust(#28A745, $lightness: 17%);
 		color: color.adjust(#28A745, $lightness: 17%);
@@ -51,10 +39,4 @@ label {
 		border-bottom-color: color.adjust(#C5000F, $lightness: 17%);
 		color: color.adjust(#C5000F, $lightness: 17%);
 	}
-}
-
-@keyframes focused-cursor {
-	0% { opacity: 1; }
-	50% { opacity: 0; }
-	100% { opacity: 1; }
 }

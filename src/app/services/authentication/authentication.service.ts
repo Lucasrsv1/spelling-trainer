@@ -57,7 +57,7 @@ export class AuthenticationService {
 	public signOut () {
 		this.localStorage.delete(LocalStorageKey.USER);
 		this._user$.next(null);
-		this.navController.navigateRoot(["login"]);
+		this.navController.navigateRoot(["home"]);
 	}
 
 	public saveLoggedUser (user: IUser): void {

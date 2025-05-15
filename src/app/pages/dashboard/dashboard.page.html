@@ -6,16 +6,47 @@
 	</ion-toolbar>
 
 	<div class="header">
-		<ion-text class="title">Welcome to Spelling Trainer!</ion-text>
 		<ion-text class="subtitle">Choose a set of words to start training.</ion-text>
 	</div>
 
 	<div class="buttons-list">
 		<ion-button
+			color="light"
+			expand="block"
+			size="large"
+			routerDirection="forward"
+			routerLink="/train/common-words"
+			[disabled]="!progress.common"
+		>
+			<div class="space-between">
+				<ion-label>New Common Words</ion-label>
+				<ion-badge color="medium" slot="end">
+					{{ progress.common }}
+				</ion-badge>
+			</div>
+		</ion-button>
+
+		<ion-button
+			color="light"
+			expand="block"
+			size="large"
+			routerDirection="forward"
+			routerLink="/train/all-words"
+			[disabled]="!progress.all"
+		>
+			<div class="space-between">
+				<ion-label>New Words</ion-label>
+				<ion-badge color="medium" slot="end">
+					{{ progress.all }}
+				</ion-badge>
+			</div>
+		</ion-button>
+
+		<ion-button
 			color="danger"
 			expand="block"
 			size="large"
-			routerDirection="root"
+			routerDirection="forward"
 			routerLink="/train/misspelled"
 			[disabled]="!progress.misspelled"
 		>
@@ -31,7 +62,7 @@
 			color="warning"
 			expand="block"
 			size="large"
-			routerDirection="root"
+			routerDirection="forward"
 			routerLink="/train/reviewing"
 			[disabled]="!progress.inReview"
 		>
@@ -54,7 +85,7 @@
 			color="light"
 			expand="block"
 			size="large"
-			routerDirection="root"
+			routerDirection="forward"
 			routerLink="/train/known-common-words"
 			[disabled]="!progress.known.common.value"
 		>
@@ -82,7 +113,7 @@
 			color="light"
 			expand="block"
 			size="large"
-			routerDirection="root"
+			routerDirection="forward"
 			routerLink="/train/known-words"
 			[disabled]="!progress.known.all.value"
 		>
@@ -103,38 +134,6 @@
 						background="#DDD"
 					/>
 				</div>
-			</div>
-		</ion-button>
-
-		<ion-button
-			color="light"
-			expand="block"
-			size="large"
-			routerDirection="root"
-			routerLink="/train/common-words"
-			[disabled]="!progress.common"
-		>
-			<div class="space-between">
-				<ion-label>New Common Words</ion-label>
-				<ion-badge color="medium" slot="end">
-					{{ progress.common }}
-				</ion-badge>
-			</div>
-		</ion-button>
-
-		<ion-button
-			color="light"
-			expand="block"
-			size="large"
-			routerDirection="root"
-			routerLink="/train/all-words"
-			[disabled]="!progress.all"
-		>
-			<div class="space-between">
-				<ion-label>New Words</ion-label>
-				<ion-badge color="medium" slot="end">
-					{{ progress.all }}
-				</ion-badge>
 			</div>
 		</ion-button>
 	</div>

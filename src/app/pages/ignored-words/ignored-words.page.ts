@@ -5,7 +5,7 @@ import { Component, OnDestroy } from "@angular/core";
 
 import { addIcons } from "ionicons";
 import { arrowUndoOutline, homeOutline } from "ionicons/icons";
-import { IonButton, IonButtons, IonContent, IonIcon, IonItem, IonLabel, IonList, IonMenuButton, IonToolbar } from "@ionic/angular/standalone";
+import { IonButton, IonButtons, IonContent, IonIcon, IonItem, IonLabel, IonList, IonMenuButton, IonRouterLink, IonToolbar } from "@ionic/angular/standalone";
 
 import { IgnoredWordsService } from "src/app/services/training/ignored-words/ignored-words.service";
 import { Subscription } from "rxjs";
@@ -25,6 +25,7 @@ import { TrainerLoaderService } from "src/app/services/training/trainer-loader/t
 		IonIcon,
 		IonList,
 		IonMenuButton,
+		IonRouterLink,
 		IonToolbar,
 		CommonModule,
 		FormsModule,

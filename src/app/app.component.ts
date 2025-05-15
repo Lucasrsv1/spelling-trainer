@@ -78,7 +78,7 @@ export class AppComponent implements OnInit, OnDestroy {
 		private readonly utilsService: UtilsService
 	) {
 		if (this.platform.is("mobile") && !this.platform.is("mobileweb")) {
-			StatusBar.setBackgroundColor({ color: "#0A0A0A" });
+			StatusBar.setBackgroundColor({ color: "#020202" });
 			StatusBar.setStyle({ style: Style.Dark });
 		}
 

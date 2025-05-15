@@ -4,8 +4,8 @@ import { RouterLink } from "@angular/router";
 import { AsyncPipe, CommonModule } from "@angular/common";
 
 import { addIcons } from "ionicons";
-import { globeOutline } from "ionicons/icons";
-import { IonButton, IonButtons, IonContent, IonIcon, IonImg, IonMenuButton, IonText, IonToolbar } from "@ionic/angular/standalone";
+import { globeOutline, homeOutline } from "ionicons/icons";
+import { IonButton, IonButtons, IonContent, IonIcon, IonImg, IonMenuButton, IonRouterLink, IonText, IonToolbar } from "@ionic/angular/standalone";
 
 import { Capacitor } from "@capacitor/core";
 
@@ -28,6 +28,7 @@ const androidUrl = "https://play.google.com/store/apps/details?id=appId";
 		IonIcon,
 		IonImg,
 		IonMenuButton,
+		IonRouterLink,
 		IonText,
 		IonToolbar,
 		CommonModule,
@@ -39,7 +40,7 @@ export class HomePage {
 	public isLoggedIn$: Observable<boolean>;
 
 	constructor (private readonly authenticationService: AuthenticationService) {
-		addIcons({ globeOutline });
+		addIcons({ globeOutline, homeOutline });
 		this.isLoggedIn$ = this.authenticationService.isLoggedIn$;
 	}
 

@@ -29,7 +29,7 @@
 						</ion-menu-toggle>
 
 						<ion-menu-toggle auto-hide="false">
-							<ion-item routerDirection="root" routerLink="/train/misspelled" lines="full" detail="false" routerLinkActive="selected" [disabled]="!progress.misspelled">
+							<ion-item routerDirection="forward" routerLink="/train/misspelled" lines="full" detail="false" routerLinkActive="selected" [disabled]="!progress.misspelled">
 								<ion-icon slot="start" name="close-circle-outline"></ion-icon>
 								<ion-label>Misspelled</ion-label>
 								<ion-badge color="danger" slot="end" *ngIf="progress.misspelled">
@@ -39,7 +39,7 @@
 						</ion-menu-toggle>
 
 						<ion-menu-toggle auto-hide="false">
-							<ion-item routerDirection="root" routerLink="/train/reviewing" lines="full" detail="false" routerLinkActive="selected" [disabled]="!progress.inReview">
+							<ion-item routerDirection="forward" routerLink="/train/reviewing" lines="full" detail="false" routerLinkActive="selected" [disabled]="!progress.inReview">
 								<ion-icon slot="start" name="search-outline"></ion-icon>
 								<ion-label>Reviewing</ion-label>
 								<ion-badge color="warning" slot="end" *ngIf="progress.inReview">
@@ -49,7 +49,7 @@
 						</ion-menu-toggle>
 
 						<ion-menu-toggle auto-hide="false">
-							<ion-item routerDirection="root" routerLink="/train/known-common-words" lines="full" detail="false" routerLinkActive="selected" [disabled]="!progress.known.common.value">
+							<ion-item routerDirection="forward" routerLink="/train/known-common-words" lines="full" detail="false" routerLinkActive="selected" [disabled]="!progress.known.common.value">
 								<ion-icon slot="start" name="checkmark-outline"></ion-icon>
 								<ion-label>Known Common Words</ion-label>
 								<round-progress
@@ -64,7 +64,7 @@
 						</ion-menu-toggle>
 
 						<ion-menu-toggle auto-hide="false">
-							<ion-item routerDirection="root" routerLink="/train/known-words" lines="full" detail="false" routerLinkActive="selected" [disabled]="!progress.known.all.value">
+							<ion-item routerDirection="forward" routerLink="/train/known-words" lines="full" detail="false" routerLinkActive="selected" [disabled]="!progress.known.all.value">
 								<ion-icon slot="start" name="checkmark-done-outline"></ion-icon>
 								<ion-label>All Known Words</ion-label>
 								<round-progress
@@ -79,7 +79,7 @@
 						</ion-menu-toggle>
 
 						<ion-menu-toggle auto-hide="false">
-							<ion-item routerDirection="root" routerLink="/train/common-words" lines="full" detail="false" routerLinkActive="selected" [disabled]="!progress.common">
+							<ion-item routerDirection="forward" routerLink="/train/common-words" lines="full" detail="false" routerLinkActive="selected" [disabled]="!progress.common">
 								<ion-icon slot="start" name="text-outline"></ion-icon>
 								<ion-label>New Common Words</ion-label>
 								<ion-badge color="medium" slot="end" *ngIf="progress.common">
@@ -89,7 +89,7 @@
 						</ion-menu-toggle>
 
 						<ion-menu-toggle auto-hide="false">
-							<ion-item routerDirection="root" routerLink="/train/all-words" lines="full" detail="false" routerLinkActive="selected" [disabled]="!progress.all">
+							<ion-item routerDirection="forward" routerLink="/train/all-words" lines="full" detail="false" routerLinkActive="selected" [disabled]="!progress.all">
 								<ion-icon slot="start" name="book-outline"></ion-icon>
 								<ion-label>New Words</ion-label>
 								<ion-badge color="medium" slot="end" *ngIf="progress.all">
@@ -99,14 +99,14 @@
 						</ion-menu-toggle>
 
 						<ion-menu-toggle auto-hide="false">
-							<ion-item routerDirection="root" routerLink="/ignored-words" lines="full" detail="false" routerLinkActive="selected">
+							<ion-item routerDirection="forward" routerLink="/ignored-words" lines="full" detail="false" routerLinkActive="selected">
 								<ion-icon slot="start" name="eye-off-outline"></ion-icon>
 								<ion-label>Ignored Words</ion-label>
 							</ion-item>
 						</ion-menu-toggle>
 
 						<ion-menu-toggle auto-hide="false">
-							<ion-item routerDirection="root" routerLink="/home" lines="full" detail="false" routerLinkActive="selected">
+							<ion-item routerDirection="forward" routerLink="/home" lines="full" detail="false" routerLinkActive="selected">
 								<ion-icon slot="start" name="information-circle-outline"></ion-icon>
 								<ion-label>About</ion-label>
 							</ion-item>

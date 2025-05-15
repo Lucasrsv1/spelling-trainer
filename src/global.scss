@@ -101,10 +101,6 @@ swiper-slide img {
 	src: url("assets/DJB\ Chalk\ It\ Up.ttf") format("truetype");
 }
 
-ion-menu {
-	max-width: 370px;
-}
-
 ion-content {
 	color: white;
 	--color: white;
@@ -128,6 +124,11 @@ ion-toolbar {
 	margin-left: -16px;
 	--background: transparent;
 	width: calc(100% + 16px);
+
+	ion-menu-button, ion-button {
+		color: white;
+		--color: white;
+	}
 }
 
 .header {
@@ -192,6 +193,32 @@ ion-toolbar {
 	}
 }
 
+/* ========== Mobile Keyboard ========== */
+
 app-spelling-input {
 	font-size: 26px;
+}
+
+html.plt-mobile #keyboard-binding,
+html:not(.plt-mobile) app-mobile-keyboard {
+	display: none;
+}
+
+html:not(.plt-mobile) .letter.cursor:not(.focused) {
+	border-bottom: 2px solid #777;
+}
+
+.letter.cursor.focused,
+html.plt-mobile .letter.cursor {
+	display: inline-block;
+	animation-name: focused-cursor;
+	animation-duration: 1s;
+	animation-iteration-count: infinite;
+	animation-timing-function: step-end;
+}
+
+@keyframes focused-cursor {
+	0% { opacity: 1; }
+	50% { opacity: 0; }
+	100% { opacity: 1; }
 }

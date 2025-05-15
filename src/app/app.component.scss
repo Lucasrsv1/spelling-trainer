@@ -40,8 +40,8 @@ ion-item.selected {
 	padding: 0.415em 0.83em;
 }
 
-ion-menu.md ion-list ion-list-header {
-	padding-top: 11px;
+ion-menu ion-list ion-list-header {
+	padding-top: calc(var(--safe-area-inset-top, 0) + 11px) !important;
 }
 
 ion-menu ion-list ion-list-header {

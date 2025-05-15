@@ -2,7 +2,7 @@
 	<ion-toolbar (click)="$event.stopPropagation()">
 		<ion-buttons slot="start">
 			<ion-menu-button></ion-menu-button>
-			<ion-button routerDirection="root" routerLink="/dashboard">
+			<ion-button routerDirection="back" routerLink="/dashboard">
 				<ion-icon slot="icon-only" name="home-outline"></ion-icon>
 			</ion-button>
 		</ion-buttons>
@@ -120,3 +120,5 @@
 		}
 	</div>
 </ion-content>
+
+<app-mobile-keyboard></app-mobile-keyboard>

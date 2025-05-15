@@ -2,6 +2,12 @@
 	<ion-toolbar>
 		<ion-buttons slot="start">
 			<ion-menu-button></ion-menu-button>
+
+			@if (isLoggedIn$ | async) {
+				<ion-button routerDirection="back" routerLink="/dashboard">
+					<ion-icon slot="icon-only" name="home-outline"></ion-icon>
+				</ion-button>
+			}
 		</ion-buttons>
 	</ion-toolbar>
 
@@ -13,7 +19,7 @@
 			<ion-text class="subtitle">To start, sign in or download the Android app from Google Play:</ion-text>
 
 			<div class="buttons">
-				<ion-button color="light" size="large" id="web-btn" routerDirection="root" routerLink="/login">
+				<ion-button color="light" size="large" id="web-btn" routerDirection="forward" routerLink="/login">
 					<ion-icon slot="start" name="globe-outline"></ion-icon>
 					Sign In
 				</ion-button>

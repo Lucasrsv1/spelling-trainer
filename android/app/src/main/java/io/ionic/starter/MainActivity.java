@@ -14,7 +14,7 @@ public class MainActivity extends BridgeActivity {
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 			Window window = getWindow();
-			window.setNavigationBarColor(Color.parseColor("#0A0A0A"));
+			window.setNavigationBarColor(Color.parseColor("#020202"));
 		}
 	}
 }

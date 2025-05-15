@@ -1,0 +1,34 @@
+#keyboard-container {
+	padding: 4px 6px;
+	background-color: #020202;
+}
+
+.keyboard-row {
+	text-align: center;
+}
+
+ion-button {
+	font-size: 22px;
+	height: 46px;
+	width: calc(10% - 4px);
+	--padding-start: 0;
+	--padding-end: 0;
+}
+
+#backspace {
+	width: calc((10% - 4px) * 2);
+}
+
+#enter {
+	width: calc(50% - 4px);
+}
+
+#space {
+	width: calc(50% - 4px);
+}
+
+@media (orientation: portrait) {
+	#keyboard-container {
+		padding-bottom: 30px;
+	}
+}

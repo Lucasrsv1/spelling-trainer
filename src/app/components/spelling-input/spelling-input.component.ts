@@ -1,7 +1,10 @@
-import { AfterViewInit, Component, computed, ElementRef, EventEmitter, forwardRef, Input, input, Output, signal, ViewChild } from "@angular/core";
+import { AfterViewInit, Component, computed, ElementRef, EventEmitter, forwardRef, Input, input, OnDestroy, Output, signal, ViewChild } from "@angular/core";
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from "@angular/forms";
 
 import { diffChars } from "diff";
+import { Subscription } from "rxjs";
+
+import { KeyboardService } from "src/app/services/keyboard/keyboard.service";
 
 interface CharDiff {
 	char: string;
@@ -11,7 +14,7 @@ interface CharDiff {
 }
 
 const allowedCharacters = [
-	"'", "-", ".", "A", "B", "C",
+	"'", "-", "A", "B", "C",
 	"D", "E", "F", "G", "H", "I",
 	"J", "K", "L", "M", "N", "O",
 	"P", "Q", "R", "S", "T", "U",
@@ -29,7 +32,7 @@ const allowedCharacters = [
 		multi: true
 	}]
 })
-export class SpellingInputComponent implements AfterViewInit, ControlValueAccessor {
+export class SpellingInputComponent implements AfterViewInit, ControlValueAccessor, OnDestroy {
 	@Input()
 	public validate: boolean = false;
 
@@ -52,6 +55,21 @@ export class SpellingInputComponent implements AfterViewInit, ControlValueAccess
 	protected inputElement?: ElementRef<HTMLInputElement>;
 
 	public expected = input<string>("");
+
+	private subscriptions: Subscription[] = [];
+
+	constructor (private readonly keyboardService: KeyboardService) {
+		this.subscriptions.push(
+			this.keyboardService.input$.subscribe(char => this.keydown(char)),
+			this.keyboardService.delete$.subscribe(() => this.keydown("Backspace")),
+			this.keyboardService.enter$.subscribe(() => this.keydown("Enter"))
+		);
+	}
+
+	public ngOnDestroy (): void {
+		for (const subscription of this.subscriptions)
+			subscription.unsubscribe();
+	}
 
 	public ngAfterViewInit (): void {
 		setTimeout(() => this.focus(), 500);
@@ -105,28 +123,30 @@ export class SpellingInputComponent implements AfterViewInit, ControlValueAccess
 		this.inputElement?.nativeElement.focus();
 	}
 
-	public keydown (event: KeyboardEvent): void {
-		if (["Enter", "Tab"].includes(event.key))
+	public keydown (eventOrChar: KeyboardEvent | string): void {
+		const char = typeof eventOrChar === "string" ? eventOrChar : eventOrChar.key;
+
+		if (["Enter", "Tab"].includes(char))
 			return this.confirm.emit(this.spelledWord());
 
-		if (!this.freeText && ["Spacebar", " "].includes(event.key))
+		if (!this.freeText && ["Spacebar", " "].includes(char))
 			return this.toggleAudio.emit();
 
-		if (["ArrowRight", "ArrowUp"].includes(event.key))
+		if (["ArrowRight", "ArrowUp"].includes(char))
 			return this.nextMeaning.emit();
 
-		if (["ArrowLeft", "ArrowDown"].includes(event.key))
+		if (["ArrowLeft", "ArrowDown"].includes(char))
 			return this.previousMeaning.emit();
 
 		if (this.validate)
 			return;
 
-		if (["Backspace", "Clear", "Delete", "Del"].includes(event.key) && this.spelledWord().length > 0)
+		if (["Backspace", "Clear", "Delete", "Del"].includes(char) && this.spelledWord().length > 0)
 			this.spelledWord.set(this.spelledWord().slice(0, -1));
-		else if (this.freeText && event.key.length === 1)
-			this.spelledWord.set(this.spelledWord() + event.key);
-		else if (allowedCharacters.includes(event.key.toUpperCase()))
-			this.spelledWord.set(this.spelledWord() + event.key.toLowerCase());
+		else if (this.freeText && char.length === 1)
+			this.spelledWord.set(this.spelledWord() + char);
+		else if (allowedCharacters.includes(char.toUpperCase()))
+			this.spelledWord.set(this.spelledWord() + char.toLowerCase());
 
 		this.onChangeCallback(this.spelledWord());
 	}

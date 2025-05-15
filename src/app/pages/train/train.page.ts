@@ -13,6 +13,7 @@ import { filter, Subscription, take } from "rxjs";
 import { environment } from "src/environments/environment";
 import { IFormattedMeaning } from "src/app/models/dictionary";
 
+import { MobileKeyboardComponent } from "src/app/components/mobile-keyboard/mobile-keyboard.component";
 import { SpellingInputComponent } from "src/app/components/spelling-input/spelling-input.component";
 
 import { AllWordsService } from "src/app/services/training/all-words/all-words.service";
@@ -43,7 +44,8 @@ import { WordsToReviewService } from "src/app/services/training/words-to-review/
 		IonToolbar,
 		CommonModule,
 		FormsModule,
-		SpellingInputComponent
+		SpellingInputComponent,
+		MobileKeyboardComponent
 	]
 })
 export class TrainPage implements OnDestroy {
