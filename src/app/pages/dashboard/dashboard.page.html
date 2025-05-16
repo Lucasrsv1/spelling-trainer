@@ -5,6 +5,10 @@
 		</ion-buttons>
 	</ion-toolbar>
 
+	<ion-refresher slot="fixed" (ionRefresh)="refresh($event)">
+		<ion-refresher-content></ion-refresher-content>
+	</ion-refresher>
+
 	<div class="header">
 		<ion-text class="subtitle">Choose a set of words to start training.</ion-text>
 	</div>

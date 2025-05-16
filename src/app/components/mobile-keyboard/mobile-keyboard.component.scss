@@ -1,5 +1,6 @@
 #keyboard-container {
 	padding: 4px 6px;
+	padding-bottom: 32px;
 	background-color: #020202;
 }
 
@@ -8,27 +9,39 @@
 }
 
 ion-button {
+	margin: 0;
 	font-size: 22px;
+	width: 10%;
 	height: 46px;
-	width: calc(10% - 4px);
+	min-height: 38px;
+	border: 2px solid #020202;
+	border-top-width: 4px;
+	border-bottom-width: 4px;
 	--padding-start: 0;
 	--padding-end: 0;
 }
 
 #backspace {
-	width: calc((10% - 4px) * 2);
+	width: 20%;
 }
 
-#enter {
-	width: calc(50% - 4px);
+#space, #enter {
+	width: 50%
 }
 
-#space {
-	width: calc(50% - 4px);
+#toggle {
+	font-size: 16px;
+	width: 28px;
+	height: 28px;
+	min-height: 28px;
+	position: absolute;
+	bottom: 0;
+	border: 0;
 }
 
 @media (orientation: portrait) {
-	#keyboard-container {
-		padding-bottom: 30px;
+	ion-button {
+		height: 56px;
+		min-height: 48px;
 	}
 }

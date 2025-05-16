@@ -5,7 +5,8 @@ import { Component, OnDestroy } from "@angular/core";
 
 import { RoundProgressModule } from "angular-svg-round-progressbar";
 
-import { IonBadge, IonButton, IonButtons, IonContent, IonLabel, IonMenuButton, IonNote, IonRouterLink, IonText, IonToolbar } from "@ionic/angular/standalone";
+import { IonBadge, IonButton, IonButtons, IonContent, IonLabel, IonMenuButton, IonNote, IonRefresher, IonRefresherContent, IonRouterLink, IonText, IonToolbar } from "@ionic/angular/standalone";
+import { IonRefresherCustomEvent, RefresherEventDetail } from "@ionic/core";
 
 import { Subscription } from "rxjs";
 
@@ -29,6 +30,8 @@ import { INextReview, WordsToReviewService } from "src/app/services/training/wor
 		IonBadge,
 		IonMenuButton,
 		IonLabel,
+		IonRefresherContent,
+		IonRefresher,
 		IonRouterLink,
 		IonText,
 		IonContent,
@@ -54,8 +57,15 @@ export class DashboardPage implements OnDestroy {
 			this.trainerLoaderService.progress$.subscribe(progress => this.progress = progress),
 			this.wordsToReviewService.nextReview$.subscribe(review => this.nextReview = review)
 		);
+	}
 
+	public ionViewWillEnter (): void {
 		this.wordsToReviewService.loadWords();
+	}
+
+	public async refresh (event: IonRefresherCustomEvent<RefresherEventDetail>): Promise<void> {
+		await this.wordsToReviewService.loadWords();
+		(event.target as HTMLIonRefresherElement).complete();
 	}
 
 	public ngOnDestroy (): void {
