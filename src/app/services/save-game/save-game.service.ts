@@ -1,6 +1,10 @@
 import { Injectable } from "@angular/core";
 
-// import { Platform } from "@ionic/angular";
+import { AlertController, Platform } from "@ionic/angular";
+
+import { Share } from "@capacitor/share";
+import { Capacitor, CapacitorException } from "@capacitor/core";
+import { Directory, Encoding, Filesystem } from "@capacitor/filesystem";
 
 import { saveAs } from "file-saver-es";
 
@@ -14,7 +18,8 @@ import { UtilsService } from "../utils/utils.service";
 @Injectable({ providedIn: "root" })
 export class SaveGameService {
 	constructor (
-		// private readonly platform: Platform,
+		private readonly alertController: AlertController,
+		private readonly platform: Platform,
 		private readonly authenticationService: AuthenticationService,
 		private readonly appStorageService: AppStorageService,
 		private readonly dictionaryService: DictionaryService,
@@ -22,14 +27,47 @@ export class SaveGameService {
 	) { }
 
 	public async saveGame (): Promise<void> {
-		const saveGameData = await this.buildSaveGameData();
+		try {
+			const saveGameData = await this.buildSaveGameData();
+			const fileName = `spelling-trainer-${saveGameData.user.name.replaceAll(" ", "-")}.json`;
+			const content = JSON.stringify(saveGameData);
 
-		// if (this.platform.is("desktop")) {
-		const blob = new Blob([JSON.stringify(saveGameData)], { type: "application/json;charset=utf-8" });
-		saveAs(blob, `spelling-trainer-${saveGameData.user.name.replaceAll(" ", "-")}.json`);
-		// } else {
-		// 	// TODO
-		// }
+			if (Capacitor.isNativePlatform()) {
+				const answer = await this.promptShareOrSave();
+
+				if (answer === "SHARE") {
+					const file = await Filesystem.writeFile({
+						path: fileName,
+						data: content,
+						directory: Directory.Cache,
+						encoding: Encoding.UTF8
+					});
+
+					await Share.share({
+						url: file.uri,
+						dialogTitle: "Export My Progress"
+					});
+				} else if (answer === "SAVE") {
+					await Filesystem.writeFile({
+						path: fileName,
+						data: content,
+						directory: Directory.Documents,
+						encoding: Encoding.UTF8
+					});
+
+					this.utilsService.toast("File saved to documents folder", "success");
+				}
+			} else {
+				const blob = new Blob([content], { type: "application/json;charset=utf-8" });
+				saveAs(blob, fileName);
+			}
+		} catch (error) {
+			if (error instanceof CapacitorException && error.message === "Share canceled")
+				return;
+
+			console.error("Failed to save game:", error);
+			this.utilsService.toast("An error occurred while saving your progress", "danger", 5000);
+		}
 	}
 
 	public async loadSaveGameFromFile (file: File): Promise<void> {
@@ -93,5 +131,29 @@ export class SaveGameService {
 
 		// Log-in using new user
 		this.authenticationService.saveLoggedUser(saveGameData.user);
+	}
+
+	private promptShareOrSave (): Promise<"SHARE" | "SAVE" | null> {
+		return new Promise(resolve => {
+			this.alertController
+				.create({
+					header: "Export Progress",
+					message: "How would you like to export your progress?",
+					backdropDismiss: true,
+					buttons: [{
+						text: "Share File",
+						handler: () => resolve("SHARE")
+					}, {
+						text: "Save Local File",
+						handler: () => resolve("SAVE")
+					}]
+				})
+				.then(alert => {
+					alert.present();
+					alert.onDidDismiss().then(
+						() => resolve(null)
+					);
+				});
+		});
 	}
 }
