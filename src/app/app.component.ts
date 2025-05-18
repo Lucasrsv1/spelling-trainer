@@ -7,6 +7,7 @@ import { Platform } from "@ionic/angular";
 import { bookOutline, checkmarkDoneOutline, checkmarkOutline, closeCircleOutline, eyeOffOutline, homeOutline, informationCircleOutline, logOutOutline, saveOutline, searchOutline, textOutline, trashOutline } from "ionicons/icons";
 import { IonApp, IonAvatar, IonBadge, IonButton, IonContent, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuToggle, IonNote, IonRouterLink, IonRouterOutlet, IonSplitPane, IonText } from "@ionic/angular/standalone";
 
+import { Encoding, Filesystem } from "@capacitor/filesystem";
 import { SafeArea, SafeAreaInsets } from "capacitor-plugin-safe-area";
 import { StatusBar, Style } from "@capacitor/status-bar";
 
@@ -90,6 +91,16 @@ export class AppComponent implements OnInit, OnDestroy {
 		this.subscriptions.push(
 			this.trainerLoaderService.progress$.subscribe(progress => this.progress = progress)
 		);
+
+		window.addEventListener("file-opened", async (event: any) => {
+			const uri = event.detail;
+			const contents = await Filesystem.readFile({
+				path: uri,
+				encoding: Encoding.UTF8
+			});
+
+			this.saveGameService.loadSaveGame(contents.data.toString());
+		});
 	}
 
 	public get userInitials (): string {

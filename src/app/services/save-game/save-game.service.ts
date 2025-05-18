@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 
-import { AlertController, Platform } from "@ionic/angular";
+import { AlertController } from "@ionic/angular";
 
 import { Share } from "@capacitor/share";
 import { Capacitor, CapacitorException } from "@capacitor/core";
@@ -19,7 +19,6 @@ import { UtilsService } from "../utils/utils.service";
 export class SaveGameService {
 	constructor (
 		private readonly alertController: AlertController,
-		private readonly platform: Platform,
 		private readonly authenticationService: AuthenticationService,
 		private readonly appStorageService: AppStorageService,
 		private readonly dictionaryService: DictionaryService,
@@ -81,8 +80,12 @@ export class SaveGameService {
 			return;
 		}
 
+		this.loadSaveGame(await this.utilsService.readTextFile(file));
+	}
+
+	public async loadSaveGame (jsonString: string): Promise<void> {
 		try {
-			const saveGameData: ISaveGame = JSON.parse(await this.utilsService.readTextFile(file));
+			const saveGameData: ISaveGame = JSON.parse(jsonString);
 
 			if (
 				saveGameData.user && saveGameData.knownWords && saveGameData.misspelledWords && saveGameData.wordsToReview && saveGameData.ignoredWords

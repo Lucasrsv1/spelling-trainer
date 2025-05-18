@@ -4,8 +4,11 @@
 		"@ionic/angular"
 	],
 	"cSpell.words": [
+		"androidx",
+		"BROWSABLE",
 		"capgo",
 		"checkmark",
+		"fileprovider",
 		"mobileweb",
 		"progressbar",
 		"spacebar",
