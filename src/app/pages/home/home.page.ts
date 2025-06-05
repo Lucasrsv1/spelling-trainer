@@ -14,6 +14,7 @@ import { Observable } from "rxjs";
 import { AuthenticationService } from "src/app/services/authentication/authentication.service";
 
 const androidUrl = "https://play.google.com/store/apps/details?id=appId";
+const donationUrl = "https://www.buymeacoffee.com/lucasrv";
 
 @Component({
 	selector: "app-home",
@@ -49,5 +50,12 @@ export class HomePage {
 			window.open(androidUrl, "_system"); // Opens using external browser or Play Store
 		else
 			window.open(androidUrl, "_blank"); // Opens in new tab
+	}
+
+	public openDonationLink (): void {
+		if (Capacitor.isNativePlatform())
+			window.open(donationUrl, "_system"); // Opens using external browser
+		else
+			window.open(donationUrl, "_blank"); // Opens in new tab
 	}
 }

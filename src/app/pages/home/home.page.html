@@ -24,7 +24,7 @@
 					Sign In
 				</ion-button>
 
-				<ion-button fill="clear" color="dark" size="large" id="android-btn" (click)="openPlayStore()">
+				<ion-button fill="clear" color="dark" size="large" class="custom-btn" (click)="openPlayStore()">
 					<ion-img src="../../../assets/get-it-on-google-play.png"></ion-img>
 				</ion-button>
 			</div>
@@ -102,6 +102,11 @@
 			<ion-text>
 				If you enjoy Spelling Trainer, please consider making a donation to support the project and help keep it free for everyone!
 			</ion-text>
+			<div id="coffee-btn" class="buttons">
+				<ion-button fill="clear" color="dark" size="large" class="custom-btn" (click)="openDonationLink()">
+					<ion-img src="../../../assets/default-yellow.webp" alt="Buy Me A Coffee" ></ion-img>
+				</ion-button>
+			</div>
 		</div>
 	</div>
 </ion-content>

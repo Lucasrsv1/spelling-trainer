@@ -9,14 +9,14 @@
 		margin-left: 1em;
 		margin-right: 1em;
 	}
+}
 
-	#android-btn {
-		--padding-top: 0;
-		--padding-bottom: 0;
-		--padding-start: 0;
-		--padding-end: 0;
-		--border-radius: 4px;
-	}
+.custom-btn {
+	--padding-top: 0;
+	--padding-bottom: 0;
+	--padding-start: 0;
+	--padding-end: 0;
+	--border-radius: 4px;
 }
 
 .content {
@@ -55,4 +55,18 @@ ion-text {
 
 .yellow {
 	color: color.adjust(#FFC409, $lightness: 10%);
+}
+
+#coffee-btn {
+	text-align: center;
+
+	a {
+		display: inline-block;
+		margin-top: 1em;
+	}
+
+	ion-img {
+		width: 230px;
+		height: 68px;
+	}
 }
