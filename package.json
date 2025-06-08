@@ -1,6 +1,6 @@
 {
 	"name": "spelling-trainer",
-	"version": "0.0.1",
+	"version": "1.0.0",
 	"author": "Lucas Rassilan Vilanova",
 	"description": "App to improve your spelling skills",
 	"homepage": "https://spellingtrainer.lrv.dev.br",
@@ -56,6 +56,7 @@
 		"@angular/cli": "^19.0.0",
 		"@angular/compiler-cli": "^19.0.0",
 		"@angular/language-service": "^19.0.0",
+		"@capacitor/assets": "^3.0.5",
 		"@capacitor/cli": "7.0.1",
 		"@ionic/angular-toolkit": "^12.0.0",
 		"@stylistic/eslint-plugin": "^3.1.0",
