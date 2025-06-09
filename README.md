@@ -1,5 +1,14 @@
 ![Spelling Trainer](./resources/banner.png "Spelling Trainer")
 
+<div align="center">
+	<a href="https://spellingtrainer.lrv.dev.br" target="blank">
+		<img src="./resources/access-web-app.png" alt="Access Web App" width="230">
+	</a>
+	<a href="https://play.google.com/store/apps/details?id=appId" target="blank">
+		<img src="./src/assets/get-it-on-google-play.png" alt="Get it on Google Play" width="230">
+	</a>
+</div><br>
+
 Spelling Trainer is an app designed to help you improve your English spelling skills through consistent practice and smart repetition.
 
 Here’s how it works:
@@ -46,8 +55,8 @@ Ready to train your spelling?
 
 If you enjoy Spelling Trainer, please consider making a donation to support the project and help keep it free for everyone!
 
-<div style="text-align: center;">
+<div align="center">
 	<a href="https://www.buymeacoffee.com/lucasrv" target="blank">
-		<img src="./src/assets/default-yellow.webp" alt="Buy Me A Coffee" style="width: 100%; max-width: 230px;">
+		<img src="./src/assets/default-yellow.webp" alt="Buy Me A Coffee" width="230">
 	</a>
 </div>
