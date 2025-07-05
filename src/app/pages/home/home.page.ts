@@ -13,7 +13,8 @@ import { Observable } from "rxjs";
 
 import { AuthenticationService } from "src/app/services/authentication/authentication.service";
 
-const androidUrl = "https://play.google.com/store/apps/details?id=appId";
+const androidUrl = "https://play.google.com/store/apps/details?id=br.dev.lrv.spellingtrainer";
+const webAppUrl = "https://spellingtrainer.lrv.dev.br";
 const donationUrl = "https://www.buymeacoffee.com/lucasrv";
 
 @Component({
@@ -45,17 +46,26 @@ export class HomePage {
 		this.isLoggedIn$ = this.authenticationService.isLoggedIn$;
 	}
 
+	public get isNativePlatform (): boolean {
+		return Capacitor.isNativePlatform();
+	}
+
 	public openPlayStore (): void {
-		if (Capacitor.isNativePlatform())
-			window.open(androidUrl, "_system"); // Opens using external browser or Play Store
-		else
-			window.open(androidUrl, "_blank"); // Opens in new tab
+		this.openLink(androidUrl);
+	}
+
+	public openWebApp (): void {
+		this.openLink(webAppUrl);
 	}
 
 	public openDonationLink (): void {
-		if (Capacitor.isNativePlatform())
-			window.open(donationUrl, "_system"); // Opens using external browser
+		this.openLink(donationUrl);
+	}
+
+	public openLink (link: string): void {
+		if (this.isNativePlatform)
+			window.open(link, "_system"); // Opens using external browser
 		else
-			window.open(donationUrl, "_blank"); // Opens in new tab
+			window.open(link, "_blank"); // Opens in new tab
 	}
 }

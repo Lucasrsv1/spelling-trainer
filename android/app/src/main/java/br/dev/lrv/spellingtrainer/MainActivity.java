@@ -1,4 +1,4 @@
-package io.ionic.starter;
+package br.dev.lrv.spellingtrainer;
 
 import android.content.Intent;
 import android.graphics.Color;

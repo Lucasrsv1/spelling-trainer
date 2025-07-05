@@ -139,6 +139,12 @@ export default [
 			strict: ["warn", "never"]
 		}
 	},
+	{
+		files: ["**/*.html"],
+		rules: {
+			"@stylistic/no-tabs": "off"
+		}
+	},
 	...compat.extends(
 		"plugin:@angular-eslint/template/recommended"
 	).map(config => ({

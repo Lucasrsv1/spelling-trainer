@@ -2,9 +2,9 @@
 
 <div align="center">
 	<a href="https://spellingtrainer.lrv.dev.br" target="blank">
-		<img src="./resources/access-web-app.png" alt="Access Web App" width="230">
+		<img src="./src/assets/access-web-app.png" alt="Access Web App" width="230">
 	</a>
-	<a href="https://play.google.com/store/apps/details?id=appId" target="blank">
+	<a href="https://play.google.com/store/apps/details?id=br.dev.lrv.spellingtrainer" target="blank">
 		<img src="./src/assets/get-it-on-google-play.png" alt="Get it on Google Play" width="230">
 	</a>
 </div><br>

@@ -24,9 +24,15 @@
 					Sign In
 				</ion-button>
 
-				<ion-button fill="clear" color="dark" size="large" class="custom-btn" (click)="openPlayStore()">
-					<ion-img src="../../../assets/get-it-on-google-play.png"></ion-img>
-				</ion-button>
+				@if (isNativePlatform) {
+					<ion-button fill="clear" color="dark" size="large" class="custom-btn" (click)="openWebApp()">
+						<ion-img src="../../../assets/access-web-app.png" alt="Access Web App"></ion-img>
+					</ion-button>
+				} @else {
+					<ion-button fill="clear" color="dark" size="large" class="custom-btn" (click)="openPlayStore()">
+						<ion-img src="../../../assets/get-it-on-google-play.png" alt="Get it on Google Play"></ion-img>
+					</ion-button>
+				}
 			</div>
 		}
 	</div>
